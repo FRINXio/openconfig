@@ -30,9 +30,15 @@
     <bundle>mvn:io.frinx.openconfig/openconfig-rib/{{VERSION}}</bundle>
   </feature>
 
+  <feature name='openconfig-network-instance' version='${project.version}'>
+    <bundle>mvn:io.frinx.openconfig/openconfig-network-instance/{{VERSION}}</bundle>
+    <bundle>mvn:io.frinx.openconfig/openconfig-local-routing/{{VERSION}}</bundle>
+  </feature>
+
   <feature name='openconfig-models' version='${project.version}' description="All available openconfig models">
     <feature version='${project.version}'>openconfig-interfaces</feature>
     <feature version='${project.version}'>openconfig-bgp</feature>
+    <feature version='${project.version}'>openconfig-network-instance</feature>
   </feature>
 
 </features>

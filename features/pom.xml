@@ -80,5 +80,15 @@
       <artifactId>openconfig-rib</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>io.frinx.openconfig</groupId>
+      <artifactId>openconfig-network-instance</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.frinx.openconfig</groupId>
+      <artifactId>openconfig-local-routing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>
