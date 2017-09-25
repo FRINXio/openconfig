@@ -23,14 +23,28 @@
     <bundle>mvn:io.frinx.openconfig/openconfig-if-ip/{{VERSION}}</bundle>
   </feature>
 
-  <feature name='openconfig-bgp' version='${project.version}'>
+  <feature name='openconfig-policy' version='${project.version}'>
     <feature version='${project.version}'>openconfig-interfaces</feature>
     <bundle>mvn:io.frinx.openconfig/openconfig-policy/{{VERSION}}</bundle>
+  </feature>
+
+  <feature name='openconfig-bgp' version='${project.version}'>
+    <feature version='${project.version}'>openconfig-interfaces</feature>
+    <feature version='${project.version}'>openconfig-policy</feature>
     <bundle>mvn:io.frinx.openconfig/openconfig-bgp/{{VERSION}}</bundle>
     <bundle>mvn:io.frinx.openconfig/openconfig-rib/{{VERSION}}</bundle>
   </feature>
 
+  <feature name="openconfig-ospf" version='${project.version}'>
+    <feature version='${project.version}'>openconfig-interfaces</feature>
+    <feature version='${project.version}'>openconfig-policy</feature>
+    <bundle>mvn:io.frinx.openconfig/openconfig-ospf/{{VERSION}}</bundle>
+  </feature>
+
   <feature name='openconfig-network-instance' version='${project.version}'>
+    <feature version='${project.version}'>openconfig-ospf</feature>
+    <feature version='${project.version}'>openconfig-bgp</feature>
+    <feature version='${project.version}'>openconfig-interfaces</feature>
     <bundle>mvn:io.frinx.openconfig/openconfig-network-instance/{{VERSION}}</bundle>
     <bundle>mvn:io.frinx.openconfig/openconfig-local-routing/{{VERSION}}</bundle>
   </feature>
