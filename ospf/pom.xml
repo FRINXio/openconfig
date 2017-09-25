@@ -21,7 +21,7 @@
     </parent>
 
     <groupId>io.frinx.openconfig</groupId>
-    <artifactId>openconfig-network-instance</artifactId>
+    <artifactId>openconfig-ospf</artifactId>
     <version>3.1.0.rc2-frinx-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
@@ -33,37 +33,12 @@
         </dependency>
         <dependency>
             <groupId>io.frinx.openconfig</groupId>
-            <artifactId>openconfig-local-routing</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.frinx.openconfig</groupId>
-            <artifactId>openconfig-interfaces</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.frinx.openconfig</groupId>
             <artifactId>openconfig-policy</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.frinx.openconfig</groupId>
             <artifactId>openconfig-types</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.frinx.openconfig</groupId>
-            <artifactId>openconfig-bgp</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.frinx.openconfig</groupId>
-            <artifactId>openconfig-ospf</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.frinx.openconfig</groupId>
-            <artifactId>openconfig-vlan</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

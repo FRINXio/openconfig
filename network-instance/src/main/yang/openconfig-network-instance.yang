@@ -22,7 +22,7 @@ module openconfig-network-instance {
   import openconfig-bgp { prefix "oc-bgp"; }
   // import openconfig-mpls { prefix "oc-mpls"; }
   import openconfig-vlan { prefix "oc-vlan"; }
-  // import openconfig-ospfv2 { prefix "oc-ospfv2"; }
+  import openconfig-ospfv2 { prefix "oc-ospfv2"; }
   // import openconfig-policy-forwarding { prefix "oc-pf"; }
   //import openconfig-segment-routing { prefix "oc-sr"; }
   // import openconfig-isis { prefix "oc-isis"; }
@@ -652,7 +652,7 @@ module openconfig-network-instance {
                 "Configuration and state parameters relating to
                 Border Gateway Protocol (BGP)";
             }
-            /*
+
             uses oc-ospfv2:ospfv2-top {
               when "../config/identifier = 'OSPF2'" {
                 description
@@ -660,7 +660,7 @@ module openconfig-network-instance {
                   is of type OSPFv2";
               }
             }
-            */
+
             /*
             uses oc-isis:isis-top {
               when "../config/identifier = 'ISIS'" {
