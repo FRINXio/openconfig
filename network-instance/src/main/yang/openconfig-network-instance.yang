@@ -20,6 +20,7 @@ module openconfig-network-instance {
   import openconfig-network-instance-l3 { prefix "oc-ni-l3"; }
   import openconfig-types { prefix "oc-types"; }
   import openconfig-bgp { prefix "oc-bgp"; }
+  import openconfig-local-routing { prefix "oc-lr"; }
   // import openconfig-mpls { prefix "oc-mpls"; }
   import openconfig-vlan { prefix "oc-vlan"; }
   import openconfig-ospfv2 { prefix "oc-ospfv2"; }
@@ -558,6 +559,10 @@ module openconfig-network-instance {
           }
         }
 */
+
+        // DEVIATION: we want the static routes to be part of vrf
+        uses oc-lr:local-static-top;
+
         uses oc-vlan:vlan-top;
 
         //uses oc-pf:policy-forwarding-top;

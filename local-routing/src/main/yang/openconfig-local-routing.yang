@@ -403,6 +403,7 @@ module openconfig-local-routing {
     }
   }
 
-  uses local-routes-top;
+  // DEVIATION: used in network-instance
+  //uses local-routes-top;
 
 }
