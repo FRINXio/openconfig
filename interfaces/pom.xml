@@ -22,7 +22,7 @@
 
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>openconfig-interfaces</artifactId>
-    <version>3.1.0.rc2-frinx</version>
+    <version>3.1.0.rc3-frinx-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <dependencies>
