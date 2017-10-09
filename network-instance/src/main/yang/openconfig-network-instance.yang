@@ -559,10 +559,6 @@ module openconfig-network-instance {
           }
         }
 */
-
-        // DEVIATION: we want the static routes to be part of vrf
-        uses oc-lr:local-routes-top;
-
         uses oc-vlan:vlan-top;
 
         //uses oc-pf:policy-forwarding-top;
