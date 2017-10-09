@@ -402,8 +402,4 @@ module openconfig-local-routing {
       uses local-aggregate-top;
     }
   }
-
-  // DEVIATION: used in network-instance
-  //uses local-routes-top;
-
 }
