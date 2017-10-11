@@ -34,22 +34,22 @@
         <dependency>
             <groupId>org.opendaylight.mdsal.model</groupId>
             <artifactId>ietf-interfaces</artifactId>
-            <version>2014.05.08.10.1-Carbon-SR1.3_1_0_rc3-frinxodl-SNAPSHOT</version>
+            <version>2014.05.08.10.1-Carbon-SR1.3_1_0-frinxodl</version>
         </dependency>
         <dependency>
             <groupId>org.opendaylight.mdsal.model</groupId>
             <artifactId>ietf-inet-types-2013-07-15</artifactId>
-            <version>1.2.1-Carbon-SR1.3_1_0_rc3-frinxodl-SNAPSHOT</version>
+            <version>1.2.1-Carbon-SR1.3_1_0-frinxodl</version>
         </dependency>
         <dependency>
             <groupId>org.opendaylight.mdsal.model</groupId>
             <artifactId>ietf-yang-types-20130715</artifactId>
-            <version>2013.07.15.10.1-Carbon-SR1.3_1_0_rc3-frinxodl-SNAPSHOT</version>
+            <version>2013.07.15.10.1-Carbon-SR1.3_1_0-frinxodl</version>
         </dependency>
         <dependency>
             <groupId>org.opendaylight.mdsal.model</groupId>
             <artifactId>iana-if-type-2014-05-08</artifactId>
-            <version>2014.05.08.10.1-Carbon-SR1.3_1_0_rc3-frinxodl-SNAPSHOT</version>
+            <version>2014.05.08.10.1-Carbon-SR1.3_1_0-frinxodl</version>
         </dependency>
     </dependencies>
 </project>
