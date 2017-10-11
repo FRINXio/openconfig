@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © 2017 Frinx and others. All rights reserved.
+  ~
+  ~ This program and the accompanying materials are made available under the
+  ~ terms of the Eclipse Public License v1.0 which accompanies this distribution,
+  ~ and is available at http://www.eclipse.org/legal/epl-v10.html
+  -->
+
+<!-- vi: set et smarttab sw=4 tabstop=4: -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.opendaylight.mdsal</groupId>
+        <artifactId>binding-parent</artifactId>
+        <version>0.10.1-Carbon-SR1.3_1_0_rc3-frinxodl-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
+
+    <properties>
+        <idsGeneratorBaseDir>${project.build.directory}/generated-sources/ids</idsGeneratorBaseDir>
+    </properties>
+
+    <groupId>io.frinx.openconfig</groupId>
+    <artifactId>binding-parent</artifactId>
+    <version>3.1.0.rc3-frinx-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <profiles>
+        <profile>
+            <activation>
+                <file>
+                    <exists>src/main/yang</exists>
+                </file>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.opendaylight.mdsal</groupId>
+                    <artifactId>yang-binding</artifactId>
+                </dependency>
+            </dependencies>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.opendaylight.yangtools</groupId>
+                            <artifactId>yang-maven-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>instance-ids</id>
+                                    <goals>
+                                        <goal>generate-sources</goal>
+                                    </goals>
+                                    <configuration>
+                                        <codeGenerators>
+                                            <generator>
+                                                <codeGeneratorClass>io.frinx.binding.ids.IdsCodeGenerator</codeGeneratorClass>
+                                                <outputBaseDir>${idsGeneratorBaseDir}</outputBaseDir>
+                                                <resourceBaseDir>${project.build.directory}/generated-sources/spi</resourceBaseDir>
+                                            </generator>
+                                        </codeGenerators>
+                                        <inspectDependencies>true</inspectDependencies>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>io.frinx.openconfig</groupId>
+                                    <artifactId>ids-code-generator</artifactId>
+                                    <version>3.1.0.rc3-frinx-SNAPSHOT</version>
+                                    <scope>compile</scope>
+                                </dependency>
+                            </dependencies>
+                        </plugin>
+                        <plugin>
+                            <artifactId>maven-clean-plugin</artifactId>
+                            <configuration>
+                                <filesets combine.children="append">
+                                    <fileset>
+                                        <directory>${idsGeneratorBaseDir}</directory>
+                                        <includes>
+                                            <include>**</include>
+                                        </includes>
+                                    </fileset>
+                                </filesets>
+                            </configuration>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>build-helper-maven-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>add-yang-sources</id>
+                                    <phase>generate-sources</phase>
+                                    <goals>
+                                        <goal>add-source</goal>
+                                    </goals>
+                                    <configuration>
+                                        <sources combine.children="append">
+                                            <source>${idsGeneratorBaseDir}</source>
+                                        </sources>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+
+                        <!-- This has to match the definition in odlparent and exists only
+                             because for some reason PMD does not understand wildcards. -->
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-pmd-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>cpd</id>
+                                    <phase>process-sources</phase>
+                                    <goals>
+                                        <goal>cpd-check</goal>
+                                    </goals>
+                                    <configuration>
+                                        <excludeRoots combine.children="append">
+                                            <excludeRoot>${idsGeneratorBaseDir}</excludeRoot>
+                                        </excludeRoots>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.opendaylight.yangtools</groupId>
+                        <artifactId>yang-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
