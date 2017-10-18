@@ -42,6 +42,7 @@
     <module>vlan</module>
     <module>local-routing</module>
     <module>network-instance</module>
+    <module>platform</module>
 
     <module>features</module>
   </modules>

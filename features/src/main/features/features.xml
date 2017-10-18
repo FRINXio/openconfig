@@ -49,10 +49,16 @@
     <bundle>mvn:io.frinx.openconfig/openconfig-local-routing/{{VERSION}}</bundle>
   </feature>
 
+  <feature name='openconfig-platform' version='${project.version}'>
+    <feature version='${project.version}'>openconfig-interfaces</feature>
+    <bundle>mvn:io.frinx.openconfig/openconfig-platform/{{VERSION}}</bundle>
+  </feature>
+
   <feature name='openconfig-models' version='${project.version}' description="All available openconfig models">
     <feature version='${project.version}'>openconfig-interfaces</feature>
     <feature version='${project.version}'>openconfig-bgp</feature>
     <feature version='${project.version}'>openconfig-network-instance</feature>
+    <feature version='${project.version}'>openconfig-platform</feature>
   </feature>
 
 </features>
