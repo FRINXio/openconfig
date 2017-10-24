@@ -44,7 +44,22 @@ module cisco-if-extension {
     description "Bfd mode";
   }
 
-  // TODO: move where BFD will be
+  typedef bundle-mode {
+    type enumeration {
+      enum ON {
+        description "On";
+      }
+      enum ACTIVE {
+        description "Active";
+      }
+      enum PASSIVE {
+        description "Passive";
+      }
+    }
+    description "Bundle mode";
+  }
+
+  // TODO: move where bfd will be
   augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config/bfd:bfd" {
     description
       "Adds BFD mode";
@@ -79,6 +94,17 @@ module cisco-if-extension {
       default "false";
       description
         "Configure to enable BFD over bundle members";
+    }
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:config/" {
+    description
+    "Adds bundle mode";
+
+    leaf mode {
+      type bundle-mode;
+      default "ON";
+      description "Configuration of bundle mode [ON|ACTIVE|PASSIVE]";
     }
   }
 }
