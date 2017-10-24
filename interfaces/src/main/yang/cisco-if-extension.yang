@@ -107,4 +107,20 @@ module cisco-if-extension {
       description "Configuration of bundle mode [ON|ACTIVE|PASSIVE]";
     }
   }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description "Adds property of load-interval";
+    container statistics {
+      description "Per-interface statistics configuration";
+      leaf load-interval {
+        type uint32 {
+          range "0..600";
+        }
+        default "300";
+        description
+          "Specify interval for load calculation for an
+          interface";
+      }
+    }
+  }
 }
