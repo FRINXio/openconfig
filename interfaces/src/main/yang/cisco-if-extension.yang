@@ -1,0 +1,84 @@
+module cisco-if-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.io/yang/interfaces/cisco";
+
+  prefix "cisco";
+
+  // import some basic types
+  import openconfig-interfaces { prefix oc-if; }
+  import openconfig-if-aggregate { prefix oc-lag; }
+  import openconfig-if-ethernet { prefix oc-eth; }
+  import bfd { prefix bfd; }
+  import openconfig-extensions { prefix oc-ext; }
+
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to Openconfig interfaces models,
+    containing CISCO specific features.";
+
+  revision "2017-10-24" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  typedef bfd-mode {
+    type enumeration {
+      enum NO_CFG {
+        description "BFD mode not configured on per-bundle basis";
+      }
+      enum CISCO {
+        description "BFD mode Cisco";
+      }
+      enum IETF {
+        description "BFD mode IETF";
+      }
+    }
+    description "Bfd mode";
+  }
+
+  // TODO: move where BFD will be
+  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config/bfd:bfd" {
+    description
+      "Adds BFD mode";
+
+    leaf mode {
+      type bfd-mode;
+      default "NO_CFG";
+      description "Configuration of BFDoBM mode [cisco|ietf]";
+    }
+  }
+
+  // TODO: move where bfd will be
+  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config/bfd:bfd/bfd:address-family/bfd:ipv4" {
+    description
+      "Adds BFD fast-detect property to IPv4 AF";
+
+    leaf fast-detect {
+      type boolean;
+      default "false";
+      description
+        "Configure to enable BFD over bundle members";
+    }
+  }
+
+  // TODO: move where bfd will be
+  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config/bfd:bfd/bfd:address-family/bfd:ipv6" {
+    description
+      "Adds BFD fast-detect property to IPv6 AF";
+
+    leaf fast-detect {
+      type boolean;
+      default "false";
+      description
+        "Configure to enable BFD over bundle members";
+    }
+  }
+}

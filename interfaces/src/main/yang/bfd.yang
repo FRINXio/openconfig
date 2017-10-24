@@ -1,0 +1,93 @@
+module bfd {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.io/yang/bfd";
+
+  prefix "bfd";
+
+  // import some basic types
+  import openconfig-interfaces { prefix oc-if; }
+  import openconfig-if-aggregate { prefix oc-lag; }
+  import openconfig-extensions { prefix oc-ext; }
+
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "BFD implementation based on Openconfig interfaces";
+
+  revision "2017-10-24" {
+    description
+      "Initial release";
+  }
+
+  grouping bfd-af-properties {
+
+    // TODO: compare with local-address, neighbor in JUNIPER
+    leaf destination-address {
+      type string;
+      description
+        "Destination address for BFD sessions
+        created by bundlemgr";
+    }
+
+    leaf multiplier {
+      type uint32 {
+        range "2..50";
+      }
+      description
+       "Detection multiplier for BFD sessions
+       created by bundlemgr";
+    }
+
+    leaf min-interval {
+      type uint32 {
+        range "3..30000";
+      }
+      description
+        "Hello interval for BFD sessions created
+        by bundlemgr";
+    }
+  }
+
+  grouping bfd {
+    container bfd {
+      description "BFD over bundle members configuration";
+
+      container address-family {
+        description
+          "Configuration of BFDoBM for all address
+          families";
+
+        container ipv6 {
+          description
+            "Configuration of BFDoBM for IPv6 address
+            family";
+
+            uses bfd-af-properties;
+        }
+
+        container ipv4 {
+          description
+            "Configuration of BFDoBM for IPv4 address
+            family";
+
+            uses bfd-af-properties;
+        }
+      }
+    }
+  }
+
+// TODO: move where appropriate
+  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config" {
+    description
+          "Adds configuration items for BFD
+          belonging to a logical aggregate / LAG interface";
+
+    uses bfd;
+  }
+}
