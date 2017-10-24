@@ -44,6 +44,7 @@
     <module>network-instance</module>
     <module>platform</module>
     <module>lldp</module>
+    <module>cdp</module>
 
     <module>features</module>
   </modules>

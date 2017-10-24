@@ -59,6 +59,11 @@
     <bundle>mvn:io.frinx.openconfig/openconfig-lldp/{{VERSION}}</bundle>
   </feature>
 
+  <feature name='openconfig-cdp' version='${project.version}'>
+    <feature version='${project.version}'>openconfig-interfaces</feature>
+    <feature version='${project.version}'>openconfig-lldp</feature>
+    <bundle>mvn:io.frinx.openconfig/openconfig-cdp/{{VERSION}}</bundle>
+  </feature>
 
   <feature name='openconfig-models' version='${project.version}' description="All available openconfig models">
     <feature version='${project.version}'>openconfig-interfaces</feature>
@@ -66,6 +71,7 @@
     <feature version='${project.version}'>openconfig-network-instance</feature>
     <feature version='${project.version}'>openconfig-platform</feature>
     <feature version='${project.version}'>openconfig-lldp</feature>
+    <feature version='${project.version}'>openconfig-cdp</feature>
   </feature>
 
 </features>
