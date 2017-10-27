@@ -31,6 +31,7 @@
     <module>ids-code-generator</module>
     <module>binding-parent</module>
 
+    <module>acl</module>
     <module>bgp</module>
     <module>ospf</module>
     <module>extensions</module>
