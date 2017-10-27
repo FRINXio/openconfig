@@ -21,7 +21,7 @@ module openconfig-network-instance {
   import openconfig-types { prefix "oc-types"; }
   import openconfig-bgp { prefix "oc-bgp"; }
   import openconfig-local-routing { prefix "oc-lr"; }
-  // import openconfig-mpls { prefix "oc-mpls"; }
+  import openconfig-mpls { prefix "oc-mpls"; }
   import openconfig-vlan { prefix "oc-vlan"; }
   import openconfig-ospfv2 { prefix "oc-ospfv2"; }
   // import openconfig-policy-forwarding { prefix "oc-pf"; }
@@ -541,7 +541,7 @@ module openconfig-network-instance {
           }
         }
 
-        /*
+
         uses oc-mpls:mpls-top {
           when "../config/type = 'DEFAULT'" {
             description
@@ -549,7 +549,7 @@ module openconfig-network-instance {
               network instance.";
           }
         }
-*/
+
 /*
         uses oc-sr:sr-top {
           when "../config/type = 'DEFAULT'" {

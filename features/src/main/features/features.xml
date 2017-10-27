@@ -41,10 +41,16 @@
     <bundle>mvn:io.frinx.openconfig/openconfig-ospf/{{VERSION}}</bundle>
   </feature>
 
+  <feature name='openconfig-mpls' version='${project.version}'>
+    <feature version='${project.version}'>openconfig-interfaces</feature>
+    <bundle>mvn:io.frinx.openconfig/openconfig-mpls/{{VERSION}}</bundle>
+  </feature>
+
   <feature name='openconfig-network-instance' version='${project.version}'>
     <feature version='${project.version}'>openconfig-ospf</feature>
     <feature version='${project.version}'>openconfig-bgp</feature>
     <feature version='${project.version}'>openconfig-interfaces</feature>
+    <feature version='${project.version}'>openconfig-mpls</feature>
     <bundle>mvn:io.frinx.openconfig/openconfig-network-instance/{{VERSION}}</bundle>
     <bundle>mvn:io.frinx.openconfig/openconfig-local-routing/{{VERSION}}</bundle>
   </feature>
