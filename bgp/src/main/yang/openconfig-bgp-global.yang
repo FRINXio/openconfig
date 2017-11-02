@@ -51,7 +51,7 @@ submodule openconfig-bgp-global {
 
     leaf as {
       type oc-inet:as-number;
-      mandatory true;
+      // mandatory true;
       description
         "Local autonomous system number of the router.  Uses
         the 32-bit as-number type from the model in RFC 6991.";
