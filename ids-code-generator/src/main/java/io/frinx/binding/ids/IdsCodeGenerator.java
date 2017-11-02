@@ -27,7 +27,7 @@ import org.sonatype.plexus.build.incremental.BuildContext;
 
 public final class IdsCodeGenerator implements BasicCodeGenerator, BuildContextAware, MavenProjectAware {
 
-    static final String INVALID_CHARS_MATCHER = "[^a-zA-Z]";
+    static final String INVALID_CHARS_MATCHER = "[^a-zA-Z0-9]";
     private MavenProject project;
 
     @Override
