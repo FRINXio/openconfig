@@ -18,7 +18,7 @@
 
   <groupId>io.frinx.openconfig</groupId>
   <artifactId>openconfig-features</artifactId>
-  <version>3.1.1.rc1-frinx-SNAPSHOT</version>
+  <version>3.1.1.rc1-frinx</version>
   <name>${project.artifactId}</name>
 
   <prerequisites>
