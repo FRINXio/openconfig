@@ -25,7 +25,7 @@
 ./interfaces/src/main/yang/openconfig-if-ethernet.yang
 ./interfaces/src/main/yang/openconfig-if-aggregate.yang
 ./interfaces/src/main/yang/bfd.yang
-./interfaces/src/main/yang/interfaces-damp.yang
+./interfaces/src/main/yang/damping.yang
 ./interfaces/src/main/yang/cisco-if-extension.yang
 
 ./policy/src/main/yang/openconfig-routing-policy.yang

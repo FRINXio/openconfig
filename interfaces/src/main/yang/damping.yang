@@ -1,0 +1,128 @@
+module damping {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.io/yang/damping";
+
+  prefix "damp";
+
+  // import some basic types
+  import openconfig-interfaces { prefix oc-if; }
+  import openconfig-if-aggregate { prefix oc-lag; }
+  import openconfig-if-ethernet { prefix oc-eth; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Damping implementation based on OpenConfig interfaces";
+
+  revision "2017-10-24" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  // grouping statements
+
+  grouping damping-config {
+    leaf enabled {
+      type boolean;
+      default "true";
+      description
+        "Desired state of damping";
+    }
+
+    leaf half-life {
+      type uint32;
+      units "minutes";
+      description
+        "Decay half life (in minutes).
+        Must be less than the max-suppress value.";
+    }
+
+    leaf reuse {
+      type uint32 {
+        range "1..20000";
+      }
+      description
+        "Reuse threshold — Arbitrary value below which
+        a suppressed route can be used again.";
+    }
+
+    leaf suppress {
+      type uint32 {
+        range "1..20000";
+      }
+      description
+        "Suppress threshold — Arbitrary value above which
+        a route can no longer be used or included in advertisements.
+        Must be greater than the reuse threshold.";
+    }
+
+    leaf max-suppress {
+      type uint32;
+      units "minutes";
+      description
+        "Max suppress time (in minutes)";
+    }
+  }
+
+  grouping damping-state {
+    description
+      "Damping related operational state";
+
+    //TODO: placeholder for operational state related to damping
+  }
+
+  grouping damping-top {
+    description
+      "Top-level grouping for damping data";
+
+    container damping {
+      description
+        "Enclosing container for damping interface-specific
+        data.";
+
+      container config {
+          description "Configuration parameters for damping";
+
+          uses damping-config;
+      }
+
+      container state {
+
+        config false;
+        description "State variables for damping";
+
+        uses damping-config;
+        uses damping-state;
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet" {
+    when "oc-if:type = 'ift:ethernetCsmacd'" {
+      description "Active when the interface is Ethernet";
+    }
+    description "Adds damping settings to individual Ethernet
+    interfaces";
+
+    uses damping-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation" {
+    when "oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface is a LAG";
+    }
+    description "Adds damping settings to a LAG interface";
+
+    uses damping-top;
+  }
+}
