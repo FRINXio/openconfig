@@ -8,86 +8,97 @@ module bfd {
   prefix "bfd";
 
   // import some basic types
+  import ietf-inet-types { prefix "inet"; }
   import openconfig-interfaces { prefix oc-if; }
   import openconfig-if-aggregate { prefix oc-lag; }
-  import openconfig-extensions { prefix oc-ext; }
 
+  // meta
   organization "Frinx s.r.o";
 
   contact
     "support@frinx.io";
 
   description
-    "BFD implementation based on Openconfig interfaces";
+    "Bidirectional Forwarding Detection (BFD) implementation
+    based on OpenConfig interfaces";
 
   revision "2017-10-24" {
     description
       "Initial release";
+    reference "3.1.1";
   }
 
-  grouping bfd-af-properties {
+  // grouping statements
 
-    // TODO: compare with local-address, neighbor in JUNIPER
-    leaf destination-address {
-      type string;
+  grouping bfd-config {
+    leaf local-address {
+      type inet:ip-address;
       description
-        "Destination address for BFD sessions
-        created by bundlemgr";
+        "Source address for BFD sessions.
+        By default, IP address of interface with BFD session is used.";
+    }
+
+    leaf destination-address {
+      type inet:ip-address;
+      description
+        "Destination address for BFD sessions";
     }
 
     leaf multiplier {
-      type uint32 {
-        range "2..50";
-      }
+      type uint32;
       description
-       "Detection multiplier for BFD sessions
-       created by bundlemgr";
+       "Detection multiplier for BFD sessions";
     }
 
     leaf min-interval {
-      type uint32 {
-        range "3..30000";
-      }
+      type uint32;
+      units "milliseconds";
       description
-        "Hello interval for BFD sessions created
-        by bundlemgr";
+        "Interval for sending BFD packets (in milliseconds)";
     }
   }
 
-  grouping bfd {
+  grouping bfd-state {
+    description
+      "BFD related operational state";
+
+    //TODO: placeholder for operational state related to BFD
+  }
+
+  grouping bfd-top {
+    description
+      "Top-level grouping for BFD data";
+
     container bfd {
-      description "BFD over bundle members configuration";
+      description
+        "Enclosing container for BFD interface-specific
+        data.";
 
-      container address-family {
-        description
-          "Configuration of BFDoBM for all address
-          families";
+      container config {
+          description "Configuration parameters for BFD";
 
-        container ipv6 {
-          description
-            "Configuration of BFDoBM for IPv6 address
-            family";
+          uses bfd-config;
+      }
 
-            uses bfd-af-properties;
-        }
+      container state {
 
-        container ipv4 {
-          description
-            "Configuration of BFDoBM for IPv4 address
-            family";
+        config false;
+        description "State variables for BFD";
 
-            uses bfd-af-properties;
-        }
+        uses bfd-config;
+        uses bfd-state;
       }
     }
   }
 
-// TODO: move where appropriate
-  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config" {
-    description
-          "Adds configuration items for BFD
-          belonging to a logical aggregate / LAG interface";
+  // augment statements
 
-    uses bfd;
+  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation" {
+    when "oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface is a LAG";
+    }
+    description "Adds BFD settings to a LAG interface";
+
+    uses bfd-top;
   }
 }
