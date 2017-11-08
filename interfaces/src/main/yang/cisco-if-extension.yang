@@ -5,21 +5,21 @@ module cisco-if-extension {
   // namespace
   namespace "http://frinx.io/yang/interfaces/cisco";
 
-  prefix "cisco";
+  prefix "cisco-if-ext";
 
   // import some basic types
   import openconfig-interfaces { prefix oc-if; }
   import openconfig-if-aggregate { prefix oc-lag; }
   import openconfig-if-ethernet { prefix oc-eth; }
-  import openconfig-extensions { prefix oc-ext; }
 
+  // meta
   organization "Frinx s.r.o";
 
   contact
     "support@frinx.io";
 
   description
-    "Set of augments needed to Openconfig interfaces models,
+    "Set of augments needed to OpenConfig interfaces models,
     containing CISCO specific features.";
 
   revision "2017-10-24" {
@@ -28,45 +28,76 @@ module cisco-if-extension {
     reference "3.1.1";
   }
 
-  typedef bundle-mode {
-    type enumeration {
-      enum ON {
-        description "On";
+  // grouping statements
+
+  grouping statistics-config {
+    leaf load-interval {
+      type uint32 {
+        range "0..600";
       }
-      enum ACTIVE {
-        description "Active";
-      }
-      enum PASSIVE {
-        description "Passive";
-      }
+
+      default "300";
+
+      description
+        "Specify interval for load calculation for an
+        interface.
+        0 disables load calculation, otherwise some
+        multiple of 30 between 30 and 600.";
     }
-    description "Bundle mode";
   }
 
-  augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:config/" {
+  grouping statistics-state {
     description
-    "Adds bundle mode";
+      "Damping related operational state";
 
-    leaf mode {
-      type bundle-mode;
-      default "ON";
-      description "Configuration of bundle mode [ON|ACTIVE|PASSIVE]";
-    }
+    //TODO: placeholder for operational state related to statistics
   }
 
-  augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
-    description "Adds property of load-interval";
+  grouping statistics-top {
+    description
+      "Top-level grouping for statistics data";
+
     container statistics {
-      description "Per-interface statistics configuration";
-      leaf load-interval {
-        type uint32 {
-          range "0..600";
-        }
-        default "300";
-        description
-          "Specify interval for load calculation for an
-          interface";
+      description
+        "Enclosing container for statistics interface-specific
+        data.";
+
+      container config {
+          description "Configuration parameters for statistics";
+
+          uses statistics-config;
+      }
+
+      container state {
+
+        config false;
+        description "State variables for statistics";
+
+        uses statistics-config;
+        uses statistics-state;
       }
     }
   }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet" {
+    when "oc-if:type = 'ift:ethernetCsmacd'" {
+      description "Active when the interface is Ethernet";
+    }
+    description "Adds statistics settings to individual Ethernet
+    interfaces";
+
+    uses statistics-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation" {
+    when "oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface is a LAG";
+    }
+    description "Adds statistics settings to a LAG interface";
+
+    uses statistics-top;
+  }
+
 }
