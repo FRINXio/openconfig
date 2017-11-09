@@ -47,6 +47,7 @@
     <module>lldp</module>
     <module>cdp</module>
     <module>mpls</module>
+    <module>lacp</module>
 
     <module>features</module>
   </modules>

@@ -28,6 +28,8 @@
 ./interfaces/src/main/yang/damping.yang
 ./interfaces/src/main/yang/cisco-if-extension.yang
 
+./lacp/src/main/yang/openconfig-lacp.yang
+
 ./policy/src/main/yang/openconfig-routing-policy.yang
 
 ./local-routing/src/main/yang/openconfig-local-routing.yang
