@@ -29,6 +29,7 @@
 ./interfaces/src/main/yang/cisco-if-extension.yang
 
 ./lacp/src/main/yang/openconfig-lacp.yang
+./lacp/src/main/yang/lacp-lag-member.yang
 
 ./policy/src/main/yang/openconfig-routing-policy.yang
 
