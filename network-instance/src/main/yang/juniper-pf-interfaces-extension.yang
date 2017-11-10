@@ -1,0 +1,75 @@
+module juniper-pf-interfaces-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.io/yang/network-instance/pf-interfaces-extension/juniper";
+
+  prefix "juniper-pf-if-ext";
+
+  // import some basic types
+  import ietf-inet-types { prefix "inet"; }
+  import openconfig-network-instance { prefix oc-netinst; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Extended interface parameters with Juniper specific in policy-forwarding";
+
+  revision "2017-11-09" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  // grouping statements
+
+  grouping juniper-pf-interface-extension-config {
+    description
+      "Extended configuration parameters relating to an interface to policy
+      forwarding rule binding.";
+
+    leaf scheduler-map {
+      description "Output scheduler map";
+      type string;
+    }
+
+    container classifiers {
+      description "Classify incoming packets based on code point value";
+
+      list exp {
+        key name;
+        ordered-by user;
+        description "MPLS EXP classifier";
+
+        leaf name {
+          description "Classifier name";
+          type string;
+        }
+      }
+
+      list inet-precedence {
+        key name;
+        ordered-by user;
+        description "IPv4 precedence classifier";
+
+        leaf name {
+          description "Classifier name";
+          type string;
+        }
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:policy-forwarding/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config" {
+    description "Adds extended interface settings to policy-forwarding";
+
+    uses juniper-pf-interface-extension-config;
+  }
+}

@@ -89,4 +89,6 @@
 ./network-instance/src/main/yang/openconfig-network-instance-l2.yang
 ./network-instance/src/main/yang/openconfig-network-instance.yang
 ./network-instance/src/main/yang/cisco-mpls-te-extension.yang
+./network-instance/src/main/yang/cisco-pf-interfaces-extension.yang
+./network-instance/src/main/yang/juniper-pf-interfaces-extension.yang
 ./network-instance/src/main/yang/mpls-rsvp-extension.yang
