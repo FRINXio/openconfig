@@ -48,6 +48,7 @@
     <module>cdp</module>
     <module>mpls</module>
     <module>lacp</module>
+    <module>policy-forwarding</module>
 
     <module>features</module>
   </modules>

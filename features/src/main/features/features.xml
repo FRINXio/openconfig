@@ -51,6 +51,7 @@
     <feature version='${project.version}'>openconfig-bgp</feature>
     <feature version='${project.version}'>openconfig-interfaces</feature>
     <feature version='${project.version}'>openconfig-mpls</feature>
+    <feature version='${project.version}'>openconfig-policy-forwarding</feature>
     <bundle>mvn:io.frinx.openconfig/openconfig-network-instance/{{VERSION}}</bundle>
     <bundle>mvn:io.frinx.openconfig/openconfig-local-routing/{{VERSION}}</bundle>
   </feature>
@@ -81,6 +82,12 @@
     <bundle>mvn:io.frinx.openconfig/openconfig-lacp/{{VERSION}}</bundle>
   </feature>
 
+  <feature name='openconfig-policy-forwarding' version='${project.version}'>
+    <feature version='${project.version}'>openconfig-interfaces</feature>
+    <feature version='${project.version}'>openconfig-acl</feature>
+    <bundle>mvn:io.frinx.openconfig/openconfig-policy-forwarding/{{VERSION}}</bundle>
+  </feature>
+
   <feature name='openconfig-models' version='${project.version}' description="All available openconfig models">
     <feature version='${project.version}'>openconfig-interfaces</feature>
     <feature version='${project.version}'>openconfig-bgp</feature>
@@ -89,6 +96,8 @@
     <feature version='${project.version}'>openconfig-lldp</feature>
     <feature version='${project.version}'>openconfig-cdp</feature>
     <feature version='${project.version}'>openconfig-acl</feature>
+    <feature version='${project.version}'>openconfig-lacp</feature>
+    <feature version='${project.version}'>openconfig-policy-forwarding</feature>
   </feature>
 
 </features>

@@ -24,8 +24,8 @@ module openconfig-network-instance {
   import openconfig-mpls { prefix "oc-mpls"; }
   import openconfig-vlan { prefix "oc-vlan"; }
   import openconfig-ospfv2 { prefix "oc-ospfv2"; }
-  // import openconfig-policy-forwarding { prefix "oc-pf"; }
-  //import openconfig-segment-routing { prefix "oc-sr"; }
+  import openconfig-policy-forwarding { prefix "oc-pf"; }
+  // import openconfig-segment-routing { prefix "oc-sr"; }
   // import openconfig-isis { prefix "oc-isis"; }
   // import openconfig-aft { prefix "oc-aft"; }
 
@@ -561,7 +561,7 @@ module openconfig-network-instance {
 */
         uses oc-vlan:vlan-top;
 
-        //uses oc-pf:policy-forwarding-top;
+        uses oc-pf:policy-forwarding-top;
 
         // uses oc-aft:aft-top;
 

@@ -65,6 +65,11 @@
 ./acl/src/main/yang/openconfig-packet-match.yang
 ./acl/src/main/yang/openconfig-acl.yang
 
+./policy-forwarding/src/main/yang/openconfig-pf-path-groups.yang
+./policy-forwarding/src/main/yang/openconfig-pf-forwarding-policies.yang
+./policy-forwarding/src/main/yang/openconfig-pf-interfaces.yang
+./policy-forwarding/src/main/yang/openconfig-policy-forwarding.yang
+
 ./bgp/src/main/yang/openconfig-bgp-common.yang
 ./bgp/src/main/yang/openconfig-bgp-common-multiprotocol.yang
 ./bgp/src/main/yang/openconfig-bgp-common-structure.yang
