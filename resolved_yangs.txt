@@ -84,3 +84,4 @@
 ./network-instance/src/main/yang/openconfig-network-instance-policy.yang
 ./network-instance/src/main/yang/openconfig-network-instance-l2.yang
 ./network-instance/src/main/yang/openconfig-network-instance.yang
+./network-instance/src/main/yang/cisco-mpls-te-extension.yang
