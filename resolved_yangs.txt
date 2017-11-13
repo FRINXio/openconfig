@@ -28,6 +28,8 @@
 ./interfaces/src/main/yang/damping.yang
 ./interfaces/src/main/yang/cisco-if-extension.yang
 
+./snmp/src/main/yang/snmp.yang
+
 ./lacp/src/main/yang/openconfig-lacp.yang
 ./lacp/src/main/yang/lacp-lag-member.yang
 

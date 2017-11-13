@@ -49,6 +49,7 @@
     <module>mpls</module>
     <module>lacp</module>
     <module>policy-forwarding</module>
+    <module>snmp</module>
 
     <module>features</module>
   </modules>
