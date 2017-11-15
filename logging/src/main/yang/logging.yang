@@ -1,0 +1,92 @@
+module logging {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.io/yang/logging";
+
+  prefix "log";
+
+  // import some basic types
+  import event-types { prefix event-types; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Logging implementation based on OpenConfig interfaces";
+
+  revision "2017-10-24" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  // grouping statements
+
+  grouping logging-global-events-structural {
+    description
+      "Structural grouping for logging events.";
+
+    container global-events {
+      description
+        "Configuration and operational state relating to logging
+        of events.";
+
+      container config {
+        description
+          "Configuration parameters relating to logging events.";
+
+        uses logging-global-event-config;
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state parameters relating logging events.";
+
+        uses logging-global-event-config;
+        uses logging-global-event-state;
+      }
+    }
+  }
+
+  grouping logging-global-event-config {
+    list enabled-logging-for-event {
+      description
+        "Event which triggers logging.";
+      key event-name;
+      leaf event-name {
+        type identityref {
+          base event-types:EVENT_TYPE;
+        }
+      }
+    }
+  }
+
+  grouping logging-global-event-state {
+    description
+      "Logging related operational state";
+
+    //TODO: placeholder for operational state related to logging
+  }
+
+  grouping logging-top {
+    description
+      "Top-level grouping for logging data";
+
+    container logging {
+      description
+        "Enclosing container for logging data.";
+
+      uses logging-global-events-structural;
+    }
+  }
+
+  // data definition statements
+
+  uses logging-top;
+}

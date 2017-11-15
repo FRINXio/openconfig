@@ -50,6 +50,7 @@
     <module>lacp</module>
     <module>policy-forwarding</module>
     <module>snmp</module>
+    <module>logging</module>
 
     <module>features</module>
   </modules>

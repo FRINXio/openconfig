@@ -9,6 +9,7 @@ module snmp {
 
   // import some basic types
   import openconfig-interfaces { prefix oc-if; }
+  import event-types { prefix event-types; }
 
   // meta
   organization "Frinx s.r.o";
@@ -82,11 +83,15 @@ module snmp {
         "A unique identifier for the interface.";
     }
 
-    leaf link-updown-traps-enabled {
-      type boolean;
-      default "true";
+    list enabled-trap-for-event {
       description
-        "SNMP notifications about link up and link down";
+        "Event which triggers SNMP trap.";
+      key event-name;
+      leaf event-name {
+        type identityref {
+          base event-types:EVENT_TYPE;
+        }
+      }
     }
   }
 

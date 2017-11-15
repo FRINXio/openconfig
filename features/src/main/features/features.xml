@@ -14,10 +14,14 @@
   xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.2.0 http://karaf.apache.org/xmlns/features/v1.2.0">
   <repository>mvn:org.opendaylight.mdsal.model/features-mdsal-model/{{VERSION}}/xml/features</repository>
 
-  <feature name='openconfig-interfaces' version='${project.version}'>
+  <feature name='openconfig-types' version='${project.version}'>
     <feature version='${mdsal.model.version}'>odl-mdsal-models</feature>
     <bundle>mvn:io.frinx.openconfig/openconfig-types/{{VERSION}}</bundle>
     <bundle>mvn:io.frinx.openconfig/openconfig-extensions/{{VERSION}}</bundle>
+  </feature>
+
+  <feature name='openconfig-interfaces' version='${project.version}'>
+    <feature version='${project.version}'>openconfig-types</feature>
     <bundle>mvn:io.frinx.openconfig/openconfig-interfaces/{{VERSION}}</bundle>
     <bundle>mvn:io.frinx.openconfig/openconfig-vlan/{{VERSION}}</bundle>
     <bundle>mvn:io.frinx.openconfig/openconfig-if-ip/{{VERSION}}</bundle>
@@ -93,6 +97,11 @@
     <bundle>mvn:io.frinx.openconfig/openconfig-snmp/{{VERSION}}</bundle>
   </feature>
 
+  <feature name='openconfig-logging' version='${project.version}'>
+    <feature version='${project.version}'>openconfig-types</feature>
+    <bundle>mvn:io.frinx.openconfig/openconfig-logging/{{VERSION}}</bundle>
+  </feature>
+
   <feature name='openconfig-models' version='${project.version}' description="All available openconfig models">
     <feature version='${project.version}'>openconfig-interfaces</feature>
     <feature version='${project.version}'>openconfig-bgp</feature>
@@ -104,6 +113,7 @@
     <feature version='${project.version}'>openconfig-lacp</feature>
     <feature version='${project.version}'>openconfig-policy-forwarding</feature>
     <feature version='${project.version}'>openconfig-snmp</feature>
+    <feature version='${project.version}'>openconfig-logging</feature>
   </feature>
 
 </features>

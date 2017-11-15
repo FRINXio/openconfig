@@ -2,6 +2,7 @@
 ./extensions/src/main/yang/openconfig-types.yang
 ./types/src/main/yang/openconfig-yang-types.yang
 ./types/src/main/yang/openconfig-inet-types.yang
+./types/src/main/yang/event-types.yang
 ./policy/src/main/yang/openconfig-policy-types.yang
 ./network-instance/src/main/yang/openconfig-network-instance-types.yang
 ./ospf/src/main/yang/openconfig-ospf-types.yang
@@ -13,6 +14,8 @@
 ./bgp/src/main/yang/openconfig-bgp-types.yang
 ./lldp/src/main/yang/openconfig-lldp-types.yang
 ./rib/src/main/yang/openconfig-rib-bgp-types.yang
+
+./logging/src/main/yang/logging.yang
 
 ./rib/src/main/yang/openconfig-rib-bgp-table-attributes.yang
 ./rib/src/main/yang/openconfig-rib-bgp-attributes.yang
