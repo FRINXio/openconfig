@@ -11,6 +11,7 @@ module cisco-if-extension {
   import openconfig-interfaces { prefix oc-if; }
   import openconfig-if-aggregate { prefix oc-lag; }
   import openconfig-if-ethernet { prefix oc-eth; }
+  import yang-ext { prefix ext; }
 
   // meta
   organization "Frinx s.r.o";
@@ -85,6 +86,7 @@ module cisco-if-extension {
     when "oc-if:type = 'ift:ethernetCsmacd'" {
       description "Active when the interface is Ethernet";
     }
+    ext:augment-identifier "if-eth-cisco-stats-aug";
     description "Adds statistics settings to individual Ethernet
     interfaces";
 
@@ -95,6 +97,7 @@ module cisco-if-extension {
     when "oc-if:type = 'ift:ieee8023adLag'" {
       description "Active when the interface is a LAG";
     }
+    ext:augment-identifier "if-lag-cisco-stats-aug";
     description "Adds statistics settings to a LAG interface";
 
     uses statistics-top;

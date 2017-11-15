@@ -11,6 +11,7 @@ module damping {
   import openconfig-interfaces { prefix oc-if; }
   import openconfig-if-aggregate { prefix oc-lag; }
   import openconfig-if-ethernet { prefix oc-eth; }
+  import yang-ext { prefix ext; }
 
   // meta
   organization "Frinx s.r.o";
@@ -111,6 +112,7 @@ module damping {
     when "oc-if:type = 'ift:ethernetCsmacd'" {
       description "Active when the interface is Ethernet";
     }
+    ext:augment-identifier "if-eth-damp-aug";
     description "Adds damping settings to individual Ethernet
     interfaces";
 
@@ -121,6 +123,7 @@ module damping {
     when "oc-if:type = 'ift:ieee8023adLag'" {
       description "Active when the interface is a LAG";
     }
+    ext:augment-identifier "if-lag-damp-aug";
     description "Adds damping settings to a LAG interface";
 
     uses damping-top;

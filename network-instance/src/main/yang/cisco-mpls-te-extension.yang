@@ -10,6 +10,7 @@ module cisco-mpls-te-extension {
   // import some basic types
   import openconfig-network-instance { prefix oc-netinst; }
   import openconfig-mpls { prefix oc-mpls; }
+  import yang-ext { prefix ext; }
 
   // meta
   organization "Frinx s.r.o";
@@ -80,6 +81,10 @@ module cisco-mpls-te-extension {
   // augment statements
 
   augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel" {
+    when "oc-netinst:type = 'oc-ni-types:DEFAULT_INSTANCE'" {
+      description "Active when the network-instance is a DEFAULT_INSTANCE";
+    }
+    ext:augment-identifier "ni-mpls-te-tunnel-cisco-aug";
     description "Adds CISCO MPLS TE tunnel settings to individual tunnel
     interfaces";
 

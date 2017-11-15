@@ -11,6 +11,7 @@ module lacp-lag-member {
   import ietf-inet-types { prefix "inet"; }
   import openconfig-interfaces { prefix oc-if; }
   import openconfig-lacp { prefix oc-lacp; }
+  import yang-ext { prefix ext; }
 
   // meta
   organization "Frinx s.r.o";
@@ -116,6 +117,7 @@ module lacp-lag-member {
 
   augment "/oc-lacp:lacp" {
     description "Adds LACP LAG member interface settings to LACP";
+    ext:augment-identifier "lacp-lag-member-aug";
 
     uses lacp-lag-member-interfaces-top;
   }
