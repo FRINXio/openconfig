@@ -5,7 +5,7 @@ module juniper-if-aggregate-extension {
   // namespace
   namespace "http://frinx.io/yang/interfaces/juniper";
 
-  prefix "cisco-if-ext";
+  prefix "juniper-if-lag-ext";
 
   // import some basic types
   import openconfig-interfaces { prefix oc-if; }
