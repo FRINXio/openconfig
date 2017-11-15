@@ -27,6 +27,7 @@
 ./interfaces/src/main/yang/bfd.yang
 ./interfaces/src/main/yang/damping.yang
 ./interfaces/src/main/yang/cisco-if-extension.yang
+./interfaces/src/main/yang/juniper-if-aggregate-extension.yang
 
 ./snmp/src/main/yang/snmp.yang
 
