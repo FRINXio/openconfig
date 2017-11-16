@@ -40,7 +40,7 @@ module lacp-lag-member {
       description
         "Reference to the interface on which LACP should be
         configured.   The type of the target interface must be
-        ieee8023adLag";
+        ethernetCsmacd";
     }
 
     leaf interval {

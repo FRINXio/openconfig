@@ -15,8 +15,6 @@
 ./lldp/src/main/yang/openconfig-lldp-types.yang
 ./rib/src/main/yang/openconfig-rib-bgp-types.yang
 
-./logging/src/main/yang/logging.yang
-
 ./rib/src/main/yang/openconfig-rib-bgp-table-attributes.yang
 ./rib/src/main/yang/openconfig-rib-bgp-attributes.yang
 ./rib/src/main/yang/openconfig-rib-bgp-shared-attributes.yang
@@ -31,6 +29,8 @@
 ./interfaces/src/main/yang/damping.yang
 ./interfaces/src/main/yang/cisco-if-extension.yang
 ./interfaces/src/main/yang/juniper-if-aggregate-extension.yang
+
+./logging/src/main/yang/logging.yang
 
 ./snmp/src/main/yang/snmp.yang
 
