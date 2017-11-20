@@ -8,23 +8,23 @@ module openconfig-bgp {
   prefix "oc-bgp";
 
   // import some basic inet types
-  import openconfig-extensions { prefix oc-ext; }
+  import openconfig-extensions { prefix oc-ext; revision-date 2017-01-29; }
 
   // Include the OpenConfig BGP submodules
   // Common: defines the groupings that are common across more than
   //         one context (where contexts are neighbor, group, global)
-  include openconfig-bgp-common;
+  include openconfig-bgp-common { revision-date 2017-02-02; }
   // Multiprotocol: defines the groupings that are common across more
   //                than one context, and relate to Multiprotocol
-  include openconfig-bgp-common-multiprotocol;
+  include openconfig-bgp-common-multiprotocol { revision-date 2017-02-02; }
   // Structure: defines groupings that are shared but are solely used for
   //            structural reasons.
-  include openconfig-bgp-common-structure;
+  include openconfig-bgp-common-structure { revision-date 2017-02-02; }
   // Include peer-group/neighbor/global - these define the groupings
   // that are specific to one context
-  include openconfig-bgp-peer-group;
-  include openconfig-bgp-neighbor;
-  include openconfig-bgp-global;
+  include openconfig-bgp-peer-group { revision-date 2017-02-02; }
+  include openconfig-bgp-neighbor { revision-date 2017-02-02; }
+  include openconfig-bgp-global { revision-date 2017-02-02; }
 
   // meta
   organization

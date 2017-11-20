@@ -4,13 +4,13 @@ submodule openconfig-bgp-peer-group {
     prefix "oc-bgp";
   }
 
-  import openconfig-extensions { prefix oc-ext; }
-  import openconfig-routing-policy { prefix oc-rpol; }
+  import openconfig-extensions { prefix oc-ext; revision-date 2017-01-29; }
+  import openconfig-routing-policy { prefix oc-rpol; revision-date 2016-05-12; }
 
   // Include the common submodule
-  include openconfig-bgp-common;
-  include openconfig-bgp-common-multiprotocol;
-  include openconfig-bgp-common-structure;
+  include openconfig-bgp-common { revision-date 2017-02-02; }
+  include openconfig-bgp-common-multiprotocol { revision-date 2017-02-02; }
+  include openconfig-bgp-common-structure { revision-date 2017-02-02; }
 
   // meta
   organization

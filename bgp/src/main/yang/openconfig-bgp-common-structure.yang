@@ -4,10 +4,10 @@ submodule openconfig-bgp-common-structure {
     prefix "oc-bgp";
   }
 
-  import openconfig-extensions { prefix oc-ext; }
+  import openconfig-extensions { prefix oc-ext; revision-date 2017-01-29; }
 
-  include openconfig-bgp-common-multiprotocol;
-  include openconfig-bgp-common;
+  include openconfig-bgp-common-multiprotocol { revision-date 2017-02-02; }
+  include openconfig-bgp-common { revision-date 2017-02-02; }
 
   // meta
   organization

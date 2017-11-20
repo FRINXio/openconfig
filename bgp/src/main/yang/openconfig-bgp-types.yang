@@ -5,9 +5,9 @@ module openconfig-bgp-types {
 
   prefix "oc-bgp-types";
 
-  import openconfig-types { prefix "oc-types"; }
-  import openconfig-inet-types { prefix "oc-inet"; }
-  import openconfig-extensions { prefix "oc-ext"; }
+  import openconfig-types { prefix "oc-types"; revision-date 2017-01-13; }
+  import openconfig-inet-types { prefix "oc-inet"; revision-date 2017-04-03; }
+  import openconfig-extensions { prefix "oc-ext"; revision-date 2017-01-29; }
 
   // meta
   organization

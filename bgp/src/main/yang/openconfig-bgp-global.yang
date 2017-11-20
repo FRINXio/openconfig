@@ -4,14 +4,14 @@ submodule openconfig-bgp-global {
     prefix "oc-bgp";
   }
 
-  import openconfig-extensions { prefix oc-ext; }
-  import openconfig-yang-types { prefix oc-yang; }
-  import openconfig-inet-types { prefix oc-inet; }
+  import openconfig-extensions { prefix oc-ext; revision-date 2017-01-29; }
+  import openconfig-yang-types { prefix oc-yang; revision-date 2017-04-03; }
+  import openconfig-inet-types { prefix oc-inet; revision-date 2017-04-03; }
 
   // Include common submodule
-  include openconfig-bgp-common;
-  include openconfig-bgp-common-multiprotocol;
-  include openconfig-bgp-peer-group;
+  include openconfig-bgp-common { revision-date 2017-02-02; }
+  include openconfig-bgp-common-multiprotocol { revision-date 2017-02-02; }
+  include openconfig-bgp-peer-group { revision-date 2017-02-02; }
 
   // meta
   organization
