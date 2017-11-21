@@ -5,7 +5,7 @@ module snmp {
   // namespace
   namespace "http://frinx.io/yang/snmp";
 
-  prefix "if-snmp";
+  prefix "snmp";
 
   // import some basic types
   import openconfig-interfaces { prefix oc-if; }

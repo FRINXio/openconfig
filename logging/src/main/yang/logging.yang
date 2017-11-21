@@ -8,6 +8,7 @@ module logging {
   prefix "log";
 
   // import some basic types
+  import openconfig-interfaces { prefix oc-if; }
   import event-types { prefix event-types; }
 
   // meta
@@ -17,7 +18,7 @@ module logging {
     "support@frinx.io";
 
   description
-    "Logging implementation based on OpenConfig interfaces";
+    "System logging (syslog) implementation based on OpenConfig";
 
   revision "2017-10-24" {
     description
@@ -27,34 +28,61 @@ module logging {
 
   // grouping statements
 
-  grouping logging-global-events-structural {
+  grouping logging-interfaces-structural {
     description
-      "Structural grouping for logging events.";
+      "Structural grouping for interface to logging bindings.";
 
-    container global-events {
+    container interfaces {
       description
-        "Configuration and operational state relating to logging
-        of events.";
+        "Configuration and operational state relating logging
+        on interfaces.";
 
-      container config {
+      list interface {
+        key "interface-id";
+
         description
-          "Configuration parameters relating to logging events.";
+          "Configuration and operationals state relating to the
+          relationship between interfaces and logging.";
 
-        uses logging-global-event-config;
-      }
+        leaf interface-id {
+          type leafref {
+            path "../config/interface-id";
+          }
+          description
+            "A reference to the unique identifier for the interface
+            being referenced by the logging.";
+        }
 
-      container state {
-        config false;
-        description
-          "Operational state parameters relating logging events.";
+        container config {
+          description
+            "Configuration parameters relating to an interface to
+            logging binding.";
 
-        uses logging-global-event-config;
-        uses logging-global-event-state;
+          uses logging-interface-config;
+        }
+
+        container state {
+          config false;
+          description
+            "Operational state parameters relating to an interface to
+            logging binding.";
+
+          uses logging-interface-config;
+          uses logging-interface-state;
+        }
+
+        uses oc-if:interface-ref;
       }
     }
   }
 
-  grouping logging-global-event-config {
+  grouping logging-interface-config {
+    leaf interface-id {
+      type oc-if:interface-id;
+      description
+        "A unique identifier for the interface.";
+    }
+
     list enabled-logging-for-event {
       description
         "Event which triggers logging.";
@@ -67,11 +95,11 @@ module logging {
     }
   }
 
-  grouping logging-global-event-state {
+  grouping logging-interface-state {
     description
-      "Logging related operational state";
+      "logging related operational state";
 
-    //TODO: placeholder for operational state related to logging
+    //TODO: placeholder for operational state related to snmp
   }
 
   grouping logging-top {
@@ -82,7 +110,7 @@ module logging {
       description
         "Enclosing container for logging data.";
 
-      uses logging-global-events-structural;
+      uses logging-interfaces-structural;
     }
   }
 
