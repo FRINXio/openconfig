@@ -10,6 +10,7 @@ module juniper-if-aggregate-extension {
   // import some basic types
   import openconfig-interfaces { prefix oc-if; }
   import openconfig-if-aggregate { prefix oc-lag; }
+  import yang-ext { prefix ext; }
 
   // meta
   organization "Frinx s.r.o";
@@ -85,6 +86,7 @@ module juniper-if-aggregate-extension {
     when "oc-if:type = 'ift:ieee8023adLag'" {
       description "Active when the interface is a LAG";
     }
+    ext:augment-identifier "if-lag-juniper-aug";
     description "Adds additional Juniper specific settings to a LAG interface";
 
     uses juniper-if-aggregate-config;

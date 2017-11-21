@@ -51,5 +51,10 @@
             <artifactId>iana-if-type-2014-05-08</artifactId>
             <version>2014.05.08.10.1-Carbon-SR1.3_1_1_rc4-frinxodl-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.opendaylight.mdsal.model</groupId>
+            <artifactId>yang-ext</artifactId>
+            <version>2013.09.07.10.1-Carbon-SR1.3_1_1_rc4-frinxodl-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

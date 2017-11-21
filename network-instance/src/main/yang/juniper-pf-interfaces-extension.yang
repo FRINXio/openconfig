@@ -10,6 +10,7 @@ module juniper-pf-interfaces-extension {
   // import some basic types
   import ietf-inet-types { prefix "inet"; }
   import openconfig-network-instance { prefix oc-netinst; }
+  import yang-ext { prefix ext; }
 
   // meta
   organization "Frinx s.r.o";
@@ -68,6 +69,10 @@ module juniper-pf-interfaces-extension {
   // augment statements
 
   augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:policy-forwarding/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config" {
+    when "oc-netinst:type = 'oc-ni-types:DEFAULT_INSTANCE'" {
+      description "Active when the network-instance is a DEFAULT_INSTANCE";
+    }
+    ext:augment-identifier "ni-pf-if-juniper-aug";
     description "Adds extended interface settings to policy-forwarding";
 
     uses juniper-pf-interface-extension-config;

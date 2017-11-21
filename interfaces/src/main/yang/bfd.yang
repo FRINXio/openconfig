@@ -11,6 +11,7 @@ module bfd {
   import ietf-inet-types { prefix "inet"; }
   import openconfig-interfaces { prefix oc-if; }
   import openconfig-if-aggregate { prefix oc-lag; }
+  import yang-ext { prefix ext; }
 
   // meta
   organization "Frinx s.r.o";
@@ -97,6 +98,7 @@ module bfd {
     when "oc-if:type = 'ift:ieee8023adLag'" {
       description "Active when the interface is a LAG";
     }
+    ext:augment-identifier "if-lag-bfd-aug";
     description "Adds BFD settings to a LAG interface";
 
     uses bfd-top;
