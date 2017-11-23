@@ -9,8 +9,6 @@ module damping {
 
   // import some basic types
   import openconfig-interfaces { prefix oc-if; }
-  import openconfig-if-aggregate { prefix oc-lag; }
-  import openconfig-if-ethernet { prefix oc-eth; }
   import yang-ext { prefix ext; }
 
   // meta
@@ -108,23 +106,9 @@ module damping {
 
   // augment statements
 
-  augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet" {
-    when "oc-if:type = 'ift:ethernetCsmacd'" {
-      description "Active when the interface is Ethernet";
-    }
-    ext:augment-identifier "if-eth-damp-aug";
-    description "Adds damping settings to individual Ethernet
-    interfaces";
-
-    uses damping-top;
-  }
-
-  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation" {
-    when "oc-if:type = 'ift:ieee8023adLag'" {
-      description "Active when the interface is a LAG";
-    }
-    ext:augment-identifier "if-lag-damp-aug";
-    description "Adds damping settings to a LAG interface";
+  augment "/oc-if:interfaces/oc-if:interface/" {
+    ext:augment-identifier "if-damp-aug";
+    description "Adds additional damping configuration to interfaces model";
 
     uses damping-top;
   }
