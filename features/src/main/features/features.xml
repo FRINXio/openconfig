@@ -20,8 +20,14 @@
     <bundle>mvn:io.frinx.openconfig/openconfig-extensions/{{VERSION}}</bundle>
   </feature>
 
+  <feature name='uniconfig-model' version='${project.version}'>
+    <feature version='${mdsal.model.version}'>odl-mdsal-models</feature>
+    <bundle>mvn:io.frinx.openconfig/uniconfig-model/{{VERSION}}</bundle>
+  </feature>
+
   <feature name='openconfig-interfaces' version='${project.version}'>
     <feature version='${project.version}'>openconfig-types</feature>
+    <feature version='${project.version}'>uniconfig-model</feature>
     <bundle>mvn:io.frinx.openconfig/openconfig-interfaces/{{VERSION}}</bundle>
     <bundle>mvn:io.frinx.openconfig/openconfig-vlan/{{VERSION}}</bundle>
     <bundle>mvn:io.frinx.openconfig/openconfig-if-ip/{{VERSION}}</bundle>

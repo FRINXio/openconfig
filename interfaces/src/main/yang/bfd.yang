@@ -11,7 +11,10 @@ module bfd {
   import ietf-inet-types { prefix "inet"; }
   import openconfig-interfaces { prefix oc-if; }
   import openconfig-if-aggregate { prefix oc-lag; }
-  import yang-ext { prefix ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
 
   // meta
   organization "Frinx s.r.o";
@@ -99,6 +102,18 @@ module bfd {
       description "Active when the interface is a LAG";
     }
     ext:augment-identifier "if-lag-bfd-aug";
+    description "Adds BFD settings to a LAG interface";
+
+    uses bfd-top;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-lag:aggregation" {
+    when "oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface is a LAG";
+    }
+    ext:augment-identifier "uniconfig-node-interfaces-if-lag-bfd-aug";
     description "Adds BFD settings to a LAG interface";
 
     uses bfd-top;

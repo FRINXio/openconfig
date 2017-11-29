@@ -30,6 +30,7 @@
   <modules>
     <module>ids-code-generator</module>
     <module>binding-parent</module>
+    <module>uniconfig-model</module>
 
     <module>acl</module>
     <module>bgp</module>

@@ -9,7 +9,10 @@ module cisco-if-extension {
 
   // import some basic types
   import openconfig-interfaces { prefix oc-if; }
-  import yang-ext { prefix ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
 
   // meta
   organization "Frinx s.r.o";
@@ -84,6 +87,16 @@ module cisco-if-extension {
     ext:augment-identifier "if-cisco-stats-aug";
     description "Adds Cisco specific statistics configuration to
                 interfaces model";
+
+    uses statistics-top;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
+    ext:augment-identifier "uniconfig-node-interfaces-if-cisco-stats-aug";
+    description "Adds Cisco specific statistics configuration to
+                    interfaces model";
 
     uses statistics-top;
   }

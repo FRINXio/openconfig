@@ -11,6 +11,10 @@ module openconfig-interfaces {
   import ietf-interfaces { prefix ietf-if; }
   import ietf-yang-types { prefix yang; }
   import openconfig-extensions { prefix oc-ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
 
   // meta
   organization "OpenConfig working group";
@@ -929,5 +933,12 @@ module openconfig-interfaces {
 
   uses interfaces-top;
 
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    when "/nt:network-topology/nt:topology/nt:topology-types/ut:uniconfig";
+    ext:augment-identifier "uniconfig-node-interfaces-aug";
+    uses interfaces-top;
+  }
 
 }
