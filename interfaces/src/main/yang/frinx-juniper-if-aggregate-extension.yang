@@ -1,0 +1,110 @@
+module frinx-juniper-if-aggregate-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/juniper";
+
+  prefix "juniper-if-lag-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-if-aggregate { prefix oc-lag; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing Juniper specific features.";
+
+  revision "2017-10-24" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  // grouping statements
+
+  grouping juniper-if-aggregate-config {
+    leaf link-speed {
+      description "Link speed of individual interface that joins the AE";
+      type enumeration {
+        enum "10M" {
+          description "Links are 10M";
+        }
+        enum "100M" {
+          description "Links are 100M";
+        }
+        enum "1G" {
+          description "Links are 1G";
+        }
+        enum "2500M" {
+          description "Links are 2.5G";
+        }
+        enum "5G" {
+          description "Links are 5G";
+        }
+        enum "8G" {
+          description "Links are 8G";
+        }
+        enum "10G" {
+          description "Links are 10G";
+        }
+        enum "25G" {
+          description "Links are 25G";
+        }
+        enum "40G" {
+          description "Links are 40G";
+        }
+        enum "50G" {
+          description "Links are 50G";
+        }
+        enum "80G" {
+          description "Links are 80G";
+        }
+        enum "100G" {
+          description "Links are 100G";
+        }
+        enum "OC192" {
+          description "Links are OC-192";
+        }
+        enum "MIXED" {
+         description "Links are various speeds";
+        }
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config" {
+    when "oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface is a LAG";
+    }
+    ext:augment-identifier "if-lag-juniper-aug";
+    description "Adds additional Juniper specific settings to a LAG interface";
+
+    uses juniper-if-aggregate-config;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config" {
+    when "oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface is a LAG";
+    }
+    ext:augment-identifier "uniconfig-node-interfaces-if-lag-juniper-aug";
+    description "Adds additional Juniper specific settings to a LAG interface";
+
+    uses juniper-if-aggregate-config;
+  }
+
+}

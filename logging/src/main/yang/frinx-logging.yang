@@ -1,0 +1,120 @@
+module frinx-logging {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/logging";
+
+  prefix "log";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-event-types { prefix event-types; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "System logging (syslog) implementation based on OpenConfig";
+
+  revision "2017-10-24" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  // grouping statements
+
+  grouping logging-interfaces-structural {
+    description
+      "Structural grouping for interface to logging bindings.";
+
+    container interfaces {
+      description
+        "Configuration and operational state relating logging
+        on interfaces.";
+
+      list interface {
+        key "interface-id";
+
+        description
+          "Configuration and operationals state relating to the
+          relationship between interfaces and logging.";
+
+        leaf interface-id {
+          type leafref {
+            path "../config/interface-id";
+          }
+          description
+            "A reference to the unique identifier for the interface
+            being referenced by the logging.";
+        }
+
+        container config {
+          description
+            "Configuration parameters relating to an interface to
+            logging binding.";
+
+          uses logging-interface-config;
+        }
+
+        container state {
+          config false;
+          description
+            "Operational state parameters relating to an interface to
+            logging binding.";
+
+          uses logging-interface-config;
+          uses logging-interface-state;
+        }
+
+        uses oc-if:interface-ref;
+      }
+    }
+  }
+
+  grouping logging-interface-config {
+    leaf interface-id {
+      type oc-if:interface-id;
+      description
+        "A unique identifier for the interface.";
+    }
+
+    list enabled-logging-for-event {
+      description
+        "Event which triggers logging.";
+      key event-name;
+      leaf event-name {
+        type identityref {
+          base event-types:EVENT_TYPE;
+        }
+      }
+    }
+  }
+
+  grouping logging-interface-state {
+    description
+      "logging related operational state";
+
+    //TODO: placeholder for operational state related to snmp
+  }
+
+  grouping logging-top {
+    description
+      "Top-level grouping for logging data";
+
+    container logging {
+      description
+        "Enclosing container for logging data.";
+
+      uses logging-interfaces-structural;
+    }
+  }
+
+  // data definition statements
+
+  uses logging-top;
+}

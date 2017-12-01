@@ -1,0 +1,68 @@
+module frinx-cdp {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/cdp";
+
+  prefix "cdp";
+
+  import frinx-openconfig-lldp-types { prefix oc-lldp-types; }
+  import frinx-openconfig-lldp { prefix oc-lldp; }
+
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import ietf-yang-types { prefix yang; }
+  import frinx-openconfig-extensions { prefix oc-ext; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "This module defines configuration and operational state data
+    for the CDP protocol. Based on openconfig LLDP";
+
+  revision "2017-10-24" {
+    description "Initial revision";
+  }
+
+  grouping cdp-top {
+    description
+      "Top-level grouping for CDP model";
+
+    container cdp {
+      description
+        "Top-level container for CDP configuration and state data";
+
+      container config {
+        description
+          "Configuration data ";
+
+        uses oc-lldp:lldp-config;
+        uses oc-lldp:lldp-system-info-config;
+      }
+
+      container state {
+
+        config false;
+
+        description
+          "Operational state data ";
+
+        uses oc-lldp:lldp-config;
+        uses oc-lldp:lldp-system-info-config;
+        uses oc-lldp:lldp-system-info-state;
+        uses oc-lldp:lldp-state;
+      }
+
+      uses oc-lldp:lldp-interface-top;
+    }
+  }
+
+  // data definition statements
+
+  uses cdp-top;
+
+}

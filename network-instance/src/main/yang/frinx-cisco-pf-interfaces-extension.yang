@@ -1,0 +1,62 @@
+module frinx-cisco-pf-interfaces-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/network-instance/pf-interfaces-extension/cisco";
+
+  prefix "cisco-pf-if-ext";
+
+  // import some basic types
+  import ietf-inet-types { prefix "inet"; }
+  import frinx-openconfig-network-instance { prefix oc-netinst; }
+  import yang-ext { prefix ext; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Extended interface parameters with CISCO specific in policy-forwarding";
+
+  revision "2017-11-09" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  // grouping statements
+
+  grouping cisco-pf-interface-extension-config {
+    description
+      "Extended configuration parameters relating to an interface to policy
+      forwarding rule binding.";
+
+    leaf input-service-policy {
+      description
+            "Service policy which is applied on packets in ingress direction";
+
+      type string;
+    }
+    leaf output-service-policy {
+      description
+            "Service policy which is applied on packets in egress direction";
+
+      type string;
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:policy-forwarding/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config" {
+    when "oc-netinst:type = 'oc-ni-types:DEFAULT_INSTANCE'" {
+      description "Active when the network-instance is a DEFAULT_INSTANCE";
+    }
+    ext:augment-identifier "ni-pf-if-cisco-aug";
+    description "Adds extended interface settings to policy-forwarding";
+
+    uses cisco-pf-interface-extension-config;
+  }
+}

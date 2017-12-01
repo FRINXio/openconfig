@@ -1,0 +1,124 @@
+module frinx-lacp-lag-member {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/lacp-lag-member";
+
+  prefix "lacp-lag-mem";
+
+  // import some basic types
+  import ietf-inet-types { prefix "inet"; }
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-lacp { prefix oc-lacp; }
+  import yang-ext { prefix ext; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "LACP LAG member implementation
+    based on OpenConfig LACP";
+
+  revision "2017-11-09" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  // grouping statements
+
+  grouping lacp-lag-member-interfaces-config {
+    description
+      "Configuration data for each LACP-enabled lag member interface";
+
+    leaf name {
+      type oc-if:base-interface-ref;
+      description
+        "Reference to the interface on which LACP should be
+        configured.   The type of the target interface must be
+        ethernetCsmacd";
+    }
+
+    leaf interval {
+      type oc-lacp:lacp-period-type;
+      default SLOW;
+      description
+        "Set the period between LACP messages -- uses
+        the lacp-period-type enumeration.";
+    }
+
+    leaf lacp-mode {
+      type oc-lacp:lacp-activity-type;
+      default ACTIVE;
+      description
+        "ACTIVE is to initiate the transmission of LACP packets.
+         PASSIVE is to wait for peer to initiate the transmission of
+         LACP packets.";
+    }
+  }
+
+  grouping lacp-lag-member-interfaces-state {
+    description
+      "Operational state data for each LACP-enabled LAG member
+      interface";
+
+    //TODO: placeholder for operational state related to BFD
+  }
+
+  grouping lacp-lag-member-interfaces-top {
+    description
+      "Top-level grouping for LACP-enabled LAG member interfaces";
+
+    container lag-member-interfaces {
+      description
+        "Enclosing container for the list of LACP-enabled
+        LAG member interfaces";
+
+      list lag-member-interface {
+        key "name";
+        description
+          "List of LAG member interfaces managed by LACP";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description
+            "Reference to the list key";
+        }
+
+        container config {
+          description
+            "Configuration data for each LACP LAG member interface";
+
+          uses lacp-lag-member-interfaces-config;
+        }
+
+        container state {
+
+          config false;
+
+          description
+            "Operational state data for each LACP LAG member
+            interface";
+
+          uses lacp-lag-member-interfaces-config;
+          uses lacp-lag-member-interfaces-state;
+        }
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-lacp:lacp" {
+    description "Adds LACP LAG member interface settings to LACP";
+    ext:augment-identifier "lacp-lag-member-aug";
+
+    uses lacp-lag-member-interfaces-top;
+  }
+}
