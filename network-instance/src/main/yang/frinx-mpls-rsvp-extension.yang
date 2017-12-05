@@ -3,7 +3,7 @@ module frinx-mpls-rsvp-extension {
   yang-version "1";
 
   // namespace
-  namespace "http://frinx.openconfig.net/yang/mpls";
+  namespace "http://frinx.openconfig.net/yang/mpls/extension";
 
   prefix "mpls-rsvp-ext";
 
