@@ -11,6 +11,51 @@ module frinx-uniconfig-topology {
     description "Initial revision";
   }
 
+  typedef sync-type {
+    type enumeration {
+      enum in-sync {
+        value 0;
+      }
+      enum out-of-sync {
+        value -1;
+      }
+    }
+  }
+
+  typedef error-type {
+    type enumeration {
+      enum no-connection {
+        value 0;
+        description "No connection to device.";
+      }
+      enum processing-error {
+        value -1;
+        description "Error occurs during processing of device configuration.";
+      }
+    }
+  }
+
+  grouping error-fields {
+    leaf error-type {
+      type error-type;
+      description "Type of error.";
+    }
+    leaf error-message {
+      type string;
+      description "Error message describing cause of error.";
+    }
+  }
+
+  grouping sync-status-fields {
+    leaf sync-status {
+      type sync-type;
+      description
+        "Represents status if actual configuration on uniconfig node
+        is synced with real device configuration.";
+    }
+    uses error-fields;
+  }
+
   augment "/nt:network-topology/nt:topology/nt:topology-types" {
     ext:augment-identifier "uniconfig-topology";
     container uniconfig {
@@ -22,7 +67,11 @@ module frinx-uniconfig-topology {
     ext:augment-identifier "uniconfig-node-aug";
     container configuration {
       description
-        "Target element for augmentations with OpenConfig configuration";
+        "Target element for augmentations from OpenConfig configuration";
+    }
+    container status {
+      config false;
+      uses sync-status-fields;
     }
   }
 
