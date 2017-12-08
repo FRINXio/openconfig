@@ -36,6 +36,11 @@
             <artifactId>openconfig-extensions</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.frinx.openconfig</groupId>
+            <artifactId>openconfig-types</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

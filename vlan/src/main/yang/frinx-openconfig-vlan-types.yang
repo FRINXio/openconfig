@@ -21,7 +21,16 @@ module frinx-openconfig-vlan-types {
     "This module defines configuration and state variables for VLANs,
     in addition to VLAN parameters associated with interfaces";
 
-  oc-ext:openconfig-version "1.0.2";
+  oc-ext:openconfig-version "2.0.0";
+
+  revision "2017-07-14" {
+    description
+      "Move top-level vlan data to network-instance; Update
+      identities to comply to style guide; fixed pattern
+      quoting; corrected trunk vlan types; added TPID config to
+      base interface.";
+    reference "2.0.0";
+  }
 
   revision "2016-05-26" {
     description
@@ -41,20 +50,20 @@ module frinx-openconfig-vlan-types {
       ethertype value";
   }
 
-  identity TPID_0x8100 {
+  identity TPID_0X8100 {
     base TPID_TYPES;
     description
       "Default TPID value for 802.1q single-tagged VLANs.";
   }
 
-  identity TPID_0x8A88 {
+  identity TPID_0X8A88 {
     base TPID_TYPES;
     description
       "TPID value for 802.1ad provider bridging, Q-in-Q,
       or stacked VLANs";
   }
 
-  identity TPID_0x9100 {
+  identity TPID_0X9100 {
     base TPID_TYPES;
     description
       "Alternate TPID value";

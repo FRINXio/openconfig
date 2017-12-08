@@ -6,7 +6,7 @@ submodule frinx-openconfig-bgp-common {
 
   import frinx-openconfig-extensions { prefix oc-ext; revision-date 2017-01-29; }
   import frinx-openconfig-bgp-types { prefix oc-bgp-types; revision-date 2017-02-02; }
-  import frinx-openconfig-routing-policy { prefix oc-rpol; revision-date 2016-05-12; }
+  import frinx-openconfig-routing-policy { prefix oc-rpol; revision-date 2017-07-14; }
   import frinx-openconfig-types { prefix oc-types; revision-date 2017-01-13; }
   import frinx-openconfig-inet-types { prefix oc-inet; revision-date 2017-04-03; }
 

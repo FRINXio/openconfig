@@ -1,4 +1,4 @@
-package org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.vlan.types.rev160526;
+package org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.vlan.types.rev170714;
 
 /**
  * The purpose of generated class in src/main/java for Union types is to create new instances of unions from a string representation.
@@ -9,9 +9,9 @@ package org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.vlan.types.r
  * loss of user code.
  *
  */
-public class VlanRefBuilder {
+public class QinqIdRangeBuilder {
 
-    public static VlanRef getDefaultInstance(java.lang.String defaultValue) {
+    public static QinqIdRange getDefaultInstance(java.lang.String defaultValue) {
         throw new java.lang.UnsupportedOperationException("Not yet implemented");
     }
 
