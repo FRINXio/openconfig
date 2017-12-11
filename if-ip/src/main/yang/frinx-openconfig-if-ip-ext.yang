@@ -10,6 +10,9 @@ module frinx-openconfig-if-ip-ext {
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-openconfig-if-ip { prefix oc-ip; }
   import frinx-openconfig-extensions { prefix oc-ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
 
   // meta
@@ -140,10 +143,20 @@ module frinx-openconfig-if-ip-ext {
 
   augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
     "oc-if:subinterface/oc-ip:ipv6" {
-      description
-        "Adds address autoconfiguration to the base IP model";
+    description
+      "Adds address autoconfiguration to the base IP model";
 
-      uses ipv6-autoconf-top;
-    }
+    uses ipv6-autoconf-top;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+    "oc-if:subinterface/oc-ip:ipv6" {
+    description
+      "Adds address autoconfiguration to the base IP model";
+
+    uses ipv6-autoconf-top;
+  }
 
 }

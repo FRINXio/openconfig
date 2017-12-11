@@ -12,6 +12,9 @@ module frinx-lacp-lag-member {
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-openconfig-lacp { prefix oc-lacp; }
   import yang-ext { prefix ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   // meta
   organization "Frinx s.r.o";
@@ -121,4 +124,13 @@ module frinx-lacp-lag-member {
 
     uses lacp-lag-member-interfaces-top;
   }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-lacp:lacp" {
+    description "Adds LACP LAG member interface settings to LACP";
+
+    uses lacp-lag-member-interfaces-top;
+  }
+
 }

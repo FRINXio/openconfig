@@ -14,6 +14,9 @@ module frinx-openconfig-platform-transceiver {
   import frinx-openconfig-types { prefix oc-types; }
   import frinx-openconfig-extensions { prefix oc-ext; }
   import frinx-openconfig-yang-types { prefix oc-yang; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
 
   // meta
@@ -463,6 +466,42 @@ module frinx-openconfig-platform-transceiver {
   }
 
   augment "/oc-if:interfaces/oc-if:interface/oc-if:state" {
+    //TODO: add 'when' or other condition to make sure this
+    //leafref points to a component of type TRANSCEIVER.
+    description
+      "Adds a reference from the base interface to its corresponding
+      physical channels.";
+
+    leaf-list physical-channel {
+      type leafref {
+        path "/oc-platform:components/" +
+          "oc-platform:component[oc-platform:name=current()/../oc-platform:hardware-port]/" +
+          "oc-transceiver:transceiver/" +
+          "oc-transceiver:physical-channels/oc-transceiver:channel/" +
+          "oc-transceiver:index";
+      }
+      description
+        "For a channelized interface, list of references to the
+        physical channels (lanes) corresponding to the interface.";
+    }
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-platform:components/oc-platform:component" {
+    description
+      "Adding transceiver data to physical inventory";
+
+    uses port-transceiver-top {
+      when "current()/oc-platform:state/" +
+        "oc-platform:type = 'TRANSCEIVER'" {
+        description
+          "Augment is active when component is of type TRANSCEIVER";
+      }
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:state" {
     //TODO: add 'when' or other condition to make sure this
     //leafref points to a component of type TRANSCEIVER.
     description

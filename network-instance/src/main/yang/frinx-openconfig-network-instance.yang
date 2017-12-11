@@ -28,6 +28,9 @@ module frinx-openconfig-network-instance {
   // import openconfig-segment-routing { prefix "oc-sr"; }
   // import openconfig-isis { prefix "oc-isis"; }
   // import openconfig-aft { prefix "oc-aft"; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   // include submodules
   include frinx-openconfig-network-instance-l2;
@@ -1051,4 +1054,10 @@ module frinx-openconfig-network-instance {
   }
 
   uses network-instance-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses network-instance-top;
+  }
 }

@@ -15,7 +15,6 @@ module frinx-openconfig-if-ethernet {
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
-  import yang-ext { prefix ext; revision-date "2013-07-09"; }
 
   // meta
   organization "OpenConfig working group";
@@ -347,7 +346,6 @@ module frinx-openconfig-if-ethernet {
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
     description "Adds addtional Ethernet-specific configuration to
     interfaces model";
-    ext:augment-identifier "uniconfig-node-interfaces-if-eth-aug";
 
     uses ethernet-top {
       when "oc-if:state/oc-if:type = 'ift:ethernetCsmacd'" {

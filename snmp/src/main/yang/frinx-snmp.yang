@@ -10,6 +10,9 @@ module frinx-snmp {
   // import some basic types
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-event-types { prefix event-types; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   // meta
   organization "Frinx s.r.o";
@@ -118,4 +121,11 @@ module frinx-snmp {
   // data definition statements
 
   uses snmp-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses snmp-top;
+  }
+  
 }

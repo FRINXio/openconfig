@@ -119,7 +119,6 @@ module frinx-damping {
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
-    ext:augment-identifier "uniconfig-node-interfaces-if-damp-aug";
     description "Adds additional damping configuration to interfaces model";
 
     uses damping-top;

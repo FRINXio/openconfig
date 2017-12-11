@@ -11,6 +11,9 @@ module frinx-openconfig-lacp {
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-openconfig-yang-types { prefix oc-yang; }
   import frinx-openconfig-extensions { prefix oc-ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
 
 
@@ -456,6 +459,12 @@ grouping aggregation-lacp-members-statistics {
   uses aggregation-lacp-top;
 
   // augment statements
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses aggregation-lacp-top;
+  }
 
 
 }

@@ -10,6 +10,9 @@ module frinx-openconfig-platform {
   import frinx-openconfig-platform-types { prefix oc-platform-types; }
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-openconfig-extensions { prefix oc-ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
 
   // meta
@@ -362,6 +365,29 @@ module frinx-openconfig-platform {
   // augments
 
   augment "/oc-if:interfaces/oc-if:interface/oc-if:state" {
+    //TODO: add 'when' or other condition to make sure this
+    //leafref points to a component of type PORT.
+    description
+      "Adds a reference from the base interface to the corresponding
+      port component in the device inventory.";
+
+    leaf hardware-port {
+      type leafref {
+        path "/oc-platform:components/oc-platform:component/" +
+          "oc-platform:name";
+      }
+      description
+        "References the hardware port in the device inventory";
+    }
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses platform-component-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:state" {
     //TODO: add 'when' or other condition to make sure this
     //leafref points to a component of type PORT.
     description

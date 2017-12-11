@@ -11,6 +11,9 @@ module frinx-openconfig-acl {
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-openconfig-yang-types { prefix oc-yang; }
   import frinx-openconfig-extensions { prefix oc-ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   // meta
   organization "OpenConfig working group";
@@ -829,6 +832,11 @@ module frinx-openconfig-acl {
 
   // augment statements
 
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses acl-top;
+  }
 
 }
 
