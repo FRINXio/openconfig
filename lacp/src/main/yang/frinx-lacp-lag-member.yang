@@ -12,6 +12,7 @@ module frinx-lacp-lag-member {
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-openconfig-lacp { prefix oc-lacp; }
   import yang-ext { prefix ext; }
+  import frinx-openconfig-if-ethernet { prefix oc-eth; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
@@ -24,7 +25,7 @@ module frinx-lacp-lag-member {
 
   description
     "LACP LAG member implementation
-    based on OpenConfig LACP";
+    based on OpenConfig lacp and interfaces";
 
   revision "2017-11-09" {
     description
@@ -33,18 +34,9 @@ module frinx-lacp-lag-member {
   }
 
   // grouping statements
-
-  grouping lacp-lag-member-interfaces-config {
+  grouping ethernet-if-lacp-config {
     description
-      "Configuration data for each LACP-enabled lag member interface";
-
-    leaf name {
-      type oc-if:base-interface-ref;
-      description
-        "Reference to the interface on which LACP should be
-        configured.   The type of the target interface must be
-        ethernetCsmacd";
-    }
+      "Configuration data for each LACP-enabled ethernet interface";
 
     leaf interval {
       type oc-lacp:lacp-period-type;
@@ -64,73 +56,43 @@ module frinx-lacp-lag-member {
     }
   }
 
-  grouping lacp-lag-member-interfaces-state {
+  grouping ethernet-if-lacp-state {
     description
-      "Operational state data for each LACP-enabled LAG member
+      "Operational state data for each LACP-enabled ethernet
       interface";
 
     //TODO: placeholder for operational state related to BFD
   }
 
-  grouping lacp-lag-member-interfaces-top {
-    description
-      "Top-level grouping for LACP-enabled LAG member interfaces";
-
-    container lag-member-interfaces {
-      description
-        "Enclosing container for the list of LACP-enabled
-        LAG member interfaces";
-
-      list lag-member-interface {
-        key "name";
-        description
-          "List of LAG member interfaces managed by LACP";
-
-        leaf name {
-          type leafref {
-            path "../config/name";
-          }
-          description
-            "Reference to the list key";
-        }
-
-        container config {
-          description
-            "Configuration data for each LACP LAG member interface";
-
-          uses lacp-lag-member-interfaces-config;
-        }
-
-        container state {
-
-          config false;
-
-          description
-            "Operational state data for each LACP LAG member
-            interface";
-
-          uses lacp-lag-member-interfaces-config;
-          uses lacp-lag-member-interfaces-state;
-        }
-      }
-    }
-  }
-
   // augment statements
 
-  augment "/oc-lacp:lacp" {
-    description "Adds LACP LAG member interface settings to LACP";
-    ext:augment-identifier "lacp-lag-member-aug";
+  augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/" +
+    "oc-eth:config" {
+    ext:augment-identifier "lacp-eth-config-aug";
+    when "oc-if:type = 'ift:ethernetCsmacd'" {
+      description "active when the interface is Ethernet";
+    }
 
-    uses lacp-lag-member-interfaces-top;
+    description "Adds LACP LAG settings to individual Ethernet
+      interfaces";
+
+    uses ethernet-if-lacp-config;
   }
 
   // uniconfig augmentations
 
-  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-lacp:lacp" {
-    description "Adds LACP LAG member interface settings to LACP";
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/" +
+    "oc-eth:config" {
+    when "oc-if:type = 'ift:ethernetCsmacd'" {
+      description "active when the interface is Ethernet";
+    }
 
-    uses lacp-lag-member-interfaces-top;
+    description "Adds LACP LAG settings to individual Ethernet
+      interfaces";
+
+    uses ethernet-if-lacp-config;
   }
+
+  //TODO Add also augmentations for state containers
 
 }
