@@ -565,13 +565,23 @@ module frinx-openconfig-acl {
     }
 
     leaf type {
-      type leafref {
-        path "../../../../../../acl-sets/acl-set[name=current()/../set-name]" +
-          "/config/type";
+      type identityref {
+        base ACL_TYPE;
       }
       description
-        "Reference to the ACL set type applied on ingress";
+        "The type determines the fields allowed in the ACL entries
+        belonging to the ACL set (e.g., IPv4, IPv6, etc.)";
     }
+
+    // Causes class cast exception.
+    //leaf type {
+    //  type leafref {
+    //    path "../../../../../../acl-sets/acl-set[name=current()/../set-name]" +
+    //      "/config/type";
+    //  }
+    //  description
+    //    "Reference to the ACL set type applied on ingress";
+    //}
   }
 
   grouping interface-ingress-acl-state {
@@ -646,13 +656,22 @@ module frinx-openconfig-acl {
     }
 
     leaf type {
-      type leafref {
-        path "../../../../../../acl-sets/acl-set[name=current()/../set-name]" +
-          "/config/type";
+      type identityref {
+        base ACL_TYPE;
       }
       description
-        "Reference to the ACL set type applied on egress.";
+        "The type determines the fields allowed in the ACL entries
+        belonging to the ACL set (e.g., IPv4, IPv6, etc.)";
     }
+
+    //leaf type {
+    //  type leafref {
+    //    path "../../../../../../acl-sets/acl-set[name=current()/../set-name]" +
+    //      "/config/type";
+    //  }
+    //  description
+    //    "Reference to the ACL set type applied on egress.";
+    //}
   }
 
   grouping interface-egress-acl-state {
