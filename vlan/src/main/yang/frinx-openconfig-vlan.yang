@@ -14,6 +14,9 @@ module frinx-openconfig-vlan {
   import frinx-openconfig-if-aggregate { prefix oc-lag; }
   import iana-if-type { prefix ift; }
   import frinx-openconfig-extensions { prefix oc-ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   // meta
   organization "OpenConfig working group";
@@ -416,6 +419,67 @@ module frinx-openconfig-vlan {
   }
 
   augment "/oc-if:interfaces/oc-if:interface" {
+    description
+      "Adds configuration and state for routed VLAN interfaces";
+
+    uses vlan-routed-top {
+      when "current()/oc-if:config/oc-if:type = 'ift:l3ipvlan'" {
+      description
+        "Active when the interface is a logical interface providing
+        L3 routing for VLANs";
+      }
+    }
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+    "oc-if:subinterface" {
+      description
+        "Adds VLAN settings to individual subinterfaces";
+
+    uses vlan-logical-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description
+      "Adds TPID / ethertype setting for the base interface";
+
+    uses vlan-tpid-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:state" {
+    description
+      "Adds TPID / ethertype opstate for the base interface";
+
+    uses vlan-tpid-config;
+    uses vlan-tpid-state;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-eth:ethernet" {
+    description
+      "Adds VLAN settings to individual Ethernet interfaces";
+
+    uses vlan-switched-top {
+      when "oc-if:type = 'ift:ethernetCsmacd'" {
+      description
+        "Active when the interface is Ethernet";
+      }
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-lag:aggregation" {
+    description "Adds VLAN settings to a LAG interface";
+
+    uses vlan-switched-top {
+      when "oc-if:type = 'ift:ieee8023adLag'" {
+        description
+          "Active when the interface is a LAG";
+      }
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
     description
       "Adds configuration and state for routed VLAN interfaces";
 

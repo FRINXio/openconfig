@@ -12,6 +12,9 @@ module frinx-openconfig-routing-policy {
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-openconfig-policy-types { prefix oc-pol-types; }
   import frinx-openconfig-extensions { prefix oc-ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   // meta
   organization
@@ -1086,5 +1089,11 @@ module frinx-openconfig-routing-policy {
   }
 
   uses routing-policy-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses routing-policy-top;
+  }
 
 }

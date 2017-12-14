@@ -8,6 +8,9 @@ module frinx-openconfig-ospf-policy {
   import frinx-openconfig-routing-policy { prefix "oc-rpol"; }
   import frinx-openconfig-extensions { prefix "oc-ext"; }
   import frinx-openconfig-ospf-types { prefix "oc-ospf-types"; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   organization
     "OpenConfig working group";
@@ -166,6 +169,24 @@ module frinx-openconfig-ospf-policy {
   }
 
   augment "/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
+            "oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/" +
+            "oc-rpol:actions" {
+    description
+      "Add OSPF specific actions to the routing policy model";
+    uses ospf-actions;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
+            "oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/" +
+            "oc-rpol:conditions" {
+    description
+      "Add OSPF specific match conditions to the routing policy model";
+    uses ospf-match-conditions;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
             "oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/" +
             "oc-rpol:actions" {
     description

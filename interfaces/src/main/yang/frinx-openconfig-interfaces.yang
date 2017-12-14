@@ -936,8 +936,6 @@ module frinx-openconfig-interfaces {
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
-    when "/nt:network-topology/nt:topology/nt:topology-types/ut:uniconfig";
-    ext:augment-identifier "uniconfig-node-interfaces-aug";
     uses interfaces-top;
   }
 

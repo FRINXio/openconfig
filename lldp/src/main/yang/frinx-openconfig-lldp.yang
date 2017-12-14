@@ -11,6 +11,9 @@ module frinx-openconfig-lldp {
   import frinx-openconfig-interfaces { prefix oc-if; }
   import ietf-yang-types { prefix yang; }
   import frinx-openconfig-extensions { prefix oc-ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
 
   // meta
@@ -630,6 +633,12 @@ module frinx-openconfig-lldp {
   // data definition statements
 
   uses lldp-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses lldp-top;
+  }
 
 
 }

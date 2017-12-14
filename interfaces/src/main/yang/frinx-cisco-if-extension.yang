@@ -94,7 +94,6 @@ module frinx-cisco-if-extension {
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
-    ext:augment-identifier "uniconfig-node-interfaces-if-cisco-stats-aug";
     description "Adds Cisco specific statistics configuration to
                     interfaces model";
 

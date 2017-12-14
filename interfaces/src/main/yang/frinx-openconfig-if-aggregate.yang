@@ -15,7 +15,6 @@ module frinx-openconfig-if-aggregate {
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
-  import yang-ext { prefix ext; revision-date "2013-07-09"; }
 
   // meta
   organization "OpenConfig working group";
@@ -196,7 +195,6 @@ module frinx-openconfig-if-aggregate {
       description "active when the interface is set to type LAG";
     }
     description "Adds LAG configuration to the interface module";
-    ext:augment-identifier "uniconfig-node-interfaces-if-agg-logical-aug";
 
     uses aggregation-logical-top;
   }
@@ -208,7 +206,6 @@ module frinx-openconfig-if-aggregate {
     }
     description "Adds LAG settings to individual Ethernet
     interfaces";
-    ext:augment-identifier "uniconfig-node-interfaces-if-eth-conf-agg-aug";
 
     uses ethernet-if-aggregation-config;
   }
@@ -220,7 +217,6 @@ module frinx-openconfig-if-aggregate {
     }
     description "Adds LAG settings to individual Ethernet
     interfaces";
-    ext:augment-identifier "uniconfig-node-interfaces-if-eth-state-agg-aug";
 
     uses ethernet-if-aggregation-config;
   }

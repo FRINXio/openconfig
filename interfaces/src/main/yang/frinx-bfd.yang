@@ -113,7 +113,6 @@ module frinx-bfd {
     when "oc-if:type = 'ift:ieee8023adLag'" {
       description "Active when the interface is a LAG";
     }
-    ext:augment-identifier "uniconfig-node-interfaces-if-lag-bfd-aug";
     description "Adds BFD settings to a LAG interface";
 
     uses bfd-top;

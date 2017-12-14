@@ -11,6 +11,9 @@ module frinx-cisco-mpls-te-extension {
   import frinx-openconfig-network-instance { prefix oc-netinst; }
   import frinx-openconfig-mpls { prefix oc-mpls; }
   import yang-ext { prefix ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   // meta
   organization "Frinx s.r.o";
@@ -90,4 +93,17 @@ module frinx-cisco-mpls-te-extension {
 
     uses cisco-mpls-te-tunnel-top;
   }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:lsps/oc-netinst:constrained-path/oc-netinst:tunnels/oc-netinst:tunnel" {
+    when "oc-netinst:type = 'oc-ni-types:DEFAULT_INSTANCE'" {
+      description "Active when the network-instance is a DEFAULT_INSTANCE";
+    }
+    description "Adds CISCO MPLS TE tunnel settings to individual tunnel
+    interfaces";
+
+    uses cisco-mpls-te-tunnel-top;
+  }
+
 }
