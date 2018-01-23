@@ -484,9 +484,12 @@ module frinx-openconfig-bgp-policy {
 
     leaf-list community-member {
       type union {
+        // FIXME use identity-ref instead of type oc-bgp-types:bgp-well-known-community-type;
+        type identityref {
+          base oc-bgp-types:BGP_WELL_KNOWN_STD_COMMUNITY;
+        }
         type oc-bgp-types:bgp-std-community-type;
         type oc-bgp-types:bgp-community-regexp-type;
-        type oc-bgp-types:bgp-well-known-community-type;
       }
       description
         "members of the community set";
@@ -790,7 +793,10 @@ module frinx-openconfig-bgp-policy {
     leaf-list communities {
       type union {
         type oc-bgp-types:bgp-std-community-type;
-        type oc-bgp-types:bgp-well-known-community-type;
+        // FIXME use identity-ref instead of type oc-bgp-types:bgp-well-known-community-type;
+        type identityref {
+          base oc-bgp-types:BGP_WELL_KNOWN_STD_COMMUNITY;
+        }
       }
       description
         "Set the community values for the update inline with
@@ -953,7 +959,10 @@ module frinx-openconfig-bgp-policy {
     leaf-list communities {
       type union {
         type oc-bgp-types:bgp-ext-community-type;
-        type oc-bgp-types:bgp-well-known-community-type;
+        // FIXME use identity-ref instead of type oc-bgp-types:bgp-well-known-community-type;
+        type identityref {
+          base oc-bgp-types:BGP_WELL_KNOWN_STD_COMMUNITY;
+        }
       }
       description
         "Set the extended community values for the update inline
