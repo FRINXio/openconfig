@@ -694,6 +694,19 @@ module frinx-openconfig-bgp-policy {
     }
   }
 
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+     "/oc-rpol:routing-policy/oc-rpol:defined-sets" {
+
+    container bgp-defined-sets {
+      description
+        "BGP-related set definitions for policy match conditions";
+
+      uses community-set-top;
+      uses ext-community-set-top;
+      uses as-path-set-top;
+    }
+  }
+
   grouping as-path-prepend-config {
     description
       "Configuration data for the AS path prepend action";
@@ -1192,6 +1205,13 @@ module frinx-openconfig-bgp-policy {
     uses bgp-conditions-top;
   }
 
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+    "oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
+    "oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/" +
+    "oc-rpol:conditions" {
+    uses bgp-conditions-top;
+  }
+
   augment "/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
     "oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/" +
     "oc-rpol:actions" {
@@ -1199,6 +1219,13 @@ module frinx-openconfig-bgp-policy {
     module";
 
     uses bgp-actions-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+    "/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
+    "oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/" +
+    "oc-rpol:actions" {
+     uses bgp-actions-top;
   }
 
   // rpc statements
