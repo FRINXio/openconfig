@@ -46,6 +46,9 @@ module frinx-juniper-if-aggregate-extension {
         enum "1G" {
           description "Links are 1G";
         }
+        enum "2G" {
+          description "Links are 2G";
+        }
         enum "2500M" {
           description "Links are 2.5G";
         }
