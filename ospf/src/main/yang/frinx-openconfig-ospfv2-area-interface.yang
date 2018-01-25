@@ -67,7 +67,7 @@ submodule frinx-openconfig-ospfv2-area-interface {
 
     leaf multi-area-adjacency-primary {
       type boolean;
-      default true;
+      // default true;
       description
         "When the specified interface is included in more than one
         area's configuration, this leaf marks whether the area should

@@ -158,7 +158,7 @@ submodule frinx-openconfig-mpls-te {
           available bandwidth";
       }
     }
-    default RANDOM;
+    // default RANDOM;
     description
      "type to indicate the CSPF selection policy when
       multiple equal cost paths are available";
@@ -187,7 +187,7 @@ submodule frinx-openconfig-mpls-te {
 
     leaf enabled {
       type boolean;
-      default false;
+      // default false;
       description
         "enables mpls auto-bandwidth on the
          lsp";
@@ -232,7 +232,7 @@ submodule frinx-openconfig-mpls-te {
 
     leaf enabled {
       type boolean;
-      default false;
+      // default false;
       description
        "enables mpls lsp bandwidth overflow
         adjustment on the lsp";
@@ -261,7 +261,7 @@ submodule frinx-openconfig-mpls-te {
 
     leaf enabled {
       type boolean;
-      default false;
+      // default false;
       description
        "enables bandwidth underflow
         adjustment on the lsp";
@@ -514,7 +514,7 @@ submodule frinx-openconfig-mpls-te {
 
     leaf flooding-type {
       type mpls-srlg-flooding-type;
-      default FLOODED_SRLG;
+      // default FLOODED_SRLG;
       description
         "The type of SRLG, either flooded in the IGP or
          statically configured";
@@ -950,7 +950,7 @@ submodule frinx-openconfig-mpls-te {
 
     leaf specification-type {
       type te-bandwidth-type;
-      default SPECIFIED;
+      // default SPECIFIED;
       description
         "The method used for settign the bandwidth, either explicitly
         specified or configured";

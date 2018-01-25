@@ -51,7 +51,7 @@ submodule frinx-openconfig-bgp-common-multiprotocol {
 
     leaf enabled {
       type boolean;
-      default false;
+      // default false;
       description
         "This leaf indicates whether graceful-restart is enabled for
         this AFI-SAFI";
@@ -71,7 +71,7 @@ submodule frinx-openconfig-bgp-common-multiprotocol {
 
     leaf enabled {
       type boolean;
-      default false;
+      // default false;
       description
         "This leaf indicates whether the IPv4 Unicast AFI,SAFI is
         enabled for the neighbour or group";
@@ -400,7 +400,7 @@ submodule frinx-openconfig-bgp-common-multiprotocol {
 
     leaf prevent-teardown {
       type boolean;
-      default false;
+      // default false;
       description
         "Do not tear down the BGP session when the maximum
         prefix limit is exceeded, but rather only log a

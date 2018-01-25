@@ -70,7 +70,7 @@ module frinx-openconfig-vlan {
           description "VLAN is inactive / suspended";
         }
       }
-      default ACTIVE;
+      // default ACTIVE;
       description "Admin state of the VLAN";
     }
 

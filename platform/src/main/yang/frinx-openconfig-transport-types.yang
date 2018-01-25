@@ -83,7 +83,7 @@ module frinx-openconfig-transport-types {
           port.";
       }
     }
-    default NONE;
+    // default NONE;
     description
       "Loopback modes for transponder logical channels";
   }

@@ -43,7 +43,7 @@ module frinx-openconfig-if-ip-ext {
 
     leaf create-global-addresses {
       type boolean;
-      default true;
+      // default true;
       description
         "[adapted from IETF IP model RFC 7277]
 
@@ -55,7 +55,7 @@ module frinx-openconfig-if-ip-ext {
     }
     leaf create-temporary-addresses {
       type boolean;
-      default false;
+      // default false;
       description
       "[adapted from IETF IP model RFC 7277]
 
@@ -69,7 +69,7 @@ module frinx-openconfig-if-ip-ext {
     leaf temporary-valid-lifetime {
       type uint32;
       units "seconds";
-      default 604800;
+      // default 604800;
       description
         "[adapted from IETF IP model RFC 7277]
 
@@ -84,7 +84,7 @@ module frinx-openconfig-if-ip-ext {
     leaf temporary-preferred-lifetime {
       type uint32;
       units "seconds";
-      default 86400;
+      // default 86400;
       description
         "[adapted from IETF IP model RFC 7277]
 

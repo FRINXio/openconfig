@@ -300,7 +300,7 @@ module frinx-openconfig-interfaces {
     leaf up {
       type uint32;
       units milliseconds;
-      default 0;
+      // default 0;
       description
         "Dampens advertisement when the interface
         transitions from down to up.  A zero value means dampening
@@ -310,7 +310,7 @@ module frinx-openconfig-interfaces {
     leaf down {
       type uint32;
       units milliseconds;
-      default 0;
+      // default 0;
       description
         "Dampens advertisement when the interface transitions from
         up to down.  A zero value means dampening is turned off,
@@ -757,7 +757,7 @@ module frinx-openconfig-interfaces {
 
     leaf enabled {
       type boolean;
-      default false;
+      // default false;
       description
         "Indicates that the subinterface is unnumbered.  By default
         the subinterface is numbered, i.e., expected to have an
@@ -808,7 +808,7 @@ module frinx-openconfig-interfaces {
 
     leaf index {
       type uint32;
-      default 0;
+      // default 0;
       description
         "The index of the subinterface, or logical interface number.
         On systems with no support for subinterfaces, or not using

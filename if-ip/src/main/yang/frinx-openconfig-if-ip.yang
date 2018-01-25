@@ -119,7 +119,7 @@ module frinx-openconfig-if-ip {
 
     leaf enabled {
      type boolean;
-     default true;
+     // default true;
      description
        "Controls whether IPv4 is enabled or disabled on this
         interface.  When IPv4 is enabled, this interface is
@@ -223,7 +223,7 @@ module frinx-openconfig-if-ip {
 
     leaf enabled {
       type boolean;
-      default true;
+      // default true;
       description
         "[adapted from IETF IP model RFC 7277]
 
@@ -256,7 +256,7 @@ module frinx-openconfig-if-ip {
 
     leaf dup-addr-detect-transmits {
       type uint32;
-      default 1;
+      // default 1;
       description
         "[adapted from IETF IP model RFC 7277]
 
@@ -495,7 +495,7 @@ module frinx-openconfig-if-ip {
       type uint8 {
         range 0..254;
       }
-      default 0;
+      // default 0;
       description "Set the value to subtract from priority when
       the tracked interface goes down";
     }
@@ -559,7 +559,7 @@ module frinx-openconfig-if-ip {
       type uint8 {
         range 1..254;
       }
-      default 100;
+      // default 100;
       description "Specifies the sending VRRP interface's priority
       for the virtual router.  Higher values equal higher
       priority";
@@ -567,7 +567,7 @@ module frinx-openconfig-if-ip {
 
     leaf preempt {
       type boolean;
-      default true;
+      // default true;
       description "When set to true, enables preemption by a higher
       priority backup router of a lower priority master router";
     }
@@ -576,7 +576,7 @@ module frinx-openconfig-if-ip {
       type uint16 {
         range 0..3600;
       }
-      default 0;
+      // default 0;
       description "Set the delay the higher priority router waits
       before preempting";
     }
@@ -585,7 +585,7 @@ module frinx-openconfig-if-ip {
       type boolean;
       // TODO: should we adopt the RFC default given the common
       // operational practice of setting to true?
-      default false;
+      // default false;
       description "Configure whether packets destined for
       virtual addresses are accepted even when the virtual
       address is not owned by the router interface";
@@ -598,7 +598,7 @@ module frinx-openconfig-if-ip {
       // TODO this range is theoretical -- needs to be validated
       // against major implementations.
       units "centiseconds";
-      default 100;
+      // default 100;
       description "Sets the interval between successive VRRP
       advertisements -- RFC 5798 defines this as a 12-bit
       value expressed as 0.1 seconds, with default 100, i.e.,

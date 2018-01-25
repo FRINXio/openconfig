@@ -547,7 +547,7 @@ module frinx-openconfig-mpls {
 
     leaf mpls-enabled {
       type boolean;
-      default false;
+      // default false;
       description
         "Enable MPLS forwarding on this interface";
     }

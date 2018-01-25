@@ -197,7 +197,7 @@ submodule frinx-openconfig-pf-forwarding-policies {
 
     leaf discard {
       type boolean;
-      default false;
+      // default false;
       description
         "When this leaf is set to true, the local system should drop
         packets that match the rule.";
@@ -205,7 +205,7 @@ submodule frinx-openconfig-pf-forwarding-policies {
 
     leaf decapsulate-gre {
       type boolean;
-      default false;
+      // default false;
       description
         "When this leaf is set to true, the local system should remove
         the GRE header from the packet matching the rule. Following

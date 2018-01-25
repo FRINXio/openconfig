@@ -53,7 +53,7 @@ submodule frinx-openconfig-bgp-common {
       type decimal64 {
         fraction-digits 2;
       }
-      default 30;
+      // default 30;
       description
         "Time interval in seconds between attempts to establish a
         session with the peer.";
@@ -63,7 +63,7 @@ submodule frinx-openconfig-bgp-common {
       type decimal64 {
         fraction-digits 2;
       }
-      default 90;
+      // default 90;
       description
         "Time interval in seconds that a BGP session will be
         considered active in the absence of keepalive or other
@@ -77,7 +77,7 @@ submodule frinx-openconfig-bgp-common {
       type decimal64 {
         fraction-digits 2;
       }
-      default 30;
+      // default 30;
       description
         "Time interval in seconds between transmission of keepalive
         messages to the neighbor.  Typically set to 1/3 the
@@ -88,7 +88,7 @@ submodule frinx-openconfig-bgp-common {
       type decimal64 {
         fraction-digits 2;
       }
-      default 30;
+      // default 30;
       description
         "Minimum time which must elapse between subsequent UPDATE
         messages relating to a common set of NLRI being transmitted
@@ -147,7 +147,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf route-flap-damping {
       type boolean;
-      default false;
+      // default false;
       description
         "Enable route flap damping.";
     }
@@ -182,7 +182,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf mtu-discovery {
       type boolean;
-      default false;
+      // default false;
       description
         "Turns path mtu discovery for BGP TCP sessions on (true)
         or off (false)";
@@ -190,7 +190,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf passive-mode {
       type boolean;
-      default false;
+      // default false;
       description
         "Wait for peers to issue requests to open a BGP session,
         rather than initiating sessions from the local router.";
@@ -293,7 +293,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf allow-own-as {
       type uint8;
-      default 0;
+      // default 0;
       description
         "Specify the number of occurrences of the local BGP speaker's
         AS that can occur within the AS_PATH before it is rejected.";
@@ -315,7 +315,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf receive {
       type boolean;
-      default false;
+      // default false;
       description
         "Enable ability to receive multiple path advertisements
         for an NLRI from the neighbor or group";
@@ -392,7 +392,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf enabled {
       type boolean;
-      default false;
+      // default false;
       description
         "Whether the use of multiple paths for the same NLRI is
         enabled for the neighbor. This value is overridden by
@@ -487,7 +487,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf maximum-paths {
      type uint32;
-     default 1;
+     // default 1;
      description
       "Maximum number of parallel paths to consider when using
       BGP multipath. The default is use a single path.";
@@ -500,7 +500,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf maximum-paths {
       type uint32;
-      default 1;
+      // default 1;
       description
         "Maximum number of parallel paths to consider when using
         iBGP multipath. The default is to use a single path";
@@ -550,7 +550,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf enable-aigp {
       type boolean;
-      default false;
+      // default false;
       description
         "Flag to enable sending / receiving accumulated IGP
         attribute in routing updates";

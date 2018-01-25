@@ -40,7 +40,7 @@ module frinx-lacp-lag-member {
 
     leaf interval {
       type oc-lacp:lacp-period-type;
-      default SLOW;
+      // default SLOW;
       description
         "Set the period between LACP messages -- uses
         the lacp-period-type enumeration.";
@@ -48,7 +48,7 @@ module frinx-lacp-lag-member {
 
     leaf lacp-mode {
       type oc-lacp:lacp-activity-type;
-      default ACTIVE;
+      // default ACTIVE;
       description
         "ACTIVE is to initiate the transmission of LACP packets.
          PASSIVE is to wait for peer to initiate the transmission of

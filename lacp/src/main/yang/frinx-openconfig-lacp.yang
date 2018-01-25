@@ -325,7 +325,7 @@ grouping aggregation-lacp-members-statistics {
 
     leaf interval {
       type lacp-period-type;
-      default SLOW;
+      // default SLOW;
       description
         "Set the period between LACP messages -- uses
         the lacp-period-type enumeration.";
@@ -333,7 +333,7 @@ grouping aggregation-lacp-members-statistics {
 
     leaf lacp-mode {
       type lacp-activity-type;
-      default ACTIVE;
+      // default ACTIVE;
       description
         "ACTIVE is to initiate the transmission of LACP packets.
          PASSIVE is to wait for peer to initiate the transmission of
