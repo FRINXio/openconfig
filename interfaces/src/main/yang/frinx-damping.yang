@@ -34,7 +34,7 @@ module frinx-damping {
   grouping damping-config {
     leaf enabled {
       type boolean;
-      default "false";
+      // default "false";
       description
         "Desired state of damping";
     }

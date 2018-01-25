@@ -350,7 +350,7 @@ module frinx-openconfig-mpls-rsvp {
       type identityref {
         base oc-mplst:PROTECTION_TYPE;
       }
-      default oc-mplst:LINK_NODE_PROTECTION_REQUESTED;
+      // default oc-mplst:LINK_NODE_PROTECTION_REQUESTED;
       description
         "Style of mpls frr protection desired:
         link, link-node, or unprotected";

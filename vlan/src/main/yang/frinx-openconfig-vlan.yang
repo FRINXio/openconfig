@@ -91,7 +91,7 @@ module frinx-openconfig-vlan {
       type identityref {
         base oc-vlan-types:TPID_TYPES;
       }
-      default oc-vlan-types:TPID_0X8100;
+      // default oc-vlan-types:TPID_0X8100;
       description
         "Optionally set the tag protocol identifier field (TPID) that
         is accepted on the VLAN";

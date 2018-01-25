@@ -472,7 +472,7 @@ module frinx-openconfig-mpls {
       type identityref {
         base oc-mplst:NULL_LABEL_TYPE;
       }
-      default oc-mplst:IMPLICIT;
+      // default oc-mplst:IMPLICIT;
       description
         "The null-label type used, implicit or explicit";
     }

@@ -491,7 +491,7 @@ module frinx-openconfig-lldp {
 
     leaf enabled {
       type boolean;
-      default "true";
+      // default "true";
       description
         "Enable or disable the LLDP protocol on the interface.";
     }
@@ -560,7 +560,7 @@ module frinx-openconfig-lldp {
 
     leaf enabled {
       type boolean;
-      default "true";
+      // default "true";
       description
         "System level state of the LLDP protocol.";
     }

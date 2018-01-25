@@ -154,7 +154,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf send-community {
       type oc-bgp-types:community-type;
-      default "NONE";
+      // default "NONE";
       description
         "Specify which types of community should be sent to the
         neighbor or group. The default is to not send the
@@ -219,7 +219,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf treat-as-withdraw {
       type boolean;
-      default "false";
+      // default "false";
       description
         "Specify whether erroneous UPDATE messages for which the
         NLRI can be extracted are reated as though the NLRI is
@@ -235,7 +235,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf log-neighbor-state-changes {
       type boolean;
-      default "true";
+      // default "true";
       description
         "Configure logging of peer state changes.  Default is
         to enable logging of peer state changes.";
@@ -249,7 +249,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf enabled {
       type boolean;
-      default "false";
+      // default "false";
       description
         "When enabled the referenced group or neighbors are permitted
         to be indirectly connected - including cases where the TTL
@@ -280,7 +280,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf route-reflector-client {
       type boolean;
-      default "false";
+      // default "false";
       description
         "Configure the neighbor as a route reflector client.";
     }
@@ -301,7 +301,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf replace-peer-as {
       type boolean;
-      default "false";
+      // default "false";
       description
         "Replace occurrences of the peer's AS in the AS_PATH
         with the local autonomous system number";
@@ -407,7 +407,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf allow-multiple-as {
      type boolean;
-     default "false";
+     // default "false";
      description
       "Allow multipath to use paths from different neighbouring
       ASes.  The default is to only consider multiple paths from
@@ -478,7 +478,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf allow-multiple-as {
      type boolean;
-     default "false";
+     // default "false";
      description
       "Allow multipath to use paths from different neighbouring
       ASes.  The default is to only consider multiple paths from
@@ -514,7 +514,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf always-compare-med {
       type boolean;
-      default "false";
+      // default "false";
       description
         "Compare multi-exit discriminator (MED) value from
         different ASes when selecting the best route.  The
@@ -524,7 +524,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf ignore-as-path-length {
       type boolean;
-      default "false";
+      // default "false";
       description
         "Ignore the AS path length when selecting the best path.
         The default is to use the AS path length and prefer paths
@@ -533,7 +533,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf external-compare-router-id {
       type boolean;
-      default "true";
+      // default "true";
       description
         "When comparing similar routes received from external
         BGP peers, use the router-id as a criterion to select
@@ -542,7 +542,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf advertise-inactive-routes {
       type boolean;
-      default "false";
+      // default "false";
       description
         "Advertise inactive routes to external peers.  The
         default is to only advertise active routes.";
@@ -558,7 +558,7 @@ submodule frinx-openconfig-bgp-common {
 
     leaf ignore-next-hop-igp-metric {
       type boolean;
-      default "false";
+      // default "false";
       description
         "Ignore the IGP metric to the next-hop when calculating
         BGP best-path. The default is to select the route for

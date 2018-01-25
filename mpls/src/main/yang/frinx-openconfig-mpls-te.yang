@@ -362,7 +362,7 @@ submodule frinx-openconfig-mpls-te {
       type identityref {
         base oc-mplst:PROTECTION_TYPE;
       }
-      default oc-mplst:UNPROTECTED;
+      // default oc-mplst:UNPROTECTED;
       description
         "style of mpls frr protection desired: can be
         link, link-node or unprotected.";
@@ -657,7 +657,7 @@ submodule frinx-openconfig-mpls-te {
       type identityref {
         base oc-mplst:TUNNEL_ADMIN_STATUS;
       }
-      default oc-mplst:ADMIN_UP;
+      // default oc-mplst:ADMIN_UP;
       description
         "TE tunnel administrative state.";
     }
@@ -675,7 +675,7 @@ submodule frinx-openconfig-mpls-te {
       type identityref {
         base oc-mplst:LSP_METRIC_TYPE;
       }
-      default oc-mplst:LSP_METRIC_INHERITED;
+      // default oc-mplst:LSP_METRIC_INHERITED;
       description
         "The type of metric specification that should be used to set
         the LSP(s) metric";
@@ -697,7 +697,7 @@ submodule frinx-openconfig-mpls-te {
 
     leaf shortcut-eligible {
       type boolean;
-      default "true";
+      // default "true";
       description
         "Whether this LSP is considered to be eligible for us as a
         shortcut in the IGP. In the case that this leaf is set to
@@ -709,7 +709,7 @@ submodule frinx-openconfig-mpls-te {
       type identityref {
         base oc-mplst:PROTECTION_TYPE;
       }
-      default oc-mplst:UNPROTECTED;
+      // default oc-mplst:UNPROTECTED;
       description
         "style of mpls frr protection desired: can be
         link, link-node or unprotected.";
@@ -762,7 +762,7 @@ submodule frinx-openconfig-mpls-te {
       type identityref {
         base oc-mplst:PATH_COMPUTATION_METHOD;
       }
-      default oc-mplst:LOCALLY_COMPUTED;
+      // default oc-mplst:LOCALLY_COMPUTED;
       description
         "The method used for computing the path, either
         locally computed, queried from a server or not

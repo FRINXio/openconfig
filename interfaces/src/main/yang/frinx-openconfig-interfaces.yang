@@ -230,7 +230,7 @@ module frinx-openconfig-interfaces {
 
     leaf enabled {
       type boolean;
-      default "true";
+      // default "true";
       description
         "[adapted from IETF interfaces model (RFC 7223)]
 

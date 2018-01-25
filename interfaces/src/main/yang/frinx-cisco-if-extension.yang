@@ -38,7 +38,7 @@ module frinx-cisco-if-extension {
         range "0..600";
       }
 
-      default "300";
+      // default "300";
 
       description
         "Specify interval for load calculation for an
