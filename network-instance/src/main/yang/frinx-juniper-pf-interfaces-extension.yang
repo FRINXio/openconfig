@@ -45,9 +45,7 @@ module frinx-juniper-pf-interfaces-extension {
     container classifiers {
       description "Classify incoming packets based on code point value";
 
-      list exp {
-        key name;
-        ordered-by user;
+      container exp {
         description "MPLS EXP classifier";
 
         leaf name {
@@ -56,9 +54,7 @@ module frinx-juniper-pf-interfaces-extension {
         }
       }
 
-      list inet-precedence {
-        key name;
-        ordered-by user;
+      container inet-precedence {
         description "IPv4 precedence classifier";
 
         leaf name {
