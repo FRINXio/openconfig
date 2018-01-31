@@ -37,8 +37,13 @@ module frinx-mpls-rsvp-extension {
       "Additional configuration data for MPLS RSVP subscription";
 
     leaf bandwidth {
-      type uint32 {
-        range "1..4294967295";
+      type union {
+        type uint32 {
+            range "1..4294967295";
+        }
+        type string {
+            pattern "default";
+        }
       }
 
       units "Kbps";
