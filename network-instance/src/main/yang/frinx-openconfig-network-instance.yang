@@ -878,11 +878,17 @@ module frinx-openconfig-network-instance {
     }
 
     leaf address-family {
+    /*
       type leafref {
         // we are at table-connections/table-connection/config/.
         path "../../../../tables/" +
           "table[protocol=current()/../src-protocol]/" +
           "config/address-family";
+      }
+      */
+      // TODO leafref issue yangtools (fails to resolve type and uses "Object" in java)
+      type identityref {
+        base oc-types:ADDRESS_FAMILY;
       }
       description
         "The address family associated with the connection. This
