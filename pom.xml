@@ -33,6 +33,7 @@
     <module>uniconfig-model</module>
 
     <module>acl</module>
+    <module>bfd</module>
     <module>bgp</module>
     <module>ospf</module>
     <module>extensions</module>

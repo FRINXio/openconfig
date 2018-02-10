@@ -96,3 +96,5 @@
 ./network-instance/src/main/yang/frinx-cisco-pf-interfaces-extension.yang
 ./network-instance/src/main/yang/frinx-juniper-pf-interfaces-extension.yang
 ./network-instance/src/main/yang/frinx-mpls-rsvp-extension.yang
+
+./bfd/src/main/yang/frinx-openconfig-bfd.yang
