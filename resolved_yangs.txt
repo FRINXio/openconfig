@@ -1,94 +1,98 @@
-./extensions/src/main/yang/openconfig-extensions.yang
-./extensions/src/main/yang/openconfig-types.yang
-./types/src/main/yang/openconfig-yang-types.yang
-./types/src/main/yang/openconfig-inet-types.yang
-./types/src/main/yang/event-types.yang
-./policy/src/main/yang/openconfig-policy-types.yang
-./network-instance/src/main/yang/openconfig-network-instance-types.yang
-./ospf/src/main/yang/openconfig-ospf-types.yang
-./platform/src/main/yang/openconfig-platform-types.yang
-./platform/src/main/yang/openconfig-transport-types.yang
-./acl/src/main/yang/openconfig-packet-match-types.yang
-./vlan/src/main/yang/openconfig-vlan-types.yang
-./mpls/src/main/yang/openconfig-mpls-types.yang
-./bgp/src/main/yang/openconfig-bgp-types.yang
-./lldp/src/main/yang/openconfig-lldp-types.yang
-./rib/src/main/yang/openconfig-rib-bgp-types.yang
+./uniconfig-model/src/main/yang/frinx-uniconfig-topology.yang
 
-./rib/src/main/yang/openconfig-rib-bgp-table-attributes.yang
-./rib/src/main/yang/openconfig-rib-bgp-attributes.yang
-./rib/src/main/yang/openconfig-rib-bgp-shared-attributes.yang
-./rib/src/main/yang/openconfig-rib-bgp-tables.yang
-./rib/src/main/yang/openconfig-rib-bgp.yang
-./rib/src/main/yang/openconfig-rib-bgp-ext.yang
+./extensions/src/main/yang/frinx-openconfig-extensions.yang
+./extensions/src/main/yang/frinx-openconfig-types.yang
+./types/src/main/yang/frinx-openconfig-yang-types.yang
+./types/src/main/yang/frinx-openconfig-inet-types.yang
+./types/src/main/yang/frinx-event-types.yang
+./policy/src/main/yang/frinx-openconfig-policy-types.yang
+./network-instance/src/main/yang/frinx-openconfig-network-instance-types.yang
+./ospf/src/main/yang/frinx-openconfig-ospf-types.yang
+./platform/src/main/yang/frinx-openconfig-platform-types.yang
+./platform/src/main/yang/frinx-openconfig-transport-types.yang
+./acl/src/main/yang/frinx-openconfig-packet-match-types.yang
+./vlan/src/main/yang/frinx-openconfig-vlan-types.yang
+./mpls/src/main/yang/frinx-openconfig-mpls-types.yang
+./bgp/src/main/yang/frinx-openconfig-bgp-types.yang
+./lldp/src/main/yang/frinx-openconfig-lldp-types.yang
+./rib/src/main/yang/frinx-openconfig-rib-bgp-types.yang
 
-./interfaces/src/main/yang/openconfig-interfaces.yang
-./interfaces/src/main/yang/openconfig-if-ethernet.yang
-./interfaces/src/main/yang/openconfig-if-aggregate.yang
-./interfaces/src/main/yang/bfd.yang
-./interfaces/src/main/yang/damping.yang
-./interfaces/src/main/yang/cisco-if-extension.yang
-./interfaces/src/main/yang/juniper-if-aggregate-extension.yang
+./rib/src/main/yang/frinx-openconfig-rib-bgp-table-attributes.yang
+./rib/src/main/yang/frinx-openconfig-rib-bgp-attributes.yang
+./rib/src/main/yang/frinx-openconfig-rib-bgp-shared-attributes.yang
+./rib/src/main/yang/frinx-openconfig-rib-bgp-tables.yang
+./rib/src/main/yang/frinx-openconfig-rib-bgp.yang
+./rib/src/main/yang/frinx-openconfig-rib-bgp-ext.yang
 
-./logging/src/main/yang/logging.yang
+./interfaces/src/main/yang/frinx-openconfig-interfaces.yang
+./interfaces/src/main/yang/frinx-openconfig-if-ethernet.yang
+./interfaces/src/main/yang/frinx-openconfig-if-aggregate.yang
+./interfaces/src/main/yang/frinx-bfd.yang
+./interfaces/src/main/yang/frinx-damping.yang
+./interfaces/src/main/yang/frinx-cisco-if-extension.yang
+./interfaces/src/main/yang/frinx-juniper-if-aggregate-extension.yang
 
-./snmp/src/main/yang/snmp.yang
+./logging/src/main/yang/frinx-logging.yang
 
-./lacp/src/main/yang/openconfig-lacp.yang
-./lacp/src/main/yang/lacp-lag-member.yang
+./snmp/src/main/yang/frinx-snmp.yang
 
-./policy/src/main/yang/openconfig-routing-policy.yang
+./lacp/src/main/yang/frinx-openconfig-lacp.yang
+./lacp/src/main/yang/frinx-lacp-lag-member.yang
 
-./local-routing/src/main/yang/openconfig-local-routing.yang
+./policy/src/main/yang/frinx-openconfig-routing-policy.yang
 
-./lldp/src/main/yang/openconfig-lldp.yang
+./local-routing/src/main/yang/frinx-openconfig-local-routing.yang
 
-./cdp/src/main/yang/cdp.yang
+./lldp/src/main/yang/frinx-openconfig-lldp.yang
 
-./platform/src/main/yang/openconfig-platform.yang
-./platform/src/main/yang/openconfig-platform-transceiver.yang
-./platform/src/main/yang/openconfig-platform-port.yang
-./platform/src/main/yang/openconfig-platform-linecard.yang
+./cdp/src/main/yang/frinx-cdp.yang
 
-./mpls/src/main/yang/openconfig-mpls-igp.yang
-./mpls/src/main/yang/openconfig-mpls-rsvp.yang
-./mpls/src/main/yang/openconfig-mpls-te.yang
-./mpls/src/main/yang/openconfig-mpls.yang
+./platform/src/main/yang/frinx-openconfig-platform.yang
+./platform/src/main/yang/frinx-openconfig-platform-transceiver.yang
+./platform/src/main/yang/frinx-openconfig-platform-port.yang
+./platform/src/main/yang/frinx-openconfig-platform-linecard.yang
 
-./vlan/src/main/yang/openconfig-vlan.yang
+./mpls/src/main/yang/frinx-openconfig-mpls-igp.yang
+./mpls/src/main/yang/frinx-openconfig-mpls-rsvp.yang
+./mpls/src/main/yang/frinx-openconfig-mpls-te.yang
+./mpls/src/main/yang/frinx-openconfig-mpls.yang
 
-./if-ip/src/main/yang/openconfig-if-ip.yang
-./if-ip/src/main/yang/openconfig-if-ip-ext.yang
+./vlan/src/main/yang/frinx-openconfig-vlan.yang
 
-./ospf/src/main/yang/openconfig-ospfv2-common.yang
-./ospf/src/main/yang/openconfig-ospfv2-lsdb.yang
-./ospf/src/main/yang/openconfig-ospfv2-area-interface.yang
-./ospf/src/main/yang/openconfig-ospfv2-area.yang
-./ospf/src/main/yang/openconfig-ospf-policy.yang
-./ospf/src/main/yang/openconfig-ospfv2-global.yang
-./ospf/src/main/yang/openconfig-ospfv2.yang
+./if-ip/src/main/yang/frinx-openconfig-if-ip.yang
+./if-ip/src/main/yang/frinx-openconfig-if-ip-ext.yang
 
-./acl/src/main/yang/openconfig-packet-match.yang
-./acl/src/main/yang/openconfig-acl.yang
+./ospf/src/main/yang/frinx-openconfig-ospfv2-common.yang
+./ospf/src/main/yang/frinx-openconfig-ospfv2-lsdb.yang
+./ospf/src/main/yang/frinx-openconfig-ospfv2-area-interface.yang
+./ospf/src/main/yang/frinx-openconfig-ospfv2-area.yang
+./ospf/src/main/yang/frinx-openconfig-ospf-policy.yang
+./ospf/src/main/yang/frinx-openconfig-ospfv2-global.yang
+./ospf/src/main/yang/frinx-openconfig-ospfv2.yang
+./ospf/src/main/yang/frinx-cisco-ospf-extensions.yang
 
-./policy-forwarding/src/main/yang/openconfig-pf-path-groups.yang
-./policy-forwarding/src/main/yang/openconfig-pf-forwarding-policies.yang
-./policy-forwarding/src/main/yang/openconfig-pf-interfaces.yang
-./policy-forwarding/src/main/yang/openconfig-policy-forwarding.yang
+./acl/src/main/yang/frinx-openconfig-packet-match.yang
+./acl/src/main/yang/frinx-openconfig-acl.yang
 
-./bgp/src/main/yang/openconfig-bgp-common.yang
-./bgp/src/main/yang/openconfig-bgp-common-multiprotocol.yang
-./bgp/src/main/yang/openconfig-bgp-common-structure.yang
-./bgp/src/main/yang/openconfig-bgp-peer-group.yang
-./bgp/src/main/yang/openconfig-bgp-neighbor.yang
-./bgp/src/main/yang/openconfig-bgp-global.yang
-./bgp/src/main/yang/openconfig-bgp.yang
+./policy-forwarding/src/main/yang/frinx-openconfig-pf-path-groups.yang
+./policy-forwarding/src/main/yang/frinx-openconfig-pf-forwarding-policies.yang
+./policy-forwarding/src/main/yang/frinx-openconfig-pf-interfaces.yang
+./policy-forwarding/src/main/yang/frinx-openconfig-policy-forwarding.yang
 
-./network-instance/src/main/yang/openconfig-network-instance-l3.yang
-./network-instance/src/main/yang/openconfig-network-instance-policy.yang
-./network-instance/src/main/yang/openconfig-network-instance-l2.yang
-./network-instance/src/main/yang/openconfig-network-instance.yang
-./network-instance/src/main/yang/cisco-mpls-te-extension.yang
-./network-instance/src/main/yang/cisco-pf-interfaces-extension.yang
-./network-instance/src/main/yang/juniper-pf-interfaces-extension.yang
-./network-instance/src/main/yang/mpls-rsvp-extension.yang
+./bgp/src/main/yang/frinx-openconfig-bgp-common.yang
+./bgp/src/main/yang/frinx-openconfig-bgp-common-multiprotocol.yang
+./bgp/src/main/yang/frinx-openconfig-bgp-common-structure.yang
+./bgp/src/main/yang/frinx-openconfig-bgp-peer-group.yang
+./bgp/src/main/yang/frinx-openconfig-bgp-neighbor.yang
+./bgp/src/main/yang/frinx-openconfig-bgp-global.yang
+./bgp/src/main/yang/frinx-openconfig-bgp.yang
+./bgp/src/main/yang/frinx-openconfig-bgp-policy.yang
+
+./network-instance/src/main/yang/frinx-openconfig-network-instance-l3.yang
+./network-instance/src/main/yang/frinx-openconfig-network-instance-policy.yang
+./network-instance/src/main/yang/frinx-openconfig-network-instance-l2.yang
+./network-instance/src/main/yang/frinx-openconfig-network-instance.yang
+./network-instance/src/main/yang/frinx-cisco-mpls-te-extension.yang
+./network-instance/src/main/yang/frinx-cisco-pf-interfaces-extension.yang
+./network-instance/src/main/yang/frinx-juniper-pf-interfaces-extension.yang
+./network-instance/src/main/yang/frinx-mpls-rsvp-extension.yang
