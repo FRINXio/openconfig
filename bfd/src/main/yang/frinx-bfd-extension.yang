@@ -1,0 +1,58 @@
+module frinx-bfd-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/bfd/ext";
+
+  prefix "oc-bfd-ext";
+
+  // import some basic types
+  import frinx-openconfig-bfd { prefix "oc-bfd"; }
+  import frinx-openconfig-inet-types { prefix "oc-inet"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Extension to Bidirectional Forwarding Detection (BFD) implementation
+    based on OpenConfig";
+
+  revision "2018-02-11" {
+    description
+      "Initial release";
+  }
+
+  grouping bfd-interface-extension-config {
+    leaf remote-address {
+      type oc-inet:ip-address;
+      description
+        "The IP address used by the remote system for this BFD session.";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-bfd:bfd/oc-bfd:interfaces/oc-bfd:interface/oc-bfd:config" {
+    ext:augment-identifier "if-bfd-ext-aug";
+    description "Extends BFD settings on the interface";
+
+    uses bfd-interface-extension-config;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-bfd:bfd/oc-bfd:interfaces/oc-bfd:interface/oc-bfd:config" {
+    description "Extends BFD settings on the interface";
+
+    uses bfd-interface-extension-config;
+  }
+
+}
