@@ -3,7 +3,7 @@ module frinx-bfd {
   yang-version "1";
 
   // namespace
-  namespace "http://frinx.openconfig.net/yang/bfd";
+  namespace "http://frinx.openconfig.net/yang/interfaces/bfd";
 
   prefix "bfd";
 
