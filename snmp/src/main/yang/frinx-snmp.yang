@@ -73,8 +73,6 @@ module frinx-snmp {
           uses snmp-interface-config;
           uses snmp-interface-state;
         }
-
-        uses oc-if:interface-ref;
       }
     }
   }
