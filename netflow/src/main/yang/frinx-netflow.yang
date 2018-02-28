@@ -1,0 +1,285 @@
+module frinx-netflow {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/netflow";
+
+  prefix "oc-nf";
+
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "FRINX s.r.o.";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "This module defines configuration and operational state
+    data for NetFlow.";
+
+  revision "2018-02-28" {
+    description
+      "Initial revision";
+  }
+
+  identity NETFLOW_TYPE {
+    description
+      "Base identity for types of NetFlow";
+  }
+
+  identity NETFLOW_IPV4 {
+    base NETFLOW_TYPE;
+    description
+      "IPv4 based NetFlow";
+  }
+
+  identity NETFLOW_IPV6 {
+    base NETFLOW_TYPE;
+    description
+      "IPv6 based NetFlow";
+  }
+
+  identity NETFLOW_MPLS {
+    base NETFLOW_TYPE;
+    description
+      "MPLS based NetFlow";
+  }
+
+  // grouping statements
+
+  grouping interface-netflow-state {
+    description
+      "Operational state data for the per-interface NetFlow";
+  }
+
+  grouping interface-netflow-config {
+    description
+      "NetFlow data configuration specific for interface";
+
+    leaf netflow-type {
+      description
+        "NetFlow type";
+      type identityref {
+        base NETFLOW_TYPE;
+      }
+    }
+    leaf monitor-name {
+      description
+        "Flow monitor map name";
+      type string;
+    }
+    leaf sampler-name {
+      description
+        "Sampler map name";
+      type string;
+    }
+  }
+
+  grouping interface-ingress-netflow-top {
+    description
+      "Top-level grouping for per-interface ingress NetFlow data";
+
+    container ingress-flows {
+      description
+        "Enclosing container the list of ingress flows on the
+        interface";
+
+      list ingress-flow {
+        key "netflow-type";
+        description
+          "List of ingress NetFlow flows on the interface";
+
+        leaf netflow-type {
+          type leafref {
+            path "../config/netflow-type";
+          }
+          description
+            "Reference to type list key";
+        }
+
+        container config {
+          description
+            "Configuration data ";
+
+          uses interface-netflow-config;
+        }
+
+        container state {
+
+          config false;
+
+          description
+            "Operational state data for interface ingress NetFlow flows";
+
+          uses interface-netflow-config;
+          uses interface-netflow-state;
+        }
+      }
+    }
+  }
+
+  grouping interface-egress-netflow-top {
+    description
+      "Top-level grouping for per-interface egress NetFlow data";
+
+    container egress-flows {
+      description
+        "Enclosing container the list of egress flows on the
+        interface";
+
+      list egress-flow {
+        key "netflow-type";
+        description
+          "List of egress NetFlow flows on the interface";
+
+        leaf netflow-type {
+          type leafref {
+            path "../config/netflow-type";
+          }
+          description
+            "Reference to type list key";
+        }
+
+        container config {
+          description
+            "Configuration data ";
+
+          uses interface-netflow-config;
+        }
+
+        container state {
+
+          config false;
+
+          description
+            "Operational state data for interface egress NetFlow flows";
+
+          uses interface-netflow-config;
+          uses interface-netflow-state;
+        }
+      }
+    }
+  }
+
+  grouping netflow-interfaces-config {
+    description
+      "Configuration data for interface references";
+
+    leaf id {
+      type oc-if:interface-id;
+      description
+        "User-defined identifier for the interface -- a common
+        convention could be '<if name>.<subif index>'";
+    }
+  }
+
+  grouping netflow-interfaces-state {
+    description
+      "Operational state data for interface references";
+  }
+
+  grouping netflow-interfaces-top {
+    description
+      "Top-level grouping for interface-specific NetFlow data";
+
+    container interfaces {
+      description
+        "Enclosing container for the list of interfaces on which
+        NetFlow is set";
+
+      list interface {
+        key "id";
+        description
+          "List of interfaces on which NetFlow is set";
+
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+          description
+            "Reference to the interface id list key";
+        }
+
+        container config {
+          description
+            "Configuration for NetFlow per-interface data";
+
+          uses netflow-interfaces-config;
+        }
+
+        container state {
+
+          config false;
+
+          description
+            "Operational state for NetFlow per-interface data";
+
+          uses netflow-interfaces-config;
+          uses netflow-interfaces-state;
+        }
+
+        uses interface-ingress-netflow-top;
+        uses interface-egress-netflow-top;
+      }
+    }
+  }
+
+  grouping netflow-config {
+    description
+      "Global configuration data for NetFlow";
+  }
+
+  grouping netflow-state {
+    description
+      "Global operational state data for NetFlow";
+  }
+
+  grouping netflow-top {
+    description
+      "Top level grouping for NetFlow data and structure";
+
+    container netflow {
+      description
+        "Top level enclosing container for NetFlow model config
+        and operational state data";
+
+      container config {
+        description
+          "Global config data for NetFlow";
+
+        uses netflow-config;
+      }
+
+      container state {
+
+        config false;
+
+        description
+          "Global operational state data for NetFlow";
+
+        uses netflow-config;
+        uses netflow-state;
+      }
+
+      uses netflow-interfaces-top;
+    }
+  }
+
+  // data definition statements
+  uses netflow-top;
+
+  // augment statements
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses netflow-top;
+  }
+
+}
+

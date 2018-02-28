@@ -32,6 +32,8 @@
 ./interfaces/src/main/yang/frinx-cisco-if-extension.yang
 ./interfaces/src/main/yang/frinx-juniper-if-aggregate-extension.yang
 
+./netflow/src/main/yang/frinx-netflow.yang
+
 ./logging/src/main/yang/frinx-logging.yang
 
 ./snmp/src/main/yang/frinx-snmp.yang

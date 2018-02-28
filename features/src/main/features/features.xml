@@ -113,6 +113,11 @@
     <bundle>mvn:io.frinx.openconfig/openconfig-bfd/{{VERSION}}</bundle>
   </feature>
 
+  <feature name='openconfig-netflow' version='${project.version}'>
+    <feature version='${project.version}'>openconfig-interfaces</feature>
+    <bundle>mvn:io.frinx.openconfig/openconfig-netflow/{{VERSION}}</bundle>
+  </feature>
+
   <feature name='openconfig-models' version='${project.version}' description="All available openconfig models">
     <feature version='${project.version}'>openconfig-interfaces</feature>
     <feature version='${project.version}'>openconfig-bgp</feature>
@@ -126,6 +131,7 @@
     <feature version='${project.version}'>openconfig-snmp</feature>
     <feature version='${project.version}'>openconfig-logging</feature>
     <feature version='${project.version}'>openconfig-bfd</feature>
+    <feature version='${project.version}'>openconfig-netflow</feature>
   </feature>
 
 </features>
