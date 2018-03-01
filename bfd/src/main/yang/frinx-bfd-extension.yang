@@ -10,6 +10,7 @@ module frinx-bfd-extension {
   // import some basic types
   import frinx-openconfig-bfd { prefix "oc-bfd"; }
   import frinx-openconfig-inet-types { prefix "oc-inet"; }
+  import frinx-openconfig-network-instance { prefix "oc-ni"; }
   import yang-ext { prefix ext; revision-date "2013-07-09"; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
@@ -47,12 +48,27 @@ module frinx-bfd-extension {
     uses bfd-interface-extension-config;
   }
 
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:ospfv2/" +
+          "oc-ni:areas/oc-ni:area/oc-ni:interfaces/oc-ni:interface" {
+    ext:augment-identifier "ospf-area-if-bfd-ext-aug";
+    description "Extends BFD settings on the OSPFv2 area interface";
+
+    uses oc-bfd:bfd-enable;
+  }
+
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-bfd:bfd/oc-bfd:interfaces/oc-bfd:interface/oc-bfd:config" {
     description "Extends BFD settings on the interface";
 
     uses bfd-interface-extension-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:ospfv2/" +
+          "oc-ni:areas/oc-ni:area/oc-ni:interfaces/oc-ni:interface" {
+    description "Extends BFD settings on the OSPFv2 area interface";
+
+    uses oc-bfd:bfd-enable;
   }
 
 }
