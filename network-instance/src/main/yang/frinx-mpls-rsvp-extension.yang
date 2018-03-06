@@ -46,7 +46,7 @@ module frinx-mpls-rsvp-extension {
         }
       }
 
-      units "Kbps";
+      units "bps";
 
       description
         "Total reservable bandwidth";
