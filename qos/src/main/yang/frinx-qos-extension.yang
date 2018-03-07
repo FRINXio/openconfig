@@ -1,0 +1,206 @@
+module frinx-qos-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/qos/extension";
+
+  prefix "oc-qos-ext";
+
+  // import some basic types
+  import frinx-openconfig-qos { prefix oc-qos; }
+  import yang-ext { prefix ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig QoS models.";
+
+  revision "2018-03-04" {
+    description
+      "Initial release";
+    reference "3.1.3";
+  }
+
+  typedef precedence {
+    type enumeration {
+      enum routine {
+        description "0";
+      }
+      enum priority {
+        description "1";
+      }
+      enum immediate {
+        description "2";
+      }
+      enum flash {
+        description "3";
+      }
+      enum flash-override {
+        description "4";
+      }
+      enum critical {
+        description "5";
+      }
+      enum internet {
+        description "6";
+      }
+      enum network {
+        description "7";
+      }
+    }
+    description "Precedence values.";
+  }
+
+  // augment statements
+  augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
+    ext:augment-identifier "qos-condition-aug";
+    description "Adds QoS Group to conditions";
+
+    leaf qos-group {
+      type uint16 {
+        range "0 .. 512";
+      }
+    }
+
+    leaf-list precedences {
+      type precedence;
+      description "List of precedences valid for both ipv4 and ipv6";
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions/oc-qos:ipv4/oc-qos:config" {
+    ext:augment-identifier "qos-ipv4-condition-aug";
+    description "Adds reference to ACL to Ipv4 conditions";
+
+    leaf acl-ref {
+      type string;
+    }
+
+    leaf-list precedences {
+      type precedence;
+      description "List of precedences valid for ipv4.";
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions/oc-qos:ipv6/oc-qos:config" {
+    ext:augment-identifier "qos-ipv6-condition-aug";
+    description "Adds QoS Group and reference to ACL to Ipv6 conditions";
+
+    leaf acl-ref {
+      type string;
+    }
+
+    leaf-list precedences {
+      type precedence;
+      description "List of precedences valid for ipv6.";
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:actions/oc-qos:remark/oc-qos:config" {
+    ext:augment-identifier "qos-remark-qos-group-aug";
+    description "Adds QoS Group to packet-match actions remarks";
+
+    leaf set-qos-group {
+      type uint16 {
+        range "0 .. 512";
+      }
+    }
+
+    leaf-list set-precedences {
+      type precedence;
+      description "List of precedences valid for both ipv4 and ipv6.";
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    ext:augment-identifier "qos-max-queue-depth-ms-aug";
+    description "Adds QoS maximum queue depth in miliseconds";
+
+    leaf max-queue-depth-ms {
+      type uint32;
+      units ms;
+      description
+        "When the scheduler is specified to be a shaper - the
+        maximum depth of the queue in miliseconds is the value
+        specified by this leaf.";
+    }
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
+    description "Adds QoS Group to conditions";
+
+    leaf qos-group {
+      type uint16 {
+        range "0 .. 512";
+      }
+    }
+
+    leaf-list precedences {
+      type precedence;
+      description "List of precedences valid for both ipv4 and ipv6.";
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions/oc-qos:ipv4/oc-qos:config" {
+    description "Adds reference to ACL to Ipv4 conditions";
+
+    leaf acl-ref {
+      type string;
+    }
+
+    leaf-list precedences {
+      type precedence;
+      description "List of precedences valid for ipv4.";
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions/oc-qos:ipv6/oc-qos:config" {
+    description "Adds reference to ACL to Ipv6 conditions";
+
+    leaf acl-ref {
+      type string;
+    }
+
+    leaf-list precedences {
+      type precedence;
+      description "List of precedences valid for ipv6.";
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:actions/oc-qos:remark/oc-qos:config" {
+    description "Adds QoS Group to packet-match actions remarks";
+
+    leaf set-qos-group {
+      type uint16 {
+        range "0 .. 512";
+      }
+    }
+
+    leaf-list set-precedences {
+      type precedence;
+      description "List of precedences valid for both ipv4 and ipv6.";
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    description "Adds QoS maximum queue depth in miliseconds";
+
+    leaf max-queue-depth-ms {
+      type uint32;
+      units ms;
+      description
+        "When the scheduler is specified to be a shaper - the
+        maximum depth of the queue in miliseconds is the value
+        specified by this leaf.";
+    }
+  }
+}
