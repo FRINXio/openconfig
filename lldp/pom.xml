@@ -15,9 +15,9 @@
 
     <parent>
         <groupId>io.frinx.openconfig</groupId>
-        <artifactId>binding-parent</artifactId>
+        <artifactId>openconfig-parent</artifactId>
         <version>3.1.3.rc1-frinx-SNAPSHOT</version>
-        <relativePath>../binding-parent</relativePath>
+        <relativePath>../openconfig-parent</relativePath>
     </parent>
 
     <groupId>io.frinx.openconfig</groupId>
