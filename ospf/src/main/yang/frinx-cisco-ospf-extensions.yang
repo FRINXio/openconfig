@@ -31,4 +31,10 @@ module frinx-cisco-ospf-extension {
     description
       "Maps to 'summary-lsa'";
   }
+
+  identity MAX_METRIC_ON_SWITCHOVER {
+    base "oc-ospf-types:MAX_METRIC_TRIGGER";
+    description
+      "Set the maximum metric on switchover. Maps to on-switchover";
+  }
 }
