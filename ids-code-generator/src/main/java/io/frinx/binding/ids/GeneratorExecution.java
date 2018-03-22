@@ -16,6 +16,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -30,6 +31,7 @@ import org.opendaylight.yangtools.yang.model.api.DataSchemaNode;
 import org.opendaylight.yangtools.yang.model.api.GroupingDefinition;
 import org.opendaylight.yangtools.yang.model.api.Module;
 import org.opendaylight.yangtools.yang.model.api.SchemaContext;
+import org.opendaylight.yangtools.yang.model.api.SchemaNode;
 import org.opendaylight.yangtools.yang.model.api.SchemaPath;
 import org.opendaylight.yangtools.yang.model.api.UsesNode;
 
@@ -118,6 +120,7 @@ final class GeneratorExecution implements AutoCloseable {
         childNodes.stream()
                 .filter(this::isComplexNode)
                 .filter(child -> isInCurrentYang(currentNamespaces, child))
+                .sorted(Comparator.comparing(SchemaNode::getQName))
                 .forEach(child -> processChild(parent, parentTypePathArgs, parentSchemaPathArgs, child));
     }
 
