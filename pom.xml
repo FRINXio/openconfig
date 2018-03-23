@@ -54,6 +54,7 @@
     <module>policy-forwarding</module>
     <module>snmp</module>
     <module>logging</module>
+    <module>configuration-metadata</module>
     <module>qos</module>
 
     <module>features</module>
