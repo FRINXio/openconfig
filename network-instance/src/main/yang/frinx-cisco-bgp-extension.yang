@@ -1,0 +1,79 @@
+module frinx-cisco-bgp-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/bgp/cisco";
+
+  prefix "cisco-bgp-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+  import frinx-openconfig-routing-policy { prefix oc-rpol; revision-date 2017-07-14; }
+  import yang-ext { prefix ext; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  revision "2018-03-23" {
+    description
+      "Initial release";
+  }
+
+  grouping local-aggregates-policy {
+    leaf apply-policy {
+      type leafref {
+        path "/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
+          "oc-rpol:policy-definition/oc-rpol:name";
+      }
+      description
+        "Name of policy which needs to be applied.";
+    }
+  }
+
+  grouping soft-reconfiguration-group {
+    container soft-reconfiguration {
+      leaf always {
+        type boolean;
+      }
+    }
+  }
+
+  // network-instances augmentations
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:local-aggregates/oc-ni:aggregate/oc-ni:config" {
+    ext:augment-identifier "ni-prot-agg-aug";
+    description "Extends local-aggregates/aggregate/config with apply-policy";
+
+    uses local-aggregates-policy;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/" +
+    "oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:config" {
+    ext:augment-identifier "bgp-ne-af-aug";
+    description "Extends bgp neighbor afi-safi config with soft-reconfiguration field";
+
+    uses soft-reconfiguration-group;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/" +
+    "oc-ni:local-aggregates/oc-ni:aggregate/oc-ni:config" {
+    description "Extends local-aggregates/aggregate/config with apply-policy for uniconfig topology";
+
+    uses local-aggregates-policy;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/" +
+    "oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:config" {
+    description "Extends bgp neighbor afi-safi config with soft-reconfiguration field for uniconfig topology";
+
+    uses soft-reconfiguration-group;
+  }
+}
