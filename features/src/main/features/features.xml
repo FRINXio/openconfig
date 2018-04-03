@@ -125,6 +125,11 @@
     <bundle>mvn:io.frinx.openconfig/openconfig-qos/{{VERSION}}</bundle>
   </feature>
 
+  <feature name='openconfig-configuration-metadata' version='${project.version}'>
+  <feature version='${project.version}'>openconfig-types</feature>
+  <bundle>mvn:io.frinx.openconfig/openconfig-configuration-metadata/{{VERSION}}</bundle>
+  </feature>
+
   <feature name='openconfig-models' version='${project.version}' description="All available openconfig models">
     <feature version='${project.version}'>openconfig-interfaces</feature>
     <feature version='${project.version}'>openconfig-bgp</feature>
@@ -140,6 +145,7 @@
     <feature version='${project.version}'>openconfig-bfd</feature>
     <feature version='${project.version}'>openconfig-netflow</feature>
     <feature version='${project.version}'>openconfig-qos</feature>
+    <feature version='${project.version}'>openconfig-configuration-metadata</feature>
   </feature>
 
 </features>

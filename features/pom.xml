@@ -155,7 +155,11 @@
       <artifactId>openconfig-qos</artifactId>
       <version>${project.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>io.frinx.openconfig</groupId>
+      <artifactId>openconfig-configuration-metadata</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>io.frinx.openconfig</groupId>
       <artifactId>uniconfig-model</artifactId>
