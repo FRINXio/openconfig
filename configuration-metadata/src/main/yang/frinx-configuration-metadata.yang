@@ -6,19 +6,16 @@ module frinx-configuration-metadata {
 
     prefix "oc-lct";
 
-    // import some basic types
-    import frinx-openconfig-yang-types { prefix yang; }
-
     description
         "Represents metadata about device configuration.";
 
     container configuration-metadata {
         config false;
 
-        leaf last-configuration-time {
-            type yang:date-and-time;
+        leaf last-configuration-fingerprint {
+            type string;
             description
-                    "Time of last device configuration.";
+                    "Unique fingerprint of last configuration.";
         }
     }
 }
