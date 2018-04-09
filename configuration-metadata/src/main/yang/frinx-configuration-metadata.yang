@@ -6,16 +6,31 @@ module frinx-configuration-metadata {
 
     prefix "oc-lct";
 
+    // uniconfig imports
+    import network-topology { prefix nt; revision-date "2013-10-21"; }
+    import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
     description
         "Represents metadata about device configuration.";
 
-    container configuration-metadata {
-        config false;
+    grouping metadata {
+        container configuration-metadata {
+            config false;
 
-        leaf last-configuration-fingerprint {
-            type string;
-            description
-                    "Unique fingerprint of last configuration.";
+            leaf last-configuration-fingerprint {
+                type string;
+                description
+                        "Unique fingerprint of last configuration.";
+            }
         }
     }
+
+    uses metadata;
+
+    augment "/nt:network-topology/nt:topology/nt:node/" {
+        ext:augment-identifier "config-metadata-aug";
+
+        uses metadata;
+    }
+
 }
