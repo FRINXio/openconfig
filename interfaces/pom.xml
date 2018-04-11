@@ -20,7 +20,6 @@
         <relativePath>../openconfig-parent</relativePath>
     </parent>
 
-    <groupId>io.frinx.openconfig</groupId>
     <artifactId>openconfig-interfaces</artifactId>
     <version>3.1.3.rc1-frinx-SNAPSHOT</version>
     <packaging>bundle</packaging>
@@ -32,29 +31,16 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.frinx.openconfig</groupId>
-            <artifactId>uniconfig-model</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.opendaylight.mdsal.model</groupId>
             <artifactId>ietf-interfaces</artifactId>
-            <version>2014.05.08.10.1-Carbon-SR1.3_1_3_rc1-frinxodl-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.opendaylight.mdsal.model</groupId>
-            <artifactId>ietf-inet-types-2013-07-15</artifactId>
-            <version>1.2.1-Carbon-SR1.3_1_3_rc1-frinxodl-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.opendaylight.mdsal.model</groupId>
-            <artifactId>ietf-yang-types-20130715</artifactId>
-            <version>2013.07.15.10.1-Carbon-SR1.3_1_3_rc1-frinxodl-SNAPSHOT</version>
+            <artifactId>yang-ext</artifactId>
         </dependency>
         <dependency>
             <groupId>org.opendaylight.mdsal.model</groupId>
             <artifactId>iana-if-type-2014-05-08</artifactId>
-            <version>2014.05.08.10.1-Carbon-SR1.3_1_3_rc1-frinxodl-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

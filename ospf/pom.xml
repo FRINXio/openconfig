@@ -20,7 +20,6 @@
         <relativePath>../openconfig-parent</relativePath>
     </parent>
 
-    <groupId>io.frinx.openconfig</groupId>
     <artifactId>openconfig-ospf</artifactId>
     <version>3.1.3.rc1-frinx-SNAPSHOT</version>
     <packaging>bundle</packaging>
@@ -38,7 +37,7 @@
         </dependency>
         <dependency>
             <groupId>io.frinx.openconfig</groupId>
-            <artifactId>openconfig-types</artifactId>
+            <artifactId>openconfig-interfaces</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

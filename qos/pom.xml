@@ -15,9 +15,9 @@
 
     <parent>
         <groupId>io.frinx.openconfig</groupId>
-        <artifactId>binding-parent</artifactId>
+        <artifactId>openconfig-parent</artifactId>
         <version>3.1.3.rc1-frinx-SNAPSHOT</version>
-        <relativePath>../binding-parent</relativePath>
+        <relativePath>../openconfig-parent</relativePath>
     </parent>
 
     <artifactId>openconfig-qos</artifactId>
@@ -28,6 +28,11 @@
         <dependency>
             <groupId>io.frinx.openconfig</groupId>
             <artifactId>openconfig-interfaces</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.frinx.openconfig</groupId>
+            <artifactId>openconfig-extensions</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -46,9 +51,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.frinx.openconfig</groupId>
-            <artifactId>uniconfig-model</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.opendaylight.mdsal.model</groupId>
+            <artifactId>yang-ext</artifactId>
         </dependency>
     </dependencies>
 
