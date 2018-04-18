@@ -38,6 +38,21 @@ module frinx-acl-extension {
       <lower>..<higher>";
   }
 
+  typedef icmp-msg-type {
+    type union {
+      type uint8 {
+        range 0..255;
+      }
+      type enumeration {
+        enum ANY {
+          description
+            "Indicates not specified message type";
+        }
+      }
+    }
+    description "ICMP message type";
+  }
+
   grouping acl-hop-range {
     leaf hop-range {
       type hop-range;
@@ -47,31 +62,38 @@ module frinx-acl-extension {
   }
 
   grouping acl-icmp-type {
-     leaf icmp-message-type {
-      type uint8 {
-        range 0..255;
+    container icmp {
+      container config {
+        leaf msg-type {
+          type icmp-msg-type;
+          description
+            "ICMP message type";
+        }
       }
-      description "ICMP message type";
     }
   }
 
   augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv4/oc-acl:config" {
     uses acl-hop-range;
-    uses acl-icmp-type;
   }
 
   augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv6/oc-acl:config" {
     uses acl-hop-range;
+  }
+
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry" {
     uses acl-icmp-type;
   }
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv4/oc-acl:config" {
     uses oc-acl-ext:acl-hop-range;
-    uses oc-acl-ext:acl-icmp-type;
   }
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv6/oc-acl:config" {
     uses oc-acl-ext:acl-hop-range;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry" {
     uses oc-acl-ext:acl-icmp-type;
   }
 }
