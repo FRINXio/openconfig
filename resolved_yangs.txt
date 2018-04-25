@@ -17,6 +17,8 @@
 ./lldp/src/main/yang/frinx-openconfig-lldp-types.yang
 ./rib/src/main/yang/frinx-openconfig-rib-bgp-types.yang
 
+./configuration-metadata/src/main/yang/frinx-configuration-metadata.yang
+
 ./rib/src/main/yang/frinx-openconfig-rib-bgp-table-attributes.yang
 ./rib/src/main/yang/frinx-openconfig-rib-bgp-attributes.yang
 ./rib/src/main/yang/frinx-openconfig-rib-bgp-shared-attributes.yang
@@ -71,10 +73,11 @@
 ./ospf/src/main/yang/frinx-openconfig-ospf-policy.yang
 ./ospf/src/main/yang/frinx-openconfig-ospfv2-global.yang
 ./ospf/src/main/yang/frinx-openconfig-ospfv2.yang
-./ospf/src/main/yang/frinx-cisco-ospf-extensions.yang
 
 ./acl/src/main/yang/frinx-openconfig-packet-match.yang
+./acl/src/main/yang/frinx-openconfig-packet-match-types.yang
 ./acl/src/main/yang/frinx-openconfig-acl.yang
+./acl/src/main/yang/frinx-acl-extension.yang
 
 ./policy-forwarding/src/main/yang/frinx-openconfig-pf-path-groups.yang
 ./policy-forwarding/src/main/yang/frinx-openconfig-pf-forwarding-policies.yang
@@ -98,6 +101,14 @@
 ./network-instance/src/main/yang/frinx-cisco-pf-interfaces-extension.yang
 ./network-instance/src/main/yang/frinx-juniper-pf-interfaces-extension.yang
 ./network-instance/src/main/yang/frinx-mpls-rsvp-extension.yang
+./network-instance/src/main/yang/frinx-cisco-ospf-extension.yang
+./network-instance/src/main/yang/frinx-cisco-bgp-extension.yang
 
 ./bfd/src/main/yang/frinx-openconfig-bfd.yang
 ./bfd/src/main/yang/frinx-bfd-extension.yang
+
+./qos/src/main/yang/frinx-openconfig-qos-types.yang
+./qos/src/main/yang/frinx-openconfig-qos-elements.yang
+./qos/src/main/yang/frinx-openconfig-qos-interfaces.yang
+./qos/src/main/yang/frinx-openconfig-qos.yang
+./qos/src/main/yang/frinx-qos-extension.yang

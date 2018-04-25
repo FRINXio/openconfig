@@ -4,7 +4,7 @@ module frinx-configuration-metadata {
     // namespace
     namespace "http://frinx.openconfig.net/yang/configuration-metadata";
 
-    prefix "oc-lct";
+    prefix "conf-meta";
 
     // uniconfig imports
     import network-topology { prefix nt; revision-date "2013-10-21"; }
@@ -27,7 +27,7 @@ module frinx-configuration-metadata {
 
     uses metadata;
 
-    augment "/nt:network-topology/nt:topology/nt:node/" {
+    augment "/nt:network-topology/nt:topology/nt:node" {
         ext:augment-identifier "config-metadata-aug";
 
         uses metadata;

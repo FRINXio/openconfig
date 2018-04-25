@@ -9,7 +9,7 @@ module frinx-cisco-ospf-extension {
 
   // import some basic types
   import frinx-openconfig-network-instance { prefix oc-ni; }
-  import frinx-openconfig-ospf-types { prefix oc-ospft; }
+  import frinx-openconfig-ospf-types { prefix oc-ospf-types; }
   import frinx-openconfig-ospfv2 { prefix oc-ospfv2; }
 
   // uniconfig imports
@@ -58,7 +58,7 @@ module frinx-cisco-ospf-extension {
         container config {
           leaf trigger {
             type identityref {
-              base "oc-ospft:MAX_METRIC_TRIGGER";
+              base "oc-ospf-types:MAX_METRIC_TRIGGER";
             }
           }
           leaf timeout {
@@ -71,7 +71,7 @@ module frinx-cisco-ospf-extension {
           }
           leaf-list include {
             type identityref {
-              base "oc-ospft:MAX_METRIC_INCLUDE";
+              base "oc-ospf-types:MAX_METRIC_INCLUDE";
             }
             description
              "By default, the maximum metric is advertised for all

@@ -662,9 +662,12 @@ module frinx-openconfig-bfd {
       // like it might be expensive for the NMS to find out since
       // it will need to cycle through all interfaces looking for
       // the associated local-discriminator.
-      type leafref {
-        path "/bfd/interfaces/interface/peers/peer/local-discriminator";
-      }
+      // type leafref {
+        // path "/bfd/interfaces/interface/peers/peer/local-discriminator";
+      // }
+      // using string directly because it is not valid by pyang 
+      // when we use this leafref in frinx-bfd-extension.yang
+      type string;
       description
         "A reference to the BFD session that is tracking the liveliness
         of the remote entity.";

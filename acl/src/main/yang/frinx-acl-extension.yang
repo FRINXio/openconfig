@@ -9,7 +9,9 @@ module frinx-acl-extension {
 
   // import some basic types
   import frinx-openconfig-acl { prefix "oc-acl"; }
+  // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   // meta
   organization "Frinx s.r.o";
