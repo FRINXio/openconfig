@@ -81,6 +81,71 @@ module frinx-cisco-if-extension {
     }
   }
 
+  grouping rpf-check-top {
+    leaf rpf-check {
+      type enumeration {
+        enum ANY {
+          description "Source is reachable via any interface";
+        }
+        enum RX {
+          description "Source is reachable via interface on which
+                      packet was received";
+        }
+      }
+    }
+  }
+
+  identity RPF_ALLOW_CONFIG_BASE {
+    description "Base identity for RPF check config";
+  }
+
+  identity RPF_ALLOW_DEFAULT {
+    base RPF_ALLOW_CONFIG_BASE;
+    description "Base identity for RPF check config";
+  }
+
+  identity RPF_ALLOW_SELF_PING {
+    base RPF_ALLOW_CONFIG_BASE;
+    description "Base identity for RPF check config";
+  }
+
+  grouping allow-config-top {
+    leaf-list allow-config {
+      type identityref {
+        base RPF_ALLOW_CONFIG_BASE;
+      }
+    }
+  }
+
+  grouping ipv4-verify {
+    container ipv4 {
+      uses rpf-check-top;
+      uses allow-config-top;
+    }
+
+    description "Enables RPF check for ipv4 interface";
+  }
+
+  grouping ipv6-verify {
+    container ipv6 {
+      uses rpf-check-top;
+      uses allow-config-top;
+    }
+
+    description "Enables RPF check for ipv6 interface";
+  }
+
+  grouping verify-unicast-source-reachable-via-top {
+    container verify-unicast-source-reachable-via {
+      uses ipv4-verify;
+      uses ipv6-verify;
+    }
+
+    description "Enable per packet validation for unicast,
+                reachability check applied to the source
+                address";
+  }
+
   // augment statements
 
   augment "/oc-if:interfaces/oc-if:interface" {
@@ -91,6 +156,13 @@ module frinx-cisco-if-extension {
     uses statistics-top;
   }
 
+  augment "/oc-if:interfaces/oc-if:interface" {
+    description "Adds Reverse Path Forwarding (RPF) checking to
+                interface model";
+
+    uses verify-unicast-source-reachable-via-top;
+  }
+
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
@@ -98,6 +170,13 @@ module frinx-cisco-if-extension {
                     interfaces model";
 
     uses statistics-top;
+  }
+  
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
+    description "Adds Reverse Path Forwarding (RPF) checking to
+                interface model";
+
+    uses verify-unicast-source-reachable-via-top;
   }
 
 }
