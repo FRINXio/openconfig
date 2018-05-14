@@ -817,6 +817,7 @@ module frinx-openconfig-bgp-policy {
       description
         "Set the community values for the update inline with
         a list.";
+      ordered-by "user";
     }
   }
 
