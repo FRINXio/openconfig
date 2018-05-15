@@ -9,9 +9,11 @@ module frinx-acl-extension {
 
   // import some basic types
   import frinx-openconfig-acl { prefix "oc-acl"; }
+  import frinx-openconfig-inet-types { prefix oc-inet; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
 
   // meta
   organization "Frinx s.r.o";
@@ -75,6 +77,66 @@ module frinx-acl-extension {
     }
   }
 
+  grouping ipv4-address-wildcarded {
+    leaf address {
+      type oc-inet:ipv4-address;
+      description
+        "IPv4 address.";
+    }
+    leaf wildcard-mask {
+      type oc-inet:ipv4-address;
+      description
+        "IPv4 wildcard mask.";
+    }
+  }
+
+  grouping src-dst-ipv4-address-wildcarded {
+    description
+      "Configuration data of IP protocol fields
+      for IPv4";
+    container source-address-wildcarded {
+      uses ipv4-address-wildcarded;
+    }
+    container destination-address-wildcarded {
+      uses ipv4-address-wildcarded;
+    }
+  }
+
+  grouping ipv6-address-wildcarded {
+    leaf address {
+      type oc-inet:ipv6-address;
+      description
+        "IPv6 address.";
+    }
+    leaf wildcard-mask {
+      type oc-inet:ipv6-address;
+      description
+        "IPv6 wildcard mask.";
+    }
+  }
+
+  grouping src-dst-ipv6-address-wildcarded {
+    description
+      "Configuration data of IP protocol fields
+      for IPv6";
+    container source-address-wildcarded {
+      uses ipv6-address-wildcarded;
+    }
+    container destination-address-wildcarded {
+      uses ipv6-address-wildcarded;
+    }
+  }
+
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv4/oc-acl:config" {
+    ext:augment-identifier "acl-set-acl-entry-ipv4-wildcarded-aug";
+    uses src-dst-ipv4-address-wildcarded;
+  }
+
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv6/oc-acl:config" {
+    ext:augment-identifier "acl-set-acl-entry-ipv6-wildcarded-aug";
+    uses src-dst-ipv6-address-wildcarded;
+  }
+
   augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv4/oc-acl:config" {
     uses acl-hop-range;
   }
@@ -85,6 +147,14 @@ module frinx-acl-extension {
 
   augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry" {
     uses acl-icmp-type;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv4/oc-acl:config" {
+    uses src-dst-ipv4-address-wildcarded;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv6/oc-acl:config" {
+    uses src-dst-ipv6-address-wildcarded;
   }
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv4/oc-acl:config" {
