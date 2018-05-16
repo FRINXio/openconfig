@@ -127,6 +127,26 @@ module frinx-acl-extension {
     }
   }
 
+  grouping src-dst-port-named {
+    description
+      "Configuration data of transport fields";
+    leaf source-port-named {
+      type string;
+      description
+        "Source port represented by name.";
+    }
+    leaf destination-port-named {
+      type string;
+      description
+        "Destination port represented by name.";
+    }
+  }
+
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config" {
+    ext:augment-identifier "acl-set-acl-entry-transport-port-named-aug";
+    uses src-dst-port-named;
+  }
+
   augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv4/oc-acl:config" {
     ext:augment-identifier "acl-set-acl-entry-ipv4-wildcarded-aug";
     uses src-dst-ipv4-address-wildcarded;
@@ -147,6 +167,10 @@ module frinx-acl-extension {
 
   augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry" {
     uses acl-icmp-type;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config" {
+    uses src-dst-port-named;
   }
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:ipv4/oc-acl:config" {
