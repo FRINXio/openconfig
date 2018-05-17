@@ -30,31 +30,9 @@ module frinx-qos-extension {
   }
 
   typedef precedence {
-    type enumeration {
-      enum routine {
-        description "0";
-      }
-      enum priority {
-        description "1";
-      }
-      enum immediate {
-        description "2";
-      }
-      enum flash {
-        description "3";
-      }
-      enum flash-override {
-        description "4";
-      }
-      enum critical {
-        description "5";
-      }
-      enum internet {
-        description "6";
-      }
-      enum network {
-        description "7";
-      }
+    type union {
+      type uint8;
+      type string;
     }
     description "Precedence values.";
   }
