@@ -39,7 +39,7 @@ module frinx-mpls-rsvp-extension {
     leaf bandwidth {
       type union {
         type uint32 {
-            range "1..4294967295";
+            range "0..4294967295";
         }
         type string {
             pattern "default";
