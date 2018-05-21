@@ -37,13 +37,17 @@ module frinx-qos-extension {
     description "Precedence values.";
   }
 
+  typedef qos-group-range {
+    type string {
+      // <number>..<number>
+      pattern '(\d+)\.\.(\d+)';
+    }
+  }
+
   typedef qos-group {
     type union {
       type uint32;
-      type string {
-        // <number>..<number>
-        pattern '(\d+)\.\.(\d+)';
-      }
+      type qos-group-range;
     }
   }
 
