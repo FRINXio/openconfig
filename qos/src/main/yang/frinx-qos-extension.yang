@@ -37,15 +37,23 @@ module frinx-qos-extension {
     description "Precedence values.";
   }
 
+  typedef qos-group {
+    type union {
+      type uint32;
+      type string {
+        // <number>..<number>
+        pattern '(\d+)\.\.(\d+)';
+      }
+    }
+  }
+
   // augment statements
   augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
     ext:augment-identifier "qos-condition-aug";
     description "Adds QoS Group to conditions";
 
-    leaf qos-group {
-      type uint16 {
-        range "0 .. 512";
-      }
+    leaf-list qos-group {
+      type qos-group;
     }
 
     leaf-list precedences {
@@ -86,10 +94,8 @@ module frinx-qos-extension {
     ext:augment-identifier "qos-remark-qos-group-aug";
     description "Adds QoS Group to packet-match actions remarks";
 
-    leaf set-qos-group {
-      type uint16 {
-        range "0 .. 512";
-      }
+    leaf-list qos-group {
+      type qos-group;
     }
 
     leaf-list set-precedences {
@@ -116,10 +122,8 @@ module frinx-qos-extension {
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
     description "Adds QoS Group to conditions";
 
-    leaf qos-group {
-      type uint16 {
-        range "0 .. 512";
-      }
+    leaf-list qos-group {
+      type qos-group;
     }
 
     leaf-list precedences {
@@ -157,10 +161,8 @@ module frinx-qos-extension {
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:actions/oc-qos:remark/oc-qos:config" {
     description "Adds QoS Group to packet-match actions remarks";
 
-    leaf set-qos-group {
-      type uint16 {
-        range "0 .. 512";
-      }
+    leaf-list qos-group {
+      type qos-group;
     }
 
     leaf-list set-precedences {
