@@ -53,10 +53,12 @@ module frinx-qos-extension {
     description "Adds QoS Group to conditions";
 
     leaf-list qos-group {
+      ordered-by user;
       type qos-group;
     }
 
     leaf-list precedences {
+      ordered-by user;
       type precedence;
       description "List of precedences valid for both ipv4 and ipv6";
     }
@@ -71,6 +73,7 @@ module frinx-qos-extension {
     }
 
     leaf-list precedences {
+      ordered-by user;
       type precedence;
       description "List of precedences valid for ipv4.";
     }
@@ -85,6 +88,7 @@ module frinx-qos-extension {
     }
 
     leaf-list precedences {
+      ordered-by user;
       type precedence;
       description "List of precedences valid for ipv6.";
     }
@@ -94,11 +98,13 @@ module frinx-qos-extension {
     ext:augment-identifier "qos-remark-qos-group-aug";
     description "Adds QoS Group to packet-match actions remarks";
 
-    leaf-list qos-group {
+    leaf-list set-qos-group {
+      ordered-by user;
       type qos-group;
     }
 
     leaf-list set-precedences {
+      ordered-by user;
       type precedence;
       description "List of precedences valid for both ipv4 and ipv6.";
     }
@@ -123,10 +129,12 @@ module frinx-qos-extension {
     description "Adds QoS Group to conditions";
 
     leaf-list qos-group {
+      ordered-by user;
       type qos-group;
     }
 
     leaf-list precedences {
+      ordered-by user;
       type precedence;
       description "List of precedences valid for both ipv4 and ipv6.";
     }
@@ -140,6 +148,7 @@ module frinx-qos-extension {
     }
 
     leaf-list precedences {
+      ordered-by user;
       type precedence;
       description "List of precedences valid for ipv4.";
     }
@@ -153,6 +162,7 @@ module frinx-qos-extension {
     }
 
     leaf-list precedences {
+      ordered-by user;
       type precedence;
       description "List of precedences valid for ipv6.";
     }
@@ -161,11 +171,13 @@ module frinx-qos-extension {
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:actions/oc-qos:remark/oc-qos:config" {
     description "Adds QoS Group to packet-match actions remarks";
 
-    leaf-list qos-group {
+    leaf-list set-qos-group {
+      ordered-by user;
       type qos-group;
     }
 
     leaf-list set-precedences {
+      ordered-by user;
       type precedence;
       description "List of precedences valid for both ipv4 and ipv6.";
     }

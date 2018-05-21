@@ -15,7 +15,7 @@ public class QosGroupBuilder {
         try {
             return new QosGroup(Long.valueOf(defaultValue));
         } catch(NumberFormatException e) {
-            return new QosGroup(defaultValue);
+            return new QosGroup(defaultValue.replace("..", "-"));
         }
     }
 
