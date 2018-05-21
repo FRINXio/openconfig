@@ -93,6 +93,10 @@ module frinx-snmp {
           base event-types:EVENT_TYPE;
         }
       }
+
+      leaf enabled {
+        type boolean;
+      }
     }
   }
 
