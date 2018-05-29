@@ -25,7 +25,7 @@
 
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>openconfig-parent</artifactId>
-    <version>3.1.4.rc2-frinx</version>
+    <version>3.1.4.rc3-frinx-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
 
@@ -103,7 +103,7 @@
                                 <dependency>
                                     <groupId>io.frinx.openconfig</groupId>
                                     <artifactId>ids-code-generator</artifactId>
-                                    <version>3.1.4.rc2-frinx</version>
+                                    <version>3.1.4.rc3-frinx-SNAPSHOT</version>
                                     <scope>compile</scope>
                                 </dependency>
                             </dependencies>
