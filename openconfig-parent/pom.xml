@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.opendaylight.mdsal</groupId>
         <artifactId>binding-parent</artifactId>
-        <version>0.10.1-Carbon-SR1.3_1_5_rc7-frinxodl-SNAPSHOT</version>
+        <version>0.10.1-Carbon-SR1.3_1_5_rc7-frinxodl</version>
         <relativePath/>
     </parent>
 
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.opendaylight.mdsal.model</groupId>
             <artifactId>ietf-topology</artifactId>
-            <version>2013.10.21.10.1-Carbon-SR1.3_1_5_rc7-frinxodl-SNAPSHOT</version>
+            <version>2013.10.21.10.1-Carbon-SR1.3_1_5_rc7-frinxodl</version>
         </dependency>
         <dependency>
             <groupId>org.opendaylight.mdsal.model</groupId>
