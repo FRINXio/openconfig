@@ -90,7 +90,6 @@ module frinx-openconfig-platform {
     leaf value {
       type union {
         type string;
-        type boolean;
         type int64;
         type uint64;
         type decimal64 {
@@ -238,7 +237,6 @@ module frinx-openconfig-platform {
   grouping platform-component-state {
     description
       "Operational state data for device components.";
-
     leaf type {
       type union {
         type identityref {
@@ -281,6 +279,28 @@ module frinx-openconfig-platform {
         or software component.";
     }
 
+    leaf hardware-version {
+      type string;
+      description
+        "For hardware components, this is the hardware revision of
+        the component.";
+    }
+
+    leaf firmware-version {
+      type string;
+      description
+        "For hardware components, this is the version of associated
+        firmware that is running on the component, if applicable.";
+    }
+
+    leaf software-version {
+      type string;
+      description
+        "For software components such as operating system or other
+        software module, this is the version of the currently
+        running software.";
+    }
+
     leaf serial-no {
       type string;
       description
@@ -292,7 +312,56 @@ module frinx-openconfig-platform {
       description
         "System-assigned part number for the component.  This should
         be present in particular if the component is also an FRU
-        (field replacable unit)";
+        (field replaceable unit)";
+    }
+
+    leaf removable {
+      type boolean;
+      description
+        "If true, this component is removable or is a field
+        replaceable unit";
+    }
+  }
+
+  grouping platform-component-temp-alarm-state {
+    description
+      "Temperature alarm data for platform components";
+
+    // TODO(aashaikh): consider if these leaves could be in a
+    // reusable grouping (not temperature-specific); threshold
+    // may always need to be units specific.
+
+    leaf alarm-status {
+      type boolean;
+      description
+        "A value of true indicates the alarm has been raised or
+        asserted.  The value should be false when the alarm is
+        cleared.";
+    }
+
+    leaf alarm-threshold {
+      type uint32;
+      description
+        "The threshold value that was crossed for this alarm.";
+    }
+  }
+
+  grouping platform-component-power-state {
+    description
+      "Power-related operational state for device components.";
+
+    leaf allocated-power {
+      type uint32;
+      units watts;
+      description
+        "Power allocated by the system for the component.";
+    }
+
+    leaf used-power {
+      type uint32;
+      units watts;
+      description
+        "Actual power used by the component.";
     }
   }
 
@@ -308,6 +377,229 @@ module frinx-openconfig-platform {
         to just supply the instant value";
 
       uses oc-platform-types:avg-min-max-instant-stats-precision1-celsius;
+      uses platform-component-temp-alarm-state;
+    }
+  }
+
+  grouping platform-component-memory-state {
+    description
+      "Per-component memory statistics";
+
+    container memory {
+      description
+        "For components that have associated memory, these values
+        report information about available and utilized memory.";
+
+      leaf available {
+        type uint64;
+        units bytes;
+        description
+          "The available memory physically installed, or logically
+          allocated to the component.";
+      }
+
+      // TODO(aashaikh): consider if this needs to be a
+      // min/max/avg statistic
+      leaf utilized {
+        type uint64;
+        units bytes;
+        description
+          "The memory currently in use by processes running on
+          the component, not considering reserved memory that is
+          not available for use.";
+      }
+    }
+  }
+
+  grouping platform-anchors-top {
+    description
+      "This grouping is used to add containers for components that
+      are common across systems, but do not have a defined schema
+      within the openconfig-platform module.  Containers should be
+      added to this grouping for components that are expected to
+      exist in multiple systems, with corresponding modules
+      augmenting the config/state containers directly.";
+
+    container chassis {
+      description
+        "Data for chassis components";
+
+      container config {
+        description
+          "Configuration data for chassis components";
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state data for chassis components";
+      }
+    }
+
+// TODO(aashaikh): linecard container is already defined in
+// openconfig-platform-linecard; will move to this module
+// in future.
+  /*
+    container linecard {
+      description
+        "Data for linecard components";
+      container config {
+        description
+          "Configuration data for linecard components";
+      }
+      container state {
+        config false;
+        description
+          "Operational state data for linecard components";
+      }
+    }
+  */
+
+    container port {
+      description
+        "Data for physical port components";
+
+      container config {
+        description
+          "Configuration data for physical port components";
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state data for physical port components";
+      }
+    }
+
+// TODO(aashaikh): transceiver container is already defined in
+// openconfig-platform-transceiver; will move to this module
+// in future.
+  /*
+    container transceiver {
+      description
+        "Data for transceiver components";
+      container config {
+        description
+          "Configuration data for transceiver components";
+      }
+      container state {
+        config false;
+        description
+          "Operational state data for transceiver components";
+      }
+    }
+  */
+
+    container power-supply {
+      description
+        "Data for power supply components";
+
+      container config {
+        description
+          "Configuration data for power supply components";
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state data for power supply components";
+      }
+    }
+
+    container fan {
+      description
+        "Data for fan components";
+
+      container config {
+        description
+          "Configuration data for fan components";
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state data for fan components";
+      }
+    }
+
+    container fabric {
+      description
+        "Data for fabric components";
+
+      container config {
+        description
+          "Configuration data for fabric components";
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state data for fabric components";
+      }
+    }
+
+    container storage {
+      description
+        "Data for storage components";
+
+      container config {
+        description
+          "Configuration data for storage components";
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state data for storage components";
+      }
+    }
+
+    container cpu {
+      description
+        "Data for cpu components";
+
+      container config {
+        description
+          "Configuration data for cpu components";
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state data for cpu components";
+      }
+    }
+
+    container integrated-circuit {
+      description
+        "Data for chip components, such as ASIC, NPUs, etc.";
+
+      container config {
+        description
+          "Configuration data for chip components";
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state data for chip components";
+      }
+    }
+
+    container backplane {
+      description
+        "Data for backplane components";
+
+      container config {
+        description
+          "Configuration data for backplane components";
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state data for backplane components";
+      }
     }
   }
 
@@ -349,13 +641,17 @@ module frinx-openconfig-platform {
           uses platform-component-config;
           uses platform-component-state;
           uses platform-component-temp-state;
+          uses platform-component-memory-state;
+          uses platform-component-power-state;
         }
 
         uses platform-component-properties-top;
         uses platform-subcomponent-ref-top;
+        uses platform-anchors-top;
       }
     }
   }
+
 
   // data definition statements
 
