@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.opendaylight.odlparent</groupId>
     <artifactId>features-parent</artifactId>
-    <version>1.8.1-Carbon-SR1.3_1_5_rc13-frinxodl</version>
+    <version>1.8.1-Carbon-SR1.3_1_5_rc14-frinxodl-SNAPSHOT</version>
     <relativePath/>
   </parent>
 
@@ -22,7 +22,7 @@
   <name>${project.artifactId}</name>
 
   <properties>
-    <mdsal.model.version>0.10.1-Carbon-SR1.3_1_5_rc13-frinxodl</mdsal.model.version>
+    <mdsal.model.version>0.10.1-Carbon-SR1.3_1_5_rc14-frinxodl-SNAPSHOT</mdsal.model.version>
     <configfile.directory>etc/opendaylight/karaf</configfile.directory>
   </properties>
 
