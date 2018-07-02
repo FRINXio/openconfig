@@ -25,6 +25,7 @@
 
   <modules>
     <module>ids-code-generator</module>
+    <module>artifacts</module>
     <module>openconfig-parent</module>
     <module>uniconfig-model</module>
 
