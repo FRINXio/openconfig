@@ -155,6 +155,8 @@
     <feature version='${project.version}'>openconfig-bfd</feature>
     <feature version='${project.version}'>openconfig-netflow</feature>
     <feature version='${project.version}'>openconfig-qos</feature>
+    <feature version='${project.version}'>openconfig-vlan</feature>
+    <feature version='${project.version}'>openconfig-if-ip</feature>
     <feature version='${project.version}'>openconfig-configuration-metadata</feature>
   </feature>
 
