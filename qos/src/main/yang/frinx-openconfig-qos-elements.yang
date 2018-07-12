@@ -7,7 +7,6 @@ submodule frinx-openconfig-qos-elements {
   import frinx-openconfig-extensions { prefix oc-ext; }
   import frinx-openconfig-qos-types { prefix oc-qos-types; }
   import frinx-openconfig-packet-match { prefix oc-pkt-match; }
-  import frinx-openconfig-platform { prefix oc-platform; }
   import frinx-openconfig-types { prefix oc-types; }
 
 
@@ -258,29 +257,6 @@ submodule frinx-openconfig-qos-elements {
 
         uses oc-qos:qos-classifier-terms-top;
       }
-    }
-  }
-
-  grouping qos-fabric-trace-config {
-    description
-      "Configuration data for fabric trace data";
-
-    leaf source {
-      type leafref {
-        path "/oc-platform:components/oc-platform:component" +
-          "/oc-platform:config/oc-platform:name";
-      }
-      description
-        "Source component for fabric trace data";
-    }
-
-    leaf dest {
-      type leafref {
-        path "/oc-platform:components/oc-platform:component" +
-          "/oc-platform:config/oc-platform:name";
-      }
-      description
-        "Destination component for fabric trace data";
     }
   }
 
