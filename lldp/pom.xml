@@ -16,12 +16,12 @@
     <parent>
         <groupId>io.frinx.openconfig</groupId>
         <artifactId>openconfig-parent</artifactId>
-        <version>3.1.5.rc16-frinx-SNAPSHOT</version>
+        <version>3.1.5.rc16-frinx</version>
         <relativePath>../openconfig-parent</relativePath>
     </parent>
 
     <artifactId>openconfig-lldp</artifactId>
-    <version>3.1.5.rc16-frinx-SNAPSHOT</version>
+    <version>3.1.5.rc16-frinx</version>
     <packaging>bundle</packaging>
 
     <dependencies>
