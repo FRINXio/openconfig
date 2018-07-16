@@ -1,7 +1,7 @@
 submodule frinx-openconfig-bgp-common-structure {
 
   belongs-to frinx-openconfig-bgp {
-    prefix "oc-bgp";
+    prefix oc-bgp;
   }
 
   import frinx-openconfig-extensions { prefix oc-ext; revision-date 2017-01-29; }

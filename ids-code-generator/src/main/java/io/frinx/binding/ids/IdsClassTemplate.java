@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.StreamSupport;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.opendaylight.yangtools.yang.common.QName;
-import org.opendaylight.yangtools.yang.model.api.AugmentationSchema;
+import org.opendaylight.yangtools.yang.model.api.AugmentationSchemaNode;
 import org.opendaylight.yangtools.yang.model.api.DataSchemaNode;
 import org.opendaylight.yangtools.yang.model.api.Module;
 import org.opendaylight.yangtools.yang.model.api.SchemaPath;
@@ -55,7 +55,7 @@ final class IdsClassTemplate {
 
         String parentCode = "InstanceIdentifier.create";
         if (parentVarName.isPresent()) {
-            String method = dataSchemaNode instanceof AugmentationSchema ? "augmentation" : "child";
+            String method = dataSchemaNode instanceof AugmentationSchemaNode ? "augmentation" : "child";
             parentCode = parentVarName.get() + "." + method;
         }
 

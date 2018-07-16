@@ -10,6 +10,9 @@ module frinx-openconfig-qos {
   // import some basic types
   import frinx-openconfig-extensions { prefix oc-ext; }
 
+  // FI-227 : remove once fixed
+  import frinx-openconfig-platform { prefix oc-platform; }
+
   // include submodules
   include frinx-openconfig-qos-interfaces;
   include frinx-openconfig-qos-elements;

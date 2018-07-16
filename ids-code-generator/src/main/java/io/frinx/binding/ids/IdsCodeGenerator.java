@@ -31,11 +31,6 @@ public final class IdsCodeGenerator implements BasicCodeGenerator, BuildContextA
     private MavenProject project;
 
     @Override
-    public Collection<File> generateSources(SchemaContext context, File outputBaseDir, Set<Module> currentModules) throws IOException {
-        throw new UnsupportedOperationException("Deprecated method");
-    }
-
-    @Override
     public Collection<File> generateSources(SchemaContext context,
                                             File outputBaseDir,
                                             Set<Module> currentModules,

@@ -10,6 +10,9 @@ module frinx-openconfig-bgp {
   // import some basic inet types
   import frinx-openconfig-extensions { prefix oc-ext; revision-date 2017-01-29; }
 
+  // FI-227 : remove once fixed
+  import frinx-openconfig-routing-policy { prefix oc-rpol; revision-date 2017-07-14; }
+
   // Include the OpenConfig BGP submodules
   // Common: defines the groupings that are common across more than
   //         one context (where contexts are neighbor, group, global)
@@ -19,7 +22,7 @@ module frinx-openconfig-bgp {
   include frinx-openconfig-bgp-common-multiprotocol { revision-date 2017-02-02; }
   // Structure: defines groupings that are shared but are solely used for
   //            structural reasons.
-  include frinx-openconfig-bgp-common-structure { revision-date 2017-02-02; }
+  include frinx-openconfig-bgp-common-structure { revision-date "2017-02-02"; }
   // Include peer-group/neighbor/global - these define the groupings
   // that are specific to one context
   include frinx-openconfig-bgp-peer-group { revision-date 2017-02-02; }

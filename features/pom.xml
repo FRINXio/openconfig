@@ -1,165 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
-  ~ Copyright © 2017 Frinx and others. All rights reserved.
+  ~ Copyright © 2018 Frinx and others. All rights reserved.
   ~
   ~ This program and the accompanying materials are made available under the
   ~ terms of the Eclipse Public License v1.0 which accompanies this distribution,
   ~ and is available at http://www.eclipse.org/legal/epl-v10.html
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.opendaylight.odlparent</groupId>
-    <artifactId>features-parent</artifactId>
-    <version>1.8.1-Carbon-SR1.3_1_5_rc17-frinxodl-SNAPSHOT</version>
-    <relativePath/>
-  </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.frinx.openconfig</groupId>
-  <artifactId>openconfig-features</artifactId>
-  <version>3.1.5.rc17-frinx-SNAPSHOT</version>
-  <name>${project.artifactId}</name>
+    <parent>
+        <groupId>org.opendaylight.odlparent</groupId>
+        <artifactId>odlparent-lite</artifactId>
+        <version>3.1.1</version>
+        <relativePath />
+    </parent>
 
-  <properties>
-    <mdsal.model.version>0.10.1-Carbon-SR1.3_1_5_rc17-frinxodl-SNAPSHOT</mdsal.model.version>
-    <configfile.directory>etc/opendaylight/karaf</configfile.directory>
-  </properties>
+    <groupId>io.frinx.openconfig</groupId>
+    <artifactId>features-aggregator</artifactId>
+    <version>3.1.5.rc17-frinx-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.opendaylight.mdsal.model</groupId>
-      <artifactId>features-mdsal-model</artifactId>
-      <version>${mdsal.model.version}</version>
-      <classifier>features</classifier>
-      <type>xml</type>
-      <scope>runtime</scope>
-    </dependency>
+    <modules>
+        <module>openconfig-features</module>
+        <module>frinx-openconfig-models</module>
 
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-extensions</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-types</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-interfaces</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-vlan</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-if-ip</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-policy</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-bgp</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-rib</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-mpls</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-network-instance</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-local-routing</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-ospf</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-platform</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-lldp</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-cdp</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-acl</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-lacp</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-policy-forwarding</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-snmp</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-logging</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-bfd</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-netflow</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-qos</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>openconfig-configuration-metadata</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.frinx.openconfig</groupId>
-      <artifactId>uniconfig-model</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-  </dependencies>
+        <module>frinx-openconfig-types</module>
+        <module>frinx-uniconfig-model</module>
+        <module>frinx-openconfig-interfaces</module>
+        <module>frinx-openconfig-policy</module>
+        <module>frinx-openconfig-bgp</module>
+        <module>frinx-openconfig-ospf</module>
+        <module>frinx-openconfig-mpls</module>
+        <module>frinx-openconfig-network-instance</module>
+        <module>frinx-openconfig-platform</module>
+        <module>frinx-openconfig-lldp</module>
+        <module>frinx-openconfig-cdp</module>
+        <module>frinx-openconfig-acl</module>
+        <module>frinx-openconfig-lacp</module>
+        <module>frinx-openconfig-policy-forwarding</module>
+        <module>frinx-openconfig-snmp</module>
+        <module>frinx-openconfig-logging</module>
+        <module>frinx-openconfig-bfd</module>
+        <module>frinx-openconfig-netflow</module>
+        <module>frinx-openconfig-qos</module>
+        <module>frinx-openconfig-configuration-metadata</module>
+        <module>frinx-openconfig-vlan</module>
+        <module>frinx-openconfig-if-ip</module>
+    </modules>
 </project>

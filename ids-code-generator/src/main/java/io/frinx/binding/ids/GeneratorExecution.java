@@ -48,7 +48,7 @@ final class GeneratorExecution implements AutoCloseable {
         this.varCache = varCache;
         this.template = new IdsClassTemplate(packageName);
 
-        this.types = new BindingGeneratorImpl(false).generateTypes(context);
+        this.types = new BindingGeneratorImpl().generateTypes(context);
         this.currentNamespaces = currentModules.stream().map(a -> a.getQNameModule().getNamespace()).collect(Collectors.toSet());
     }
 
