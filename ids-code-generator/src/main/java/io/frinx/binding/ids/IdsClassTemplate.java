@@ -26,7 +26,8 @@ final class IdsClassTemplate {
     private static final String CLOSING_BRACE = "}";
     private static final String MODULE_START = "\n\t// Module: %s %s\n\n";
     private static final String CONSTANT_JAVADOC = "\t/**\n\t * %s\n\t**/\n";
-    private static final String CONSTANT_DEFINITION = "\tpublic static final InstanceIdentifier<%s> %s = %s(%s.class);\n";
+    private static final String CONSTANT_DEFINITION = "\tpublic static final InstanceIdentifier<%s> %s = %s(%s.class)"
+            + ";\n";
 
     private final StringBuilder result = new StringBuilder();
 
@@ -64,11 +65,11 @@ final class IdsClassTemplate {
     }
 
     /**
-     * Create human readable representation of schema path
+     * Create human readable representation of schema path.
      */
     private static String toConstantHeader(SchemaPath schemaPath) {
         return StreamSupport.stream(schemaPath.getPathFromRoot().spliterator(), false)
                 .map(QName::getLocalName)
-                .reduce("", (s, s2) -> s + "/" + s2);
+                .reduce("", (s1, s2) -> s1 + "/" + s2);
     }
 }

@@ -34,7 +34,8 @@ public final class IdsCodeGenerator implements BasicCodeGenerator, BuildContextA
     public Collection<File> generateSources(SchemaContext context,
                                             File outputBaseDir,
                                             Set<Module> currentModules,
-                                            Function<Module, Optional<String>> moduleResourcePathResolver) throws IOException {
+                                            Function<Module, Optional<String>> moduleResourcePathResolver) throws
+            IOException {
         String packageNameSource = project.getGroupId() + "." + project.getName()
                 .replaceAll(INVALID_CHARS_MATCHER, ".")
                 .toLowerCase();
@@ -45,7 +46,8 @@ public final class IdsCodeGenerator implements BasicCodeGenerator, BuildContextA
                 .reduce(outputBaseDir, (file, file2) -> new File(file, file2.getName()));
 
         try (VariableNameCache varCache = new VariableNameCache();
-             GeneratorExecution execution = new GeneratorExecution(context, varCache, currentModules, packageNameSource)) {
+             GeneratorExecution execution = new GeneratorExecution(context, varCache, currentModules,
+                     packageNameSource)) {
             return execution.execute(outputBaseDir);
         }
     }
