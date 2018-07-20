@@ -16,12 +16,12 @@
     <parent>
         <groupId>io.frinx.openconfig</groupId>
         <artifactId>openconfig-parent</artifactId>
-        <version>3.1.5.rc17-frinx-SNAPSHOT</version>
+        <version>4.1.0</version>
         <relativePath>../openconfig-parent</relativePath>
     </parent>
 
     <artifactId>openconfig-interfaces</artifactId>
-    <version>3.1.5.rc17-frinx-SNAPSHOT</version>
+    <version>4.1.0</version>
     <packaging>bundle</packaging>
 
     <dependencies>
@@ -53,7 +53,6 @@
         <dependency>
             <groupId>org.opendaylight.mdsal.model</groupId>
             <artifactId>ietf-topology</artifactId>
-            <version>2013.10.21.10.1-Carbon-SR1.3_1_5_rc17-frinxodl-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.opendaylight.yangtools</groupId>
