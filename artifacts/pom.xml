@@ -163,6 +163,13 @@
             <!-- Features -->
             <dependency>
                 <groupId>io.frinx.openconfig</groupId>
+                <artifactId>frinx-openconfig-models</artifactId>
+                <type>xml</type>
+                <classifier>features</classifier>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.frinx.openconfig</groupId>
                 <artifactId>frinx-openconfig-extensions</artifactId>
                 <type>xml</type>
                 <classifier>features</classifier>
