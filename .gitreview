@@ -1,0 +1,5 @@
+[gerrit]
+host=gerrit.frinx.io
+port=29418
+project=openconfig.git
+defaultbranch=oxygen/development
