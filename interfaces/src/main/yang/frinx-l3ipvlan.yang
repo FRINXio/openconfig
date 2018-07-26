@@ -1,0 +1,93 @@
+module frinx-l3ipvlan {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/l3ipvlan";
+
+  prefix "l3vlan";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import iana-if-type { prefix ift; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing L3VLAN specific features.";
+
+  revision "2018-08-09" {
+    description
+      "Initial release";
+    reference "4.1.0";
+  }
+
+  // grouping statements
+
+  grouping l3ipvlan-interface-config {
+    leaf ip-redirects {
+      type boolean;
+
+      // default false;
+
+      description
+        "Specify 'ip redirects' for vlan interface.";
+    }
+  }
+
+  grouping l3ipvlan-interface-top {
+    description
+      "Top-level grouping for vlan interface";
+
+    container l3ipvlan {
+      description "Configuration for L3 VLAN interface";
+
+      container config {
+        description "Configuration parameters for vlan interface";
+
+        uses l3ipvlan-interface-config;
+      }
+
+      container state {
+
+        config false;
+        description "State variables for vlan interface";
+
+        uses l3ipvlan-interface-config;
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface" {
+    when "oc-if:config/oc-if:type = 'ift:l3ipvlan'" {
+      description "active when the interface is set to type L3ipvlan";
+    }
+    ext:augment-identifier "if-l3ipvlan-aug";
+    description "Adds L3 VLAN specific configuration to interfaces model";
+
+    uses l3ipvlan-interface-top;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
+    when "oc-if:config/oc-if:type = 'ift:l3ipvlan'" {
+      description "active when the interface is set to type L3ipvlan";
+    }
+    description "Adds L3 VLAN specific configuration to interfaces model";
+
+    uses l3ipvlan-interface-top;
+  }
+
+}
