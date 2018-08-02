@@ -13,6 +13,11 @@ module frinx-configuration-metadata {
     description
         "Represents metadata about device configuration.";
 
+    revision "2018-07-31" {
+        description
+            "Initial revision";
+    }
+
     grouping metadata {
         container configuration-metadata {
             config false;
