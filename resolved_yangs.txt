@@ -33,6 +33,7 @@
 ./interfaces/src/main/yang/frinx-damping.yang
 ./interfaces/src/main/yang/frinx-cisco-if-extension.yang
 ./interfaces/src/main/yang/frinx-juniper-if-aggregate-extension.yang
+./interfaces/src/main/yang/frinx-l3ipvlan.yang
 
 ./netflow/src/main/yang/frinx-netflow.yang
 
@@ -103,6 +104,7 @@
 ./network-instance/src/main/yang/frinx-mpls-rsvp-extension.yang
 ./network-instance/src/main/yang/frinx-cisco-ospf-extension.yang
 ./network-instance/src/main/yang/frinx-cisco-bgp-extension.yang
+./network-instance/src/main/yang/frinx-dasan-vlan-extension.yang
 
 ./bfd/src/main/yang/frinx-openconfig-bfd.yang
 ./bfd/src/main/yang/frinx-bfd-extension.yang
