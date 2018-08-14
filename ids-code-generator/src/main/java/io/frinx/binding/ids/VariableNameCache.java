@@ -14,13 +14,16 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import java.util.Iterator;
 import java.util.Optional;
+import org.opendaylight.mdsal.binding.model.api.Type;
 import org.opendaylight.yangtools.yang.common.QName;
+import org.opendaylight.yangtools.yang.common.QNameModule;
 import org.opendaylight.yangtools.yang.model.api.SchemaPath;
 
 final class VariableNameCache implements AutoCloseable {
 
     private static final String JOINER = "_";
     private static final int DEFAULT_PARENT_NAME_LENGTH = 2;
+    static final String AUG_PREFIX = "AUG_";
 
     private final BiMap<SchemaPath, String> variableNames = HashBiMap.create();
 
@@ -57,6 +60,15 @@ final class VariableNameCache implements AutoCloseable {
         return candidateNoConflictName;
     }
 
+    String getAugmentationVariableName(SchemaPath parentPath, Type aug, QNameModule qName) {
+        SchemaPath path = getAugmentPath(parentPath, aug, qName);
+        return getVariableName(path);
+    }
+
+    static SchemaPath getAugmentPath(SchemaPath parentPath, Type aug, QNameModule qName) {
+        return parentPath.createChild(QName.create(qName, AUG_PREFIX + aug.getName()));
+    }
+
     private String getNameWithParents(String localName, int nameLength, Iterator<QName> iterator) {
         String candidateNoConflictName = localName;
         while (iterator.hasNext()) {
@@ -76,12 +88,25 @@ final class VariableNameCache implements AutoCloseable {
     }
 
     private String encodeVariableName(String yangName, boolean full, int size) {
-        String constant = yangName.replaceAll(IdsCodeGenerator.INVALID_CHARS_MATCHER, "").toUpperCase();
+        String withoutPrefix = yangName;
+
+        // Preserve augmentation prefix
+        if (yangName.startsWith(AUG_PREFIX)) {
+            withoutPrefix = yangName.substring(AUG_PREFIX.length());
+        }
+
+        String constant = withoutPrefix.replaceAll(IdsCodeGenerator.INVALID_CHARS_MATCHER, "").toUpperCase();
+
+        if (yangName.startsWith(AUG_PREFIX)) {
+            constant = AUG_PREFIX + constant;
+        }
+
         if (full) {
             return constant;
         } else {
-            // Shorten the name to first 3 letters
-            return constant.length() > size ? constant.substring(0, size) : constant;
+            // Shorten the name to first 3 letters (but preserve aug prefix)
+            int trimSize = constant.startsWith(AUG_PREFIX) ? constant.length() : size;
+            return constant.length() > trimSize ? constant.substring(0, trimSize) : constant;
         }
     }
 

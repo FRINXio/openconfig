@@ -8,32 +8,42 @@
 
 package io.frinx.binding.ids;
 
+import static io.frinx.binding.ids.BindingLookup.constructParentTypePaths;
+import static io.frinx.binding.ids.BindingLookup.extractAugMeta;
+import static io.frinx.binding.ids.BindingLookup.findType;
+import static io.frinx.binding.ids.BindingLookup.fixTypePathForGroupings;
+import static io.frinx.binding.ids.BindingLookup.getFqnFromParent;
+import static io.frinx.binding.ids.BindingLookup.sortAugNodes;
+
 import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.opendaylight.mdsal.binding.generator.impl.BindingGeneratorImpl;
+import org.opendaylight.mdsal.binding.model.api.GeneratedType;
+import org.opendaylight.mdsal.binding.model.api.ParameterizedType;
 import org.opendaylight.mdsal.binding.model.api.Type;
-import org.opendaylight.mdsal.binding.model.util.BindingGeneratorUtil;
-import org.opendaylight.yangtools.yang.binding.BindingMapping;
+import org.opendaylight.yangtools.yang.binding.ChildOf;
 import org.opendaylight.yangtools.yang.common.QName;
+import org.opendaylight.yangtools.yang.model.api.AugmentationSchemaNode;
 import org.opendaylight.yangtools.yang.model.api.DataNodeContainer;
 import org.opendaylight.yangtools.yang.model.api.DataSchemaNode;
-import org.opendaylight.yangtools.yang.model.api.GroupingDefinition;
 import org.opendaylight.yangtools.yang.model.api.Module;
 import org.opendaylight.yangtools.yang.model.api.SchemaContext;
 import org.opendaylight.yangtools.yang.model.api.SchemaNode;
 import org.opendaylight.yangtools.yang.model.api.SchemaPath;
-import org.opendaylight.yangtools.yang.model.api.UsesNode;
 
 final class GeneratorExecution implements AutoCloseable {
 
@@ -50,6 +60,8 @@ final class GeneratorExecution implements AutoCloseable {
         this.template = new IdsClassTemplate(packageName);
 
         this.types = new BindingGeneratorImpl().generateTypes(context);
+        // Sort types to make sure order is always predictable
+        types.sort(Comparator.comparing(Type::getFullyQualifiedName));
         this.currentNamespaces = currentModules.stream()
                 .map(a -> a.getQNameModule()
                         .getNamespace())
@@ -62,50 +74,59 @@ final class GeneratorExecution implements AutoCloseable {
     }
 
     Set<File> execute(File outputBaseDir) throws IOException {
-        context.getModules()
-                .forEach(this::executeModule);
+        context.getModules().forEach(this::executeModule);
+        context.getModules().forEach(this::executeModuleAug);
         return writeFile(outputBaseDir);
     }
 
     private void executeModule(Module module) {
         Collection<DataSchemaNode> childNodes = module.getChildNodes();
-//        Set<AugmentationSchema> augNodes = module.getAugmentations();
-
         template.addModuleStart(module);
-        processChildNodes(module, childNodes, Collections.emptyList(), Collections.emptyList());
-
-        // TODO augmentations cannot be easily generated, there is a no trivial way for how to find
-        // augmentationNode -> Type mapping and without knowing the augmentation Type we cannot generate the ID
-        // TODO find the mapping between aug(SchemaNode) <-> Type and generate the IDs
-        // Augment ID is needed here !
-
-//        for (AugmentationSchema augNode : augNodes) {
-//            Collection<DataSchemaNode> augChildren = augNode.getChildNodes();
-//
-//            SchemaPath targetPath = augNode.getTargetPath();
-//            DataSchemaNode targetNode = (DataSchemaNode) SchemaContextUtil.findNodeInSchemaContext(context,
-// targetPath.getPathFromRoot());
-//            String fqn = getFqn(rootPackage, targetNode, targetPath);
-//            Optional<Type> targetType = findType(types, fqn);
-//
-//            //    ArrayList<QName> schemaPathArgs = Lists.newArrayList(augNode.getTargetPath().getPathFromRoot());
-//            processChildNodes(augNode, rootPackage, augChildren, Collections.emptyList(), Collections.emptyList());
-//        }
+        processChildNodes(module, Optional.empty(), childNodes, Collections.emptyList(), Collections.emptyList());
     }
 
-//    private Optional<Type> getAugmentTargetType(Type type) {
-//        if (type instanceof GeneratedType) {
-//            for (Type implementedType : ((GeneratedType) type).getImplements()) {
-//                if (implementedType instanceof ParameterizedType &&
-//                    ((ParameterizedType) implementedType).getRawType().getFullyQualifiedName().equals(Augmentation
-// .class.getName())) {
-//                    return Optional.of(((ParameterizedType) implementedType).getActualTypeArguments()[0]);
-//                }
-//            }
-//        }
-//
-//        return Optional.empty();
-//    }
+    private void executeModuleAug(Module module) {
+        Set<AugmentationSchemaNode> augNodes = module.getAugmentations();
+        template.addModuleAugStart(module);
+        processAugmentations(augNodes, module);
+    }
+
+    private void processAugmentations(Set<AugmentationSchemaNode> augNodes, Module module) {
+        for (AugmentationSchemaNode augNode : sortAugNodes(augNodes)) {
+
+            if (!currentNamespaces.contains(module.getQNameModule().getNamespace())) {
+                // Skip dependency modules, only generate local
+                continue;
+            }
+
+            processAugmentation(module, augNode);
+        }
+    }
+
+    private void processAugmentation(Module module, AugmentationSchemaNode augNode) {
+        BindingLookup.AugmentationMeta currentAugMeta = extractAugMeta(augNode, context, types);
+        List<Type> augTypes = BindingLookup.findAllAugTypes(types, augNode, currentAugMeta.targetType, module);
+
+        for (Type augType : augTypes) {
+
+            AbstractMap.SimpleEntry<SchemaPath, LinkedHashMap<String, String>> parentPathMeta =
+                    constructParentTypePaths(currentAugMeta, context, types);
+
+            String varName = varCache.getAugmentationVariableName(currentAugMeta.originalTargetPath,
+                    augType, module.getQNameModule());
+            template.addAugId(varName, augType.getFullyQualifiedName(), parentPathMeta.getValue(), parentPathMeta.getKey());
+
+            SchemaPath augTypeSchemaPath = VariableNameCache.getAugmentPath(currentAugMeta.targetPathWithGroupings,
+                    augType, module.getQNameModule());
+            SchemaPath augSchemaPath = VariableNameCache.getAugmentPath(currentAugMeta.originalTargetPath,
+                    augType, module.getQNameModule());
+
+            processChildNodes(augNode, Optional.of(augType),
+                    augNode.getChildNodes(),
+                    Lists.newArrayList(augTypeSchemaPath.getPathFromRoot()),
+                    Lists.newArrayList(augSchemaPath.getPathFromRoot()));
+        }
+    }
 
     private Set<File> writeFile(File outputBaseDir) throws IOException {
         File outputFile = new File(outputBaseDir, IdsClassTemplate.CLS_NAME + ".java");
@@ -121,6 +142,7 @@ final class GeneratorExecution implements AutoCloseable {
     }
 
     private void processChildNodes(final DataNodeContainer parent,
+                                   final Optional<Type> parentType,
                                    final Collection<DataSchemaNode> childNodes,
                                    final List<QName> parentTypePathArgs,
                                    final List<QName> parentSchemaPathArgs) {
@@ -128,23 +150,25 @@ final class GeneratorExecution implements AutoCloseable {
                 .filter(this::isComplexNode)
                 .filter(child -> isInCurrentYang(currentNamespaces, child))
                 .sorted(Comparator.comparing(SchemaNode::getQName))
-                .forEach(child -> processChild(parent, parentTypePathArgs, parentSchemaPathArgs, child));
+                .forEach(child -> processChild(parent, parentType, parentTypePathArgs, parentSchemaPathArgs, child));
     }
 
-    private void processChild(DataNodeContainer parent, List<QName> parentTypePathArgs, List<QName>
-            parentSchemaPathArgs, DataSchemaNode dataSchemaNode) {
+    private void processChild(DataNodeContainer parent,
+                              Optional<Type> parentType,
+                              List<QName> parentTypePathArgs,
+                              List<QName> parentSchemaPathArgs,
+                              DataSchemaNode dataSchemaNode) {
 
         // create a copy of schema path args, since we are using a mutable list here
         List<QName> typePathArgs = new ArrayList<>(parentTypePathArgs);
         List<QName> schemaPathArgs = new ArrayList<>(parentSchemaPathArgs);
 
         // Get name of parent variable if any
-        Optional<String> parentVarName = schemaPathArgs.isEmpty()
-                ?
+        Optional<String> parentVarName = schemaPathArgs.isEmpty() ?
                 Optional.empty() :
                 varCache.getExistingVariableName(SchemaPath.create(schemaPathArgs, true));
 
-        fixTypePathForGroupings(parent, dataSchemaNode, typePathArgs);
+        fixTypePathForGroupings(parent, dataSchemaNode, typePathArgs, context);
         typePathArgs.add(dataSchemaNode.getQName());
         schemaPathArgs.add(dataSchemaNode.getQName());
 
@@ -152,31 +176,30 @@ final class GeneratorExecution implements AutoCloseable {
         SchemaPath schemaPath = SchemaPath.create(schemaPathArgs, true);
 
         String varName = varCache.getVariableName(schemaPath);
-        String fqn = getFqn(dataSchemaNode, typePath);
+        String fqn = getFqnFromParent(dataSchemaNode, typePath);
 
         // If the type was not found we might be facing augmentation or there's a problem with package name
         // either way, skip and cut the recursion subtree
-        if (findType(types, fqn).isPresent()) {
-            template.addId(parentVarName, dataSchemaNode, schemaPath, varName, fqn);
+        Optional<Type> type = findType(parentType, dataSchemaNode, typePath, fqn, types);
+        if (!type.isPresent()) {
+            type = findType(parentType, dataSchemaNode, schemaPath, fqn, types);
+        }
+
+        if (type.isPresent()) {
+            template.addId(parentVarName, dataSchemaNode, schemaPath, varName, type.get().getFullyQualifiedName());
             Collection<DataSchemaNode> children = ((DataNodeContainer) dataSchemaNode).getChildNodes();
-            processChildNodes(((DataNodeContainer) dataSchemaNode), children, typePathArgs, schemaPathArgs);
+            processChildNodes(((DataNodeContainer) dataSchemaNode), type, children, typePathArgs, schemaPathArgs);
         }
     }
 
-    private String getFqn(DataSchemaNode dataSchemaNode, SchemaPath typePath) {
-        String className = BindingMapping.getClassName(dataSchemaNode.getQName());
-        String rootPackageName = BindingMapping.getRootPackageName(typePath.getPathFromRoot()
-                .iterator()
-                .next());
-        String packageName = BindingGeneratorUtil.packageNameForGeneratedType(rootPackageName, typePath);
-        return packageName + "." + className;
-    }
-
-    private Optional<Type> findType(List<Type> types, String fqn) {
-        return types.stream()
-                .filter(a -> a.getFullyQualifiedName()
-                        .equals(fqn))
-                .findFirst();
+    private boolean isParentChild(Type parent, Type child) {
+        return ((GeneratedType) child).getImplements().stream()
+                .filter(implType -> implType instanceof ParameterizedType)
+                .filter(implType -> implType.getFullyQualifiedName().equals(ChildOf.class.getName()))
+                .findFirst()
+                .map(childOfType -> ((ParameterizedType) childOfType).getActualTypeArguments()[0])
+                .map(childOfParameter -> childOfParameter.getFullyQualifiedName().equals(parent.getFullyQualifiedName()))
+                .orElse(false);
     }
 
     private boolean isComplexNode(DataSchemaNode dataSchemaNode) {
@@ -188,49 +211,4 @@ final class GeneratorExecution implements AutoCloseable {
                 .getNamespace());
     }
 
-    /**
-     * Check if type is from grouping and if so, fix the type path by replacing the usage path with grouping
-     * definition path.
-     * Since types for groupings are generated at their definition place rather than place of use
-     */
-    private void fixTypePathForGroupings(DataNodeContainer parent,
-                                         DataSchemaNode dataSchemaNode,
-                                         List<QName> typePathArgs) {
-        if (dataSchemaNode.isAddedByUses()) {
-            Set<UsesNode> uses = parent.getUses();
-
-            if (uses.size() == 0) {
-                // Not direct child of grouping, no type fix necessary
-            } else {
-                for (UsesNode use : uses) {
-                    GroupingDefinition groupingDefinition = findGroupingDefinition(use);
-                    Optional<DataSchemaNode> foundChild = groupingDefinition.getChildNodes()
-                            .stream()
-                            .filter(a -> a.getQName()
-                                    .getLocalName()
-                                    .equals(dataSchemaNode.getQName()
-                                            .getLocalName()))
-                            .findFirst();
-                    if (foundChild.isPresent()) {
-                        typePathArgs.clear();
-                        typePathArgs.add(use.getGroupingPath()
-                                .getLastComponent());
-                        // Since there can be uses in grouping, check the path recursively
-                        fixTypePathForGroupings(groupingDefinition, foundChild.get(), typePathArgs);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    private GroupingDefinition findGroupingDefinition(UsesNode use) {
-        return context.getGroupings()
-                .stream()
-                .filter(a -> a.getQName()
-                        .equals(use.getGroupingPath()
-                                .getLastComponent()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Unable to find grouping definition for " + use));
-    }
 }
