@@ -177,5 +177,12 @@
       <type>xml</type>
       <classifier>features</classifier>
     </dependency>
+    <dependency>
+      <groupId>io.frinx.openconfig</groupId>
+      <artifactId>frinx-openconfig-hsrp</artifactId>
+      <version>${project.version}</version>
+      <type>xml</type>
+      <classifier>features</classifier>
+    </dependency>
   </dependencies>
 </project>

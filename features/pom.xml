@@ -25,7 +25,6 @@
     <modules>
         <module>openconfig-features</module>
         <module>frinx-openconfig-models</module>
-
         <module>frinx-openconfig-types</module>
         <module>frinx-uniconfig-model</module>
         <module>frinx-openconfig-interfaces</module>
@@ -49,5 +48,6 @@
         <module>frinx-openconfig-configuration-metadata</module>
         <module>frinx-openconfig-vlan</module>
         <module>frinx-openconfig-if-ip</module>
+        <module>frinx-openconfig-hsrp</module>
     </modules>
 </project>

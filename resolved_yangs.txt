@@ -121,3 +121,5 @@
 ./ospfv3/src/main/yang/frinx-ospfv3-types.yang
 ./ospfv3/src/main/yang/frinx-ospfv3.yang
 
+./hsrp/src/main/yang/frinx-hsrp.yang
+
