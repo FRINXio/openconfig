@@ -25,7 +25,7 @@ module frinx-l3ipvlan {
     "Set of augments needed to OpenConfig interfaces models,
     containing L3VLAN specific features.";
 
-  revision "2018-08-09" {
+  revision "2018-08-02" {
     description
       "Initial release";
     reference "4.1.0";
