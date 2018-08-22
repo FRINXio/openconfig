@@ -11,7 +11,7 @@ module frinx-openconfig-mpls {
   // import some basic types
   import frinx-openconfig-mpls-types { prefix oc-mplst; }
   import frinx-openconfig-mpls-rsvp { prefix oc-rsvp; }
-  //import openconfig-mpls-ldp { prefix oc-ldp; }
+  import frinx-openconfig-mpls-ldp { prefix oc-ldp; }
   import frinx-openconfig-types { prefix oc-types; }
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-openconfig-extensions { prefix oc-ext; }
@@ -664,7 +664,7 @@ module frinx-openconfig-mpls {
           "top-level signaling protocol configuration";
 
         uses oc-rsvp:rsvp-global;
-        //uses oc-ldp:ldp-global;
+        uses oc-ldp:ldp-global;
         //uses oc-sr:sr-mpls-top;
       }
 

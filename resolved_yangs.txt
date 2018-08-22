@@ -57,6 +57,7 @@
 ./platform/src/main/yang/frinx-openconfig-platform-port.yang
 ./platform/src/main/yang/frinx-openconfig-platform-linecard.yang
 
+./mpls/src/main/yang/frinx-openconfig-mpls-ldp.yang
 ./mpls/src/main/yang/frinx-openconfig-mpls-igp.yang
 ./mpls/src/main/yang/frinx-openconfig-mpls-rsvp.yang
 ./mpls/src/main/yang/frinx-openconfig-mpls-te.yang
@@ -105,6 +106,7 @@
 ./network-instance/src/main/yang/frinx-cisco-ospf-extension.yang
 ./network-instance/src/main/yang/frinx-cisco-bgp-extension.yang
 ./network-instance/src/main/yang/frinx-dasan-vlan-extension.yang
+./network-instance/src/main/yang/frinx-mpls-ldp-extension.yang
 
 ./bfd/src/main/yang/frinx-openconfig-bfd.yang
 ./bfd/src/main/yang/frinx-bfd-extension.yang

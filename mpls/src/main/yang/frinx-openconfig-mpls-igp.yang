@@ -8,7 +8,7 @@ submodule frinx-openconfig-mpls-igp {
 
 
   // import some basic types
-  //import openconfig-mpls-ldp { prefix oc-ldp; }
+  import frinx-openconfig-mpls-ldp { prefix oc-ldp; }
   import frinx-openconfig-extensions { prefix oc-ext; }
 
 
@@ -88,7 +88,7 @@ submodule frinx-openconfig-mpls-igp {
           the LSP";
 
       // uses path-setup-common;
-      //uses oc-ldp:igp-lsp-ldp-setup;
+      uses oc-ldp:igp-lsp-ldp-setup;
     }
   }
 
