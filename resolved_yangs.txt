@@ -116,3 +116,7 @@
 ./qos/src/main/yang/frinx-openconfig-qos-interfaces.yang
 ./qos/src/main/yang/frinx-openconfig-qos.yang
 ./qos/src/main/yang/frinx-qos-extension.yang
+
+./ospfv3/src/main/yang/frinx-ospfv3-types.yang
+./ospfv3/src/main/yang/frinx-ospfv3.yang
+

@@ -1,0 +1,108 @@
+module frinx-ospfv3 {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/ospfv3";
+
+  prefix "frinx-ospfv3";
+
+  import frinx-openconfig-network-instance { prefix "oc-ni"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+  import frinx-ospfv3-types { prefix "fr-ospfv3-t"; }
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "An OpenConfig model for Open Shortest 
+    Path First (OSPF) version 3";
+
+  revision "2018-08-17" {
+    description
+      "Initial public release of OSPFv3";
+    reference "3.1.6";
+  }
+
+  grouping ospfv3-global-structural {
+    description
+      "grouping  for OSPFv3 global configuration.";
+
+    container global {
+      description
+        "container for global ";
+
+      container config {
+        container stub-router {
+          description
+            "container for stub router.";
+
+          container config {
+            description
+              "stub-router  container";
+
+            leaf set {
+              type boolean;
+              description
+                "stub-router set";
+            }
+
+            leaf advertise-lsas-types {
+              type identityref {
+                base "fr-ospfv3-t:STUB_ROUTER_MODE";
+              }
+              description
+                "Active mode of advertising LSAs";
+            }
+
+            leaf always {
+              type boolean;
+              description
+                "Forcing ospfv3 stub router mode unconditionally";
+            }
+          }
+        }
+      }
+    }
+  }
+
+  grouping ospfv3-top {
+    description
+      "Top-level OSPFv3 configuration.";
+    container ospfv3 {
+      description
+        "Top-level configuration for Open Shortest Path First (OSPF) v3";
+      uses ospfv3-global-structural;
+    }
+  }
+
+  // augment statements
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol" {
+    description "Adds extended ospfv3 to protocols";
+    ext:augment-identifier "protocol-ospfv3-ext-aug";
+    uses ospfv3-top {
+      when "../config/identifier = 'OSPF3'" {
+        description
+          "Include OSPFv3 parameters only when the protocol
+          is of type OSPFv3";
+      }
+    }
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/" +
+          "oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol" {
+    uses ospfv3-top {
+      when "../config/identifier = 'OSPF3'" {
+        description
+          "Include OSPFv3 parameters only when the protocol
+          is of type OSPFv3";
+      }
+    }
+  }
+}

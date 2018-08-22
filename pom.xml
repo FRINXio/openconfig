@@ -51,6 +51,7 @@
     <module>logging</module>
     <module>configuration-metadata</module>
     <module>qos</module>
+    <module>ospfv3</module>
 
     <module>features</module>
   </modules>
