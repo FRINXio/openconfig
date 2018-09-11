@@ -32,7 +32,6 @@
         <module>frinx-openconfig-policy</module>
         <module>frinx-openconfig-bgp</module>
         <module>frinx-openconfig-ospf</module>
-        <module>frinx-openconfig-ospfv3</module>
         <module>frinx-openconfig-mpls</module>
         <module>frinx-openconfig-network-instance</module>
         <module>frinx-openconfig-platform</module>
