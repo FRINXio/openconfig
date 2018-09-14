@@ -1,0 +1,89 @@
+module frinx-if-aggregate-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/aggregate-ext";
+
+  prefix "if-lag-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-if-ethernet { prefix oc-eth; }
+  import iana-if-type { prefix ift; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing LAG specific features.";
+
+  revision "2018-09-26" {
+    description
+      "Initial release";
+    reference "3.1.7";
+  }
+
+  // grouping statements
+
+  grouping if-aggregate-extentions-config {
+    leaf admin-key {
+      type uint16;
+      description
+        "Member port of LACP has key value. All member ports in one aggregator have same key
+        values. To make the aggregator consisted of specified member ports, configure the
+        different key value with the key value of another port.";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/" +
+    "oc-eth:config" {
+    when "oc-if:type = 'ift:ethernetCsmacd'" {
+      description "active when the interface is Ethernet";
+    }
+    description "Adds LAG specific configuration to individual Ethernet interfaces";
+
+    uses if-aggregate-extentions-config;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/" +
+    "oc-eth:state" {
+    when "oc-if:type = 'ift:ethernetCsmacd'" {
+      description "active when the interface is Ethernet";
+    }
+    description "Adds LAG specific configuration to individual Ethernet interfaces";
+
+    uses if-aggregate-extentions-config;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/" +
+    "oc-eth:ethernet/oc-eth:config" {
+    when "oc-if:type = 'ift:ethernetCsmacd'" {
+      description "active when the interface is Ethernet";
+    }
+    description "Adds LAG specific configuration to individual Ethernet interfaces";
+
+    uses if-aggregate-extentions-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/" +
+    "oc-eth:ethernet/oc-eth:state" {
+    when "oc-if:type = 'ift:ethernetCsmacd'" {
+      description "active when the interface is Ethernet";
+    }
+    description "Adds LAG specific configuration to individual Ethernet interfaces";
+
+    uses if-aggregate-extentions-config;
+  }
+}
