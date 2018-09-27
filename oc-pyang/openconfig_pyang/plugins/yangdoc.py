@@ -26,7 +26,6 @@ from pyang import plugin
 from pyang import statements
 
 from util import yangpath
-from util.usecase_emitter import UsecaseEmitter
 from util.device_emitter import DeviceEmitter
 from util.html_emitter import HTMLEmitter
 from util.markdown_emitter import MarkdownEmitter
@@ -239,8 +238,6 @@ def emit_child(node, emitter, ctx, fd, level=1):
     for child in node.children:
         emit_child(child, emitter, ctx, fd, level)
 
-    # gen_docs_html(mod, ctx, fd)
-
 
 def collect_docs(module, ctx):
     """Extract documentation for the supplied module -- module parameter is a
@@ -275,6 +272,10 @@ def collect_docs(module, ctx):
     version = module.search_one(('openconfig-extensions', 'openconfig-version'))
     if version is not None:
         mod.attrs['version'] = version.arg
+    # get reference if exists
+    reference = module.search_one('reference')
+    if reference is not None:
+        mod.attrs['reference'] = reference.arg
     # collect identities
     for (name, identity) in module.i_identities.iteritems():
         collect_identity_doc(identity, modtop)
@@ -284,7 +285,6 @@ def collect_docs(module, ctx):
     # collect elements
     for child in module.i_children:
         collect_child_doc(child, mod, modtop)
-
     return modtop
 
 
@@ -436,7 +436,10 @@ def collect_child_doc(node, parent, top):
             elif child.arg == 'usecase-tag':
                 frinx_usecase = child.search_one((module_name, u'frinx-usecase'))
                 if frinx_usecase is not None:
-                    statement.attrs['frinx-usecase'] = frinx_usecase.arg.split(',')
+                    if 'frinx-usecase' not in statement.attrs.keys():
+                        statement.attrs['frinx-usecase'] = []
+                    statement.attrs['frinx-usecase'].append(frinx_usecase.arg)
+
             else:
                 collect_child_doc(child, statement, top)
 

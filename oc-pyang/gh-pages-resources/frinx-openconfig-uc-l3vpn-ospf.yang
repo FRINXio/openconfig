@@ -1,0 +1,264 @@
+module frinx-openconfig-uc-l3vpn-ospf {
+  yang-version "1";
+  namespace "http://frinx.openconfig.net/yang/l3vpn-ospf:docs";
+  prefix "oc-if-docs-uc";
+  import frinx-openconfig-network-instance { prefix oc-netinst; }
+  import frinx-openconfig-routing-policy { prefix oc-rpol; }
+  import frinx-openconfig-bgp-policy { prefix oc-bgp-pol; }
+
+  description "frinx use case documentation module";
+  reference "https://github.com/FRINXio/translation-units-docs/blob/master/Configuration%20datasets/network-instances/l3vpn/network_instance_l3vpn_ospf.md";
+
+  extension usecase-tag {
+   argument "name";
+  }
+  extension frinx-usecase {
+   argument "name";
+  }
+ augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:name" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:type" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:route-distinguisher" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:enabled-address-families" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:config/oc-netinst:enabled" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:id" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:inter-instance-policies/oc-netinst:apply-policy/oc-netinst:config/oc-netinst:export-policy" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:inter-instance-policies/oc-netinst:apply-policy/oc-netinst:config/oc-netinst:import-policy" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:config/oc-netinst:identifier" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:config/oc-netinst:identifier" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:id" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:id" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:network-type" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:metric" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:priority" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:name" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:identifier" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:config/oc-netinst:name" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:config/oc-netinst:enabled" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:config/oc-netinst:afi-safi-name" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:afi-safis/oc-netinst:afi-safi/oc-netinst:config/oc-netinst:enabled" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:tables/oc-netinst:table/oc-netinst:config/oc-netinst:protocol" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:tables/oc-netinst:table/oc-netinst:address-family" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:table-connections/oc-netinst:table-connection/oc-netinst:config/oc-netinst:src-protocol" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:table-connections/oc-netinst:table-connection/oc-netinst:config/oc-netinst:dst-protocol" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:table-connections/oc-netinst:table-connection/oc-netinst:address-family" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:config/oc-bgp-pol:ext-community-set-name" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-bgp-pol:bgp-defined-sets/oc-bgp-pol:ext-community-sets/oc-bgp-pol:ext-community-set/oc-bgp-pol:config/oc-bgp-pol:ext-community-member" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:config/oc-rpol:name" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:match-ext-community-set/oc-bgp-pol:config/oc-bgp-pol:ext-community-set" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-rpol:config/oc-rpol:policy-result" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:config/oc-rpol:name" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:actions/oc-bgp-pol:bgp-actions/oc-bgp-pol:set-ext-community/oc-bgp-pol:reference/oc-bgp-pol:config/oc-bgp-pol:ext-community-set-ref" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+/*
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:inter-instance-policies/oc-netinst:apply-policy/oc-netinst:config/oc-netinst:frinx-network-instance-extension:identifier" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:global/oc-netinst:as" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:config/oc-netinst:frinx-ospf-extension:enabled" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:frinx-bfd-extension:bfd/oc-netinst:config/oc-netinst:multiplier" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:frinx-bfd-extension:bfd/oc-netinst:config/oc-netinst:min-interval" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:frinx-bfd-extension:bfd/oc-netinst:config/oc-netinst:min-receive-interval" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:frinx-ospf-extension:authentication/oc-netinst:config/oc-netinst:enabled" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:frinx-ospf-extension:authentication/oc-netinst:config/oc-netinst:type" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:frinx-ospf-extension:authentication/oc-netinst:config/oc-netinst:passwords/oc-netinst:password/oc-netinst:auth-id" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:frinx-ospf-extension:authentication/oc-netinst:config/oc-netinst:passwords/oc-netinst:password/oc-netinst:auth-id/oc-netinst:config/oc-netinst:auth-id" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv2/oc-netinst:areas/oc-netinst:area/oc-netinst:interfaces/oc-netinst:interface/oc-netinst:frinx-ospf-extension:authentication/oc-netinst:config/oc-netinst:passwords/oc-netinst:password/oc-netinst:auth-id/oc-netinst:config/oc-netinst:auth-password" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv3/oc-netinst:global/oc-netinst:stub-router/oc-netinst:config/oc-netinst:set" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv3/oc-netinst:global/oc-netinst:stub-router/oc-netinst:config/oc-netinst:advertise-lsas-types" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:ospfv3/oc-netinst:global/oc-netinst:stub-router/oc-netinst:config/oc-netinst:always" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:protocols/oc-netinst:protocol/oc-netinst:bgp/oc-netinst:global/oc-netinst:as" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}
+augment "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:conditions/oc-bgp-pol:bgp-conditions/oc-bgp-pol:match-ext-community-set/oc-bgp-pol:config/oc-rpol:method" {
+container usecase-tag {
+ oc-if-docs-uc:frinx-usecase "l3vpn-ospf";
+ }
+}*/
+}
