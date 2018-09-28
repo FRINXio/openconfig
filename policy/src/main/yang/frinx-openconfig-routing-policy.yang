@@ -112,6 +112,10 @@ module frinx-openconfig-routing-policy {
         description
           "Default policy to reject the route";
       }
+      enum PASS_ROUTE {
+          description
+            "Default policy to pass the route";
+      }
     }
     description
       "Type used to specify route disposition in
@@ -125,6 +129,9 @@ module frinx-openconfig-routing-policy {
       }
       enum REJECT_ROUTE {
         description "Policy rejects the route";
+      }
+      enum PASS_ROUTE {
+          description "Policy passes the route";
       }
     }
     description
