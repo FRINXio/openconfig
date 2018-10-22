@@ -12,14 +12,14 @@
     <parent>
         <groupId>org.opendaylight.odlparent</groupId>
         <artifactId>single-feature-parent</artifactId>
-        <version>3.1.1-Oxygen-SR2.4_1_0_rc1-frinxodl-SNAPSHOT</version>
+        <version>3.1.1-Oxygen-SR2.4_2_0_rc1-frinxodl-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-configuration-metadata</artifactId>
     <packaging>feature</packaging>
-    <version>4.1.0.rc1-frinx-SNAPSHOT</version>
+    <version>4.2.0.rc1-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: Configuration Metadata</name>
 
     <dependencyManagement>
