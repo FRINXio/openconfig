@@ -123,3 +123,5 @@
 
 ./hsrp/src/main/yang/frinx-hsrp.yang
 
+./evpn/src/main/yang/frinx-evpn-types.yang
+./evpn/src/main/yang/frinx-evpn.yang

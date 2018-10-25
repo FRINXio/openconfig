@@ -52,6 +52,7 @@
     <module>configuration-metadata</module>
     <module>qos</module>
     <module>ospfv3</module>
+    <module>evpn</module>
     <module>hsrp</module>
 
     <module>features</module>
