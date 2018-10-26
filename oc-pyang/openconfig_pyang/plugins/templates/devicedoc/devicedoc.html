@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--Copyright 2018 Frinx.io, s.r.o-->
+
+<!--Licensed under the Apache License, Version 2.0 (the "License");-->
+<!--you may not use this file except in compliance with the License.-->
+<!--You may obtain a copy of the License at-->
+
+<!--http://www.apache.org/licenses/LICENSE-2.0-->
+
+<!--Unless required by applicable law or agreed to in writing, software-->
+<!--distributed under the License is distributed on an "AS IS" BASIS,-->
+<!--WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.-->
+<!--See the License for the specific language governing permissions and-->
+<!--limitations under the License.-->
+<html lang="en">
+<head>
+    <title>Frinx Documentation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="pics/X_icon_RGB.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/devicedoc.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+</style>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a class="navbar-brand" href="https://frinx.io/">
+                        <img alt="brand" src="../pics/logo_frinx_main.png" height="70px">
+                    </a>
+                </li>
+                <li> <a href="https://frinxio.github.io/translation-units-docs/">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Device<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="frinx-oc-ios-docs.html">CLI IOS</a></li>
+                    <li><a href="frinx-oc-ios-xr-docs.html">CLI IOS-XR</a></li>
+                    <li><a href="frinx-oc-vrp-docs.html">CLI Huawei</a></li>
+                    <li><a href="frinx-oc-ironware-docs.html">CLI Brocade</a></li>
+                    <li><a href="frinx-oc-nexus-docs.html">CLI Nexus</a></li>
+                    <li><a href="frinx-oc-nos-docs.html">CLI Dasan</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="frinx-oc-junos-docs.html">NETCONF Junos</a></li>
+                    <li><a href="frinx-oc-xr-docs.html">NETCONF IOS-XR</a></li>
+                  </ul>
+                </li>
+                <li><a href="https://github.com/FRINXio">Github</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <div class="row content">
+        <div class="col-sm-3 sidenav">
+        <!-- LEFT SIDE PANEL -->
+        </div>
+        <div class="col-sm-6 col main">
+
+                <div text-align="center" margin="15px">
+
+                <h2>Device type: {{name}}</h2>
+                <h3>Device versions: {{version}}</h3>
+
+                <h3> Implemented features:</h3>
+                </br>
+                </div>
+                <div>
+                  {{htmldocs}}
+                </div>
+        </div>
+        <div class="col-sm-3 sidenav">
+            <!-- RIGHT SIDE PANEL -->
+        </div>
+</div>
+
+<footer class="container-fluid text-center">
+<p>FRINX.io Documentation</p>
+</footer>
+
+
+</body>
+</html>
