@@ -163,6 +163,15 @@ module frinx-cisco-if-extension {
     uses verify-unicast-source-reachable-via-top;
   }
 
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+              "oc-if:subinterface" {
+    ext:augment-identifier "if-cisco-stats-aug";
+    description "Adds Cisco specific statistics configuration to
+                subinterfaces model";
+
+    uses statistics-top;
+  }
+
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
@@ -171,12 +180,20 @@ module frinx-cisco-if-extension {
 
     uses statistics-top;
   }
-  
+
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
     description "Adds Reverse Path Forwarding (RPF) checking to
                 interface model";
 
     uses verify-unicast-source-reachable-via-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" +
+              "/oc-if:subinterfaces/oc-if:subinterface"{
+    description "Adds Cisco specific statistics configuration to
+                subinterfaces model";
+
+    uses statistics-top;
   }
 
 }
