@@ -121,29 +121,38 @@ module frinx-openconfig-lacp {
 
   // grouping statements
 
+  grouping lacp-member-common {
+    description
+      "Common features of memeber and LAG interfaces";
+
+    leaf lacp-mode {
+      type lacp-activity-type;
+      description "Indicates participant is active or passive";
+    }
+
+    leaf interval {
+      type lacp-period-type;
+      description
+        "Set the period between LACP messages -- uses
+        the lacp-period-type enumeration.";
+    }
+  }
 
   grouping aggregation-lacp-members-config {
     description
       "Configuration data for lacp member interfaces";
-
-    //currently a placeholder -- the list of member interfaces
-    //and their status is considered opstate only
-  }
-
-  grouping aggregation-lacp-members-state {
-    description
-      "Operational status data for the member interfaces";
-
     leaf interface {
       type oc-if:base-interface-ref;
       description
         "Reference to interface member of the LACP aggregate";
     }
 
-    leaf activity {
-      type lacp-activity-type;
-      description "Indicates participant is active or passive";
-    }
+    uses lacp-member-common;
+  }
+
+  grouping aggregation-lacp-members-state {
+    description
+      "Operational status data for the member interfaces";
 
     leaf timeout {
       type lacp-timeout-type;
@@ -221,6 +230,8 @@ module frinx-openconfig-lacp {
         "Port number of the partner (remote) port for this member
         port";
     }
+
+    uses lacp-member-common;
   }
 
 grouping aggregation-lacp-members-statistics {
@@ -274,7 +285,6 @@ grouping aggregation-lacp-members-statistics {
       "Top-level grouping for aggregate members list";
 
     container members {
-      config false;
       description
         "Enclosing container for the list of members interfaces of
         the aggregate. This list is considered operational state
@@ -290,12 +300,18 @@ grouping aggregation-lacp-members-statistics {
 
         leaf interface {
           type leafref {
-            path "../state/interface";
+            path "../config/interface";
           }
           description
             "Reference to aggregate member interface";
         }
 
+        container config {
+          description
+            "Indiviudal configuration of mode and period type per member interface";
+
+          uses aggregation-lacp-members-config;
+        }
 
         container state {
 
@@ -323,26 +339,6 @@ grouping aggregation-lacp-members-statistics {
         ieee8023adLag";
     }
 
-    leaf interval {
-      type lacp-period-type;
-      // default SLOW;
-      description
-        "Set the period between LACP messages -- uses
-        the lacp-period-type enumeration.";
-    }
-
-    leaf lacp-mode {
-      type lacp-activity-type;
-      // default ACTIVE;
-      description
-        "ACTIVE is to initiate the transmission of LACP packets.
-         PASSIVE is to wait for peer to initiate the transmission of
-         LACP packets.";
-        //TODO:some implementations configure the LACP mode on each
-        //member interface rather than on the LAG interface.  There
-        //may be use cases for this identified at a later time.
-    }
-
     leaf system-id-mac {
       type oc-yang:mac-address;
       description
@@ -352,6 +348,7 @@ grouping aggregation-lacp-members-statistics {
     }
 
     uses aggregation-lacp-global-config;
+    uses lacp-member-common;
   }
 
   grouping lacp-interfaces-state {
