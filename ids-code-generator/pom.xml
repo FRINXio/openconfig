@@ -19,7 +19,7 @@
 
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>ids-code-generator</artifactId>
-    <version>4.2.0.rc3-frinx-SNAPSHOT</version>
+    <version>4.2.0.rc3-frinx</version>
     <packaging>bundle</packaging>
 
     <dependencyManagement>
