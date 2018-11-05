@@ -165,7 +165,7 @@ module frinx-cisco-if-extension {
 
   augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
               "oc-if:subinterface" {
-    ext:augment-identifier "if-cisco-stats-aug";
+    ext:augment-identifier "if-subif-cisco-stats-aug";
     description "Adds Cisco specific statistics configuration to
                 subinterfaces model";
 
