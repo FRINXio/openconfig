@@ -8,19 +8,12 @@
 
 package io.frinx.binding.ids;
 
-import static io.frinx.binding.ids.BindingLookup.constructParentTypePaths;
-import static io.frinx.binding.ids.BindingLookup.extractAugMeta;
-import static io.frinx.binding.ids.BindingLookup.findType;
-import static io.frinx.binding.ids.BindingLookup.fixTypePathForGroupings;
-import static io.frinx.binding.ids.BindingLookup.getFqnFromParent;
-import static io.frinx.binding.ids.BindingLookup.sortAugNodes;
-
-import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,7 +85,7 @@ final class GeneratorExecution implements AutoCloseable {
     }
 
     private void processAugmentations(Set<AugmentationSchemaNode> augNodes, Module module) {
-        for (AugmentationSchemaNode augNode : sortAugNodes(augNodes)) {
+        for (AugmentationSchemaNode augNode : BindingLookup.sortAugNodes(augNodes)) {
 
             if (!currentNamespaces.contains(module.getQNameModule().getNamespace())) {
                 // Skip dependency modules, only generate local
@@ -104,17 +97,20 @@ final class GeneratorExecution implements AutoCloseable {
     }
 
     private void processAugmentation(Module module, AugmentationSchemaNode augNode) {
-        BindingLookup.AugmentationMeta currentAugMeta = extractAugMeta(augNode, context, types);
+        BindingLookup.AugmentationMeta currentAugMeta = BindingLookup.extractAugMeta(augNode, context, types);
         List<Type> augTypes = BindingLookup.findAllAugTypes(types, augNode, currentAugMeta.targetType, module);
 
         for (Type augType : augTypes) {
 
             AbstractMap.SimpleEntry<SchemaPath, LinkedHashMap<String, String>> parentPathMeta =
-                    constructParentTypePaths(currentAugMeta, context, types);
+                    BindingLookup.constructParentTypePaths(currentAugMeta, context, types);
 
             String varName = varCache.getAugmentationVariableName(currentAugMeta.originalTargetPath,
                     augType, module.getQNameModule());
-            template.addAugId(varName, augType.getFullyQualifiedName(), parentPathMeta.getValue(), parentPathMeta.getKey());
+            template.addAugId(varName,
+                    augType.getFullyQualifiedName(),
+                    parentPathMeta.getValue(),
+                    parentPathMeta.getKey());
 
             SchemaPath augTypeSchemaPath = VariableNameCache.getAugmentPath(currentAugMeta.targetPathWithGroupings,
                     augType, module.getQNameModule());
@@ -133,7 +129,7 @@ final class GeneratorExecution implements AutoCloseable {
         try {
             Files.createParentDirs(outputFile);
             Files.touch(outputFile);
-            Files.write(template.getContent(), outputFile, Charsets.UTF_8);
+            Files.write(template.getContent(), outputFile, StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new IOException("Unable to generate IDs class at: " + outputFile, e);
         }
@@ -164,11 +160,11 @@ final class GeneratorExecution implements AutoCloseable {
         List<QName> schemaPathArgs = new ArrayList<>(parentSchemaPathArgs);
 
         // Get name of parent variable if any
-        Optional<String> parentVarName = schemaPathArgs.isEmpty() ?
-                Optional.empty() :
-                varCache.getExistingVariableName(SchemaPath.create(schemaPathArgs, true));
+        Optional<String> parentVarName = schemaPathArgs.isEmpty()
+                ? Optional.empty()
+                : varCache.getExistingVariableName(SchemaPath.create(schemaPathArgs, true));
 
-        fixTypePathForGroupings(parent, dataSchemaNode, typePathArgs, context);
+        BindingLookup.fixTypePathForGroupings(parent, dataSchemaNode, typePathArgs, context);
         typePathArgs.add(dataSchemaNode.getQName());
         schemaPathArgs.add(dataSchemaNode.getQName());
 
@@ -176,13 +172,13 @@ final class GeneratorExecution implements AutoCloseable {
         SchemaPath schemaPath = SchemaPath.create(schemaPathArgs, true);
 
         String varName = varCache.getVariableName(schemaPath);
-        String fqn = getFqnFromParent(dataSchemaNode, typePath);
+        String fqn = BindingLookup.getFqnFromParent(dataSchemaNode, typePath);
 
         // If the type was not found we might be facing augmentation or there's a problem with package name
         // either way, skip and cut the recursion subtree
-        Optional<Type> type = findType(parentType, dataSchemaNode, typePath, fqn, types);
+        Optional<Type> type = BindingLookup.findType(parentType, dataSchemaNode, typePath, fqn, types);
         if (!type.isPresent()) {
-            type = findType(parentType, dataSchemaNode, schemaPath, fqn, types);
+            type = BindingLookup.findType(parentType, dataSchemaNode, schemaPath, fqn, types);
         }
 
         if (type.isPresent()) {
@@ -198,7 +194,8 @@ final class GeneratorExecution implements AutoCloseable {
                 .filter(implType -> implType.getFullyQualifiedName().equals(ChildOf.class.getName()))
                 .findFirst()
                 .map(childOfType -> ((ParameterizedType) childOfType).getActualTypeArguments()[0])
-                .map(childOfParameter -> childOfParameter.getFullyQualifiedName().equals(parent.getFullyQualifiedName()))
+                .map(childOfParameter -> childOfParameter.getFullyQualifiedName()
+                        .equals(parent.getFullyQualifiedName()))
                 .orElse(false);
     }
 
@@ -206,8 +203,8 @@ final class GeneratorExecution implements AutoCloseable {
         return dataSchemaNode instanceof DataNodeContainer;
     }
 
-    private boolean isInCurrentYang(Set<URI> currentNamespaces, DataSchemaNode dataSchemaNode) {
-        return currentNamespaces.contains(dataSchemaNode.getQName()
+    private boolean isInCurrentYang(Set<URI> uriSet, DataSchemaNode dataSchemaNode) {
+        return uriSet.contains(dataSchemaNode.getQName()
                 .getNamespace());
     }
 

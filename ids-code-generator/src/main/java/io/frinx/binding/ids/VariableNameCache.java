@@ -8,8 +8,7 @@
 
 package io.frinx.binding.ids;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
+import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import java.util.Iterator;
@@ -43,7 +42,7 @@ final class VariableNameCache implements AutoCloseable {
         do {
             Iterator<QName> iterator = path.getPathTowardsRoot().iterator();
             // Skip target node
-            checkArgument(iterator.hasNext());
+            Preconditions.checkArgument(iterator.hasNext());
             iterator.next();
 
             candidateNoConflictName = getNameWithParents(constantName, nameLength, iterator);
@@ -60,13 +59,13 @@ final class VariableNameCache implements AutoCloseable {
         return candidateNoConflictName;
     }
 
-    String getAugmentationVariableName(SchemaPath parentPath, Type aug, QNameModule qName) {
-        SchemaPath path = getAugmentPath(parentPath, aug, qName);
+    String getAugmentationVariableName(SchemaPath parentPath, Type aug, QNameModule qname) {
+        SchemaPath path = getAugmentPath(parentPath, aug, qname);
         return getVariableName(path);
     }
 
-    static SchemaPath getAugmentPath(SchemaPath parentPath, Type aug, QNameModule qName) {
-        return parentPath.createChild(QName.create(qName, AUG_PREFIX + aug.getName()));
+    static SchemaPath getAugmentPath(SchemaPath parentPath, Type aug, QNameModule qname) {
+        return parentPath.createChild(QName.create(qname, AUG_PREFIX + aug.getName()));
     }
 
     private String getNameWithParents(String localName, int nameLength, Iterator<QName> iterator) {

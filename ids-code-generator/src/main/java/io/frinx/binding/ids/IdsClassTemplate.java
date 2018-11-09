@@ -8,8 +8,7 @@
 
 package io.frinx.binding.ids;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -58,11 +57,15 @@ final class IdsClassTemplate {
     }
 
     void addModuleStart(Module module) {
-        result.append(String.format(MODULE_START, module.getQNameModule().getNamespace().toString(), module.getName()));
+        result.append(String.format(MODULE_START,
+                module.getQNameModule().getNamespace().toString(),
+                module.getName()));
     }
 
     void addModuleAugStart(Module module) {
-        result.append(String.format(MODULE_AUG_START, module.getQNameModule().getNamespace().toString(), module.getName()));
+        result.append(String.format(MODULE_AUG_START,
+                module.getQNameModule().getNamespace().toString(),
+                module.getName()));
     }
 
     void addId(Optional<String> parentVarName,
@@ -73,7 +76,9 @@ final class IdsClassTemplate {
 
         String parentCode = "InstanceIdentifier.create";
         if (parentVarName.isPresent()) {
-            String method = dataSchemaNode instanceof AugmentationSchemaNode ? IID_AUGMENTATION_METHOD : IID_CHILD_METHOD;
+            String method = dataSchemaNode instanceof AugmentationSchemaNode
+                    ? IID_AUGMENTATION_METHOD
+                    : IID_CHILD_METHOD;
             parentCode = parentVarName.get() + "." + method;
         }
 
@@ -86,9 +91,10 @@ final class IdsClassTemplate {
                   LinkedHashMap<String, String> parentFqns,
                   SchemaPath currentPath) {
 
-        checkArgument(parentFqns.size() >= 1);
+        Preconditions.checkArgument(parentFqns.size() >= 1);
 
-        String parentCode = String.format("InstanceIdentifier.create(%s.class)", parentFqns.entrySet().iterator().next().getKey());
+        String parentCode = String.format("InstanceIdentifier.create(%s.class)",
+                parentFqns.entrySet().iterator().next().getKey());
         for (Map.Entry<String, String> parent : Iterables.skip(parentFqns.entrySet(), 1)) {
             parentCode += String.format(".%s(%s.class)", parent.getValue(), parent.getKey());
         }

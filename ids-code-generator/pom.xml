@@ -11,9 +11,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.opendaylight.mdsal</groupId>
-        <artifactId>binding-parent</artifactId>
-        <version>0.12.2-Oxygen-SR2.4_2_0_rc4-frinxodl-SNAPSHOT</version>
+        <groupId>io.frinx.translate.unit.commons</groupId>
+        <artifactId>checkstyle-frinx-parent</artifactId>
+        <version>4.2.0.rc4-frinx-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
