@@ -1,11 +1,11 @@
-module frinx-cisco-bgp-extension {
+module frinx-bgp-extension {
 
   yang-version "1";
 
   // namespace
-  namespace "http://frinx.openconfig.net/yang/bgp/cisco";
+  namespace "http://frinx.openconfig.net/yang/bgp/extension";
 
-  prefix "cisco-bgp-ext";
+  prefix "bgp-ext";
 
   // import some basic types
   import frinx-openconfig-network-instance { prefix oc-ni; }
