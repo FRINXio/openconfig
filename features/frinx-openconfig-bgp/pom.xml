@@ -19,7 +19,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-bgp</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.0.rc6-frinx</version>
+    <version>4.2.0.rc7-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: BGP</name>
 
     <dependencyManagement>
