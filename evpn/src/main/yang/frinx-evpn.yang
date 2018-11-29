@@ -62,7 +62,7 @@ module frinx-evpn {
     description "Groups of EVPN";
     container groups {
       description "Groups of EVPN";
-      list evpn-group {
+      list group {
         key "id";
         description
           "List of EVPN groups, keyed by group id";
