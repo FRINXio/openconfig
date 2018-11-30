@@ -11,7 +11,6 @@ module frinx-bgp-extension {
   import frinx-openconfig-network-instance { prefix oc-ni; }
   import frinx-openconfig-routing-policy { prefix oc-rpol; revision-date 2017-07-14; }
   import yang-ext { prefix ext; }
-  import frinx-openconfig-inet-types { prefix oc-inet; }
 
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
@@ -29,16 +28,13 @@ module frinx-bgp-extension {
   }
 
   grouping local-aggregates-policy {
-    leaf apply-policy {
+    leaf-list apply-policy {
       type leafref {
         path "/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
           "oc-rpol:policy-definition/oc-rpol:name";
       }
       description
         "Name of policy which needs to be applied.";
-    }
-    leaf aggregate-address {
-      type  oc-inet:ip-prefix;
     }
     leaf summary-only {
       type boolean;
