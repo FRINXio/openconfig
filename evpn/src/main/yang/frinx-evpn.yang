@@ -7,9 +7,9 @@ module frinx-evpn {
 
   prefix "frinx-evpn";
 
+  import ietf-yang-types { prefix yang; }
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-evpn-types { prefix evpn-types; }
-  import frinx-openconfig-yang-types { prefix oc-yang; revision-date "2017-04-03"; }
 
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
@@ -123,7 +123,7 @@ module frinx-evpn {
                 "Load balance mode of ethernet segment";
             }
             leaf bgp-route-target {
-              type oc-yang:mac-address;
+              type yang:mac-address;
               description
                 "BGP route target of ethernet segment";
             }
@@ -152,6 +152,13 @@ module frinx-evpn {
     container evpn {
       description
         "Top level configuration containers for EVPN data";
+      container config {
+        description "Config container for evpn container";
+        leaf enabled {
+          type boolean;
+          description "Is EVPN enabled";
+        }
+      }
       uses evpn-groups;
       uses evpn-interfaces;
     }

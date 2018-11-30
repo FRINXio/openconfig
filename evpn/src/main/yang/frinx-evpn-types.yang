@@ -24,7 +24,7 @@ module frinx-evpn-types {
 
   typedef ethernet-segment-identifier {
     type string {
-      pattern '^[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){8}$';
+      pattern '[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){8}';
     }
     description
       "ethernet segment identifier";
