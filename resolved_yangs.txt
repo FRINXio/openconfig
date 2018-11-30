@@ -36,6 +36,8 @@
 ./interfaces/src/main/yang/frinx-l3ipvlan.yang
 ./interfaces/src/main/yang/frinx-if-aggregate-extension.yang
 
+./interfaces/src/main/yang/frinx-juniper-if-extension.yang
+
 ./netflow/src/main/yang/frinx-netflow.yang
 
 ./logging/src/main/yang/frinx-logging.yang
@@ -125,3 +127,7 @@
 
 ./evpn/src/main/yang/frinx-evpn-types.yang
 ./evpn/src/main/yang/frinx-evpn.yang
+
+./probes/src/main/yang/frinx-openconfig-probes-types.yang
+./probes/src/main/yang/frinx-openconfig-probes.yang
+./probes/src/main/yang/frinx-juniper-probes-extension.yang

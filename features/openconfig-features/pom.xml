@@ -184,5 +184,12 @@
       <type>xml</type>
       <classifier>features</classifier>
     </dependency>
+    <dependency>
+      <groupId>io.frinx.openconfig</groupId>
+      <artifactId>frinx-openconfig-probe</artifactId>
+      <version>${project.version}</version>
+      <type>xml</type>
+      <classifier>features</classifier>
+    </dependency>
   </dependencies>
 </project>

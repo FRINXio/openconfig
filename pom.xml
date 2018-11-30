@@ -54,6 +54,7 @@
     <module>ospfv3</module>
     <module>evpn</module>
     <module>hsrp</module>
+    <module>probes</module>
 
     <module>features</module>
   </modules>

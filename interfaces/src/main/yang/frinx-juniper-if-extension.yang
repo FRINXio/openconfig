@@ -1,0 +1,56 @@
+module frinx-juniper-if-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/juniper-extention";
+
+  prefix "juniper-if-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing JUNOS specific features.";
+
+  revision "2018-12-04" {
+    description
+      "Initial release";
+    reference "3.1.7";
+  }
+
+  typedef rpm-types {
+    type enumeration {
+      enum client {
+        description
+          "The interface is Client mode";
+      }
+      enum server {
+        description
+          "The interface is Server mode";
+      }
+      enum client-delegate-probes {
+        description
+          "The interface is Client delegate probe mode";
+      }
+    }
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-if:config" {
+    description "Adds Juniper specific configuration to
+                subinterfaces model";
+
+    leaf rpm-type {
+      type rpm-types;
+      description "The rpm type of the interface";
+    }
+  }
+
+}

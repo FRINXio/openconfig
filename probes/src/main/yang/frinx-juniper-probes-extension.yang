@@ -1,0 +1,46 @@
+module frinx-juniper-probes-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/probes/juniper";
+
+  prefix "juniper-oc-probes";
+
+  import frinx-openconfig-probes { prefix oc-probes; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing Juniper specific features.";
+
+  revision "2018-12-03" {
+    description
+      "Initial release";
+    reference "3.1.7";
+  }
+
+  // augment statements
+
+  augment "/oc-probes:probes/oc-probes:probe/oc-probes:config" {
+    leaf delegate-probes {
+      type boolean;
+      description
+        "Define the probe is delegate-probes or not";
+    }
+  }
+
+  augment "/oc-probes:probes/oc-probes:probe/oc-probes:tests/oc-probes:test/oc-probes:config" {
+    leaf destination-interface {
+      type string;
+      description
+        "Define the interface that adds a timestamp to RPM probe messages.";
+    }
+  }
+
+}
