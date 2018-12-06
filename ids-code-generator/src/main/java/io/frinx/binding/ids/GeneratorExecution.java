@@ -67,8 +67,16 @@ final class GeneratorExecution implements AutoCloseable {
     }
 
     Set<File> execute(File outputBaseDir) throws IOException {
-        context.getModules().forEach(this::executeModule);
-        context.getModules().forEach(this::executeModuleAug);
+        context.getModules()
+                .stream()
+                .sorted(Comparator.comparing(m -> m.getQNameModule().toString()))
+                .forEach(this::executeModule);
+
+        context.getModules()
+                .stream()
+                .sorted(Comparator.comparing(m -> m.getQNameModule().toString()))
+                .forEach(this::executeModuleAug);
+
         return writeFile(outputBaseDir);
     }
 
