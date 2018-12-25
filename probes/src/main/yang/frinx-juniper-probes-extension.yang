@@ -8,6 +8,9 @@ module frinx-juniper-probes-extension {
   prefix "juniper-oc-probes";
 
   import frinx-openconfig-probes { prefix oc-probes; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   // meta
   organization "Frinx s.r.o";
@@ -25,9 +28,11 @@ module frinx-juniper-probes-extension {
     reference "3.1.7";
   }
 
-  // augment statements
+  // grouping statements
 
-  augment "/oc-probes:probes/oc-probes:probe/oc-probes:config" {
+  grouping probe-config-extension {
+    description
+      "Extended configuration parameters relating to a probe.";
     leaf delegate-probes {
       type boolean;
       description
@@ -35,7 +40,9 @@ module frinx-juniper-probes-extension {
     }
   }
 
-  augment "/oc-probes:probes/oc-probes:probe/oc-probes:tests/oc-probes:test/oc-probes:config" {
+  grouping test-config-extension {
+    description
+      "Extended configuration parameters relating to a test of probe.";
     leaf destination-interface {
       type string;
       description
@@ -43,4 +50,23 @@ module frinx-juniper-probes-extension {
     }
   }
 
+  // augment statements
+
+  augment "/oc-probes:probes/oc-probes:probe/oc-probes:config" {
+    uses probe-config-extension;
+  }
+
+  augment "/oc-probes:probes/oc-probes:probe/oc-probes:tests/oc-probes:test/oc-probes:config" {
+    uses test-config-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-probes:probes/oc-probes:probe/oc-probes:config" {
+    uses probe-config-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-probes:probes/oc-probes:probe/oc-probes:tests/oc-probes:test/oc-probes:config" {
+    uses test-config-extension;
+  }
 }
