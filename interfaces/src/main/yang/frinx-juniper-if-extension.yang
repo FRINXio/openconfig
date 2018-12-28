@@ -43,14 +43,28 @@ module frinx-juniper-if-extension {
     }
   }
 
-  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-if:config" {
-    description "Adds Juniper specific configuration to
-                subinterfaces model";
-
+  grouping juniper-if-extension-config {
     leaf rpm-type {
       type rpm-types;
-      description "The rpm type of the interface";
+      description "The rpm type of the subinterface";
     }
   }
 
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/" +
+    "oc-if:config" {
+    description "The rpm type of the subinterface";
+
+    uses juniper-if-extension-config;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration//oc-if:interfaces/oc-if:interface/" +
+    "oc-if:subinterfaces/oc-if:subinterface/oc-if:config" {
+    description "The rpm type of the subinterface";
+
+    uses juniper-if-extension-config;
+  }
 }
