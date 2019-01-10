@@ -12,6 +12,9 @@ module frinx-openconfig-probes {
   import frinx-openconfig-extensions { prefix oc-ext; }
   import frinx-openconfig-inet-types { prefix oc-inet; }
   import frinx-openconfig-probes-types { prefix oc-probes-types; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   organization "OpenConfig working group";
 
@@ -104,7 +107,10 @@ grouping test-target {
       type oc-probes-types:test-type;
       description
         "The type of the probe test.";
-      mandatory true;
+
+      // Removed the mandatory flag to enable to use a default
+      // test-type value originated from out of the OpenConfig.
+      // mandatory true;
     }
 
     leaf count {
@@ -565,4 +571,9 @@ grouping test-target {
 
   uses openconfig-probes-top;
 
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses openconfig-probes-top;
+  }
 }

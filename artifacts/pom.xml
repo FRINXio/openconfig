@@ -129,6 +129,11 @@
             </dependency>
             <dependency>
                 <groupId>io.frinx.openconfig</groupId>
+                <artifactId>openconfig-probes</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.frinx.openconfig</groupId>
                 <artifactId>openconfig-snmp</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -298,6 +303,13 @@
             <dependency>
                 <groupId>io.frinx.openconfig</groupId>
                 <artifactId>frinx-openconfig-policy-forwarding</artifactId>
+                <type>xml</type>
+                <classifier>features</classifier>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.frinx.openconfig</groupId>
+                <artifactId>frinx-openconfig-probes</artifactId>
                 <type>xml</type>
                 <classifier>features</classifier>
                 <version>${project.version}</version>
