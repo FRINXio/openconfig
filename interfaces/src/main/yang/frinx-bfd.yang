@@ -60,6 +60,13 @@ module frinx-bfd {
       description
         "Interval for sending BFD packets (in milliseconds)";
     }
+
+    leaf min-receive-interval {
+        type uint32;
+        units "milliseconds";
+        description
+          "Interval for receiving BFD packets (in milliseconds)";
+      }
   }
 
   grouping bfd-state {
