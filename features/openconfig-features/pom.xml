@@ -186,7 +186,7 @@
     </dependency>
     <dependency>
       <groupId>io.frinx.openconfig</groupId>
-      <artifactId>frinx-openconfig-probe</artifactId>
+      <artifactId>frinx-openconfig-probes</artifactId>
       <version>${project.version}</version>
       <type>xml</type>
       <classifier>features</classifier>
