@@ -18,6 +18,7 @@ Implements an HTML documentation emitter for YANG modules
 
 """
 import os
+import re
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -66,6 +67,9 @@ class HTMLEmitter(DocEmitter):
         self.moduledocs[mod.module_name]['module'] = mod_div
         self.moduledocs[mod.module_name]['data'] = ""
 
+        # handle reference for the use-case @FRINX
+        if mod.module.attrs.has_key('reference'):
+            self.moduledocs[mod.module_name]['reference'] = mod.module.attrs['reference']
         # handle typedefs
         if len(mod.typedefs) > 0:
             types_div = ht.open_tag("div", newline=True)
@@ -131,8 +135,16 @@ class HTMLEmitter(DocEmitter):
 
         # store the identity docs
         self.moduledocs[mod.module_name]['identities'] = idents_div
-
         gen_nav_tree(self, mod, 0)
+
+    def create_links(self, use_cases):
+        ht = html_helper.HTMLHelper()
+        output = ""
+        for use_case in use_cases:
+            url = self.moduledocs[u'frinx-openconfig-uc-' + use_case]['reference']
+            new_link = ht.add_tag("a", use_case, {"href": url})
+            output = output + " | " + new_link
+        return output
 
     def genStatementDoc(self, statement, ctx, level=1):
         """HTML emitter for module data node given a StatementDoc
@@ -172,23 +184,21 @@ class HTMLEmitter(DocEmitter):
                     'desc'], {"class": "statement-info-text"}, level, True)
         s_div += ht.close_tag(newline=True)
 
-        # all FRINX prefixes from units
-        prefixes = ["frinx-oc-ios-docs", "frinx-oc-ios-xr-docs", "frinx-oc-ironware-docs", "frinx-oc-nos-docs",
-                    "frinx-oc-vrp-docs", "frinx-oc-nexus-docs", "frinx-oc-junos-docs", "frinx-oc-xr-docs"]
 
-        # frinxdoc (added by ab@frinx)
+
         if statement.attrs.has_key('frinx-documentation'):
+
+            prefixes = find_frinx_prefixes(statement.attrs['frinx-documentation'].keys())
             for prefix in prefixes:
 
                 if statement.attrs['frinx-documentation'].has_key(prefix):
-                    if prefix == "frinx-oc-junos-docs" or prefix == "frinx-oc-xr-docs":
+                    if 'frinx-oc-netconf' in prefix:
                         protocol = 'netconf'
                     else:
                         protocol = 'cli'
-                    s_div += ht.h4(
-                        protocol + " device " + statement.attrs['frinx-documentation'][prefix]['frinx-docs-type'] + ":",
-                        {"class": "frinx-text-color thick frinx-margin-left-medium",
-                         "id": "ident-" + ht.gen_html_id(prefix)}, 2, True)
+                    s_div += ht.h4( protocol + " device " + statement.attrs['frinx-documentation'][prefix]['frinx-docs-type'] + ":",
+                                   {"class": "frinx-text-color thick frinx-margin-left-medium",
+                                    "id": "ident-" + ht.gen_html_id(prefix)}, 2, True)
                     s_div += ht.para(
                         ht.add_tag("span", "frinx-device-type", {"class": "statement-info-label"}) + ":<br />" +
                         statement.attrs['frinx-documentation'][prefix]['frinx-docs-type'],
@@ -226,7 +236,7 @@ class HTMLEmitter(DocEmitter):
         elif statement.attrs.has_key('frinx-usecase'):
             s_div += ht.para(
                 ht.add_tag("span", "related usecases", {"class": "statement-info-label"}) + ": "
-                + create_links(statement.attrs['frinx-usecase']), {"class": "statement-info-text"}, level, True)
+                + self.create_links(statement.attrs['frinx-usecase']), {"class": "statement-info-text"}, level, True)
 
         # check for additional properties
         notes = ""
@@ -380,16 +390,16 @@ def gen_nav_tree(emitter, root_mod, level=0):
     # module link
     if is_augmented(root_mod.module):
         nav += "<li><a class=\"menu-module-name, frinx-nav\" href=\"%s\">%s</a>\n" % (
-            "#mod-" + ht.gen_html_id(root_mod.module_name), root_mod.module_name)
+        "#mod-" + ht.gen_html_id(root_mod.module_name), root_mod.module_name)
     else:
         nav += "<li><a class=\"menu-module-name\" href=\"%s\">%s</a>\n" % (
-            "#mod-" + ht.gen_html_id(root_mod.module_name), root_mod.module_name)
+        "#mod-" + ht.gen_html_id(root_mod.module_name), root_mod.module_name)
 
     nav += "<ul>\n"
     # generate links for types and identities
     if len(root_mod.typedefs) > 0:
         nav += "<li><a href=\"%s\">%s</a>\n" % (
-            "#" + ht.gen_html_id(root_mod.module_name) + "-defined-types", "Defined types")
+        "#" + ht.gen_html_id(root_mod.module_name) + "-defined-types", "Defined types")
         types = root_mod.typedefs.keys()
         nav += " <ul>\n"
         for typename in types:
@@ -399,7 +409,7 @@ def gen_nav_tree(emitter, root_mod, level=0):
 
     if len(root_mod.identities) > 0:
         nav += "<li><a href=\"%s\">%s</a>\n" % (
-            "#" + ht.gen_html_id(root_mod.module_name) + "-identities", "Identities")
+        "#" + ht.gen_html_id(root_mod.module_name) + "-identities", "Identities")
         nav += " <ul>\n"
         for base_id in root_mod.base_identities:
             derived = {key: value for key, value in root_mod.identities.items() if value.attrs['base'] == base_id}
@@ -490,17 +500,8 @@ def is_augmented(node):
     return False
 
 
-def create_links(usecases_list):
-    ht = html_helper.HTMLHelper()
-    output = ""
-
-    for usecase in usecases_list:
-        if usecase == "l3vpn-bgp":
-            new_link = ht.add_tag("a", usecase, {
-                "href": "https://github.com/FRINXio/translation-units-docs/blob/master/Configuration%20datasets/network-instances/l3vpn/network_instance_l3vpn_bgp.md"})
-            output = output + " | " + new_link
-        if usecase == "l2vpn":
-            new_link = ht.add_tag("a", usecase, {
-                "href": "https://github.com/FRINXio/translation-units-docs/blob/master/Configuration%20datasets/network-instances/l3vpn/network_instance_l3vpn_bgp.md"})
-            output = output + " " + new_link
-    return output
+def find_frinx_prefixes(all_keys):
+    regex = re.compile(r'^frinx-oc-.*-docs$')
+    filtered_prefixes = filter(regex.search, all_keys)
+    filtered_prefixes.sort()
+    return filtered_prefixes
