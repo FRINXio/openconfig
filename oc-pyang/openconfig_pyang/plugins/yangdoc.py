@@ -26,6 +26,7 @@ from pyang import plugin
 from pyang import statements
 
 from util import yangpath
+from util.usecase_emitter import UsecaseEmitter
 from util.device_emitter import DeviceEmitter
 from util.html_emitter import HTMLEmitter
 from util.markdown_emitter import MarkdownEmitter
@@ -212,6 +213,8 @@ def emit_docs(ctx, modules, fd):
         emitter = HTMLEmitter()
     elif ctx.opts.doc_format == "one-device":
         emitter = DeviceEmitter()
+    elif ctx.opts.doc_format == "usecase":
+        emitter = UsecaseEmitter()
     else:
         emitter = MarkdownEmitter()
     # write top level module and types
