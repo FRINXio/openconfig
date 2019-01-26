@@ -149,12 +149,12 @@ module frinx-openconfig-packet-match {
       "Configuration parameters relating to matches within
       MPLS header fields.";
 
-    leaf traffic-class {
+    leaf-list traffic-class {
       type uint8 {
         range "0..7";
       }
       description
-        "The value of the MPLS traffic class (TC) bits,
+        "The values of the MPLS traffic class (TC) bits,
         formerly known as the EXP bits.";
     }
   }
