@@ -19,7 +19,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-uniconfig-model</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.0.rc12-frinx-SNAPSHOT</version>
+    <version>4.2.0.rc12-frinx</version>
     <name>Frinx :: Uniconfig :: Model</name>
 
     <properties>
