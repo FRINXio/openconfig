@@ -142,6 +142,26 @@ module frinx-acl-extension {
     }
   }
 
+  grouping term-name {
+    description
+      "Configuration data of terminal name";
+    leaf term-name {
+      type string;
+      description
+        "terminal name";
+    }
+  }
+
+  grouping instance-name {
+    description
+      "Configuration data of action instance name";
+    leaf instance-name {
+      type string;
+      description
+        "action instance name";
+    }
+  }
+
   augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config" {
     ext:augment-identifier "acl-set-acl-entry-transport-port-named-aug";
     uses src-dst-port-named;
@@ -191,5 +211,25 @@ module frinx-acl-extension {
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry" {
     uses oc-acl-ext:acl-icmp-type;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:config" {
+    description "Adds terminal name to acl-entry config";
+    uses term-name;
+  }
+
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:config" {
+    description "Adds terminal name to acl-entry config";
+    uses term-name;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config" {
+    description "Adds instance name of actions in acl-entry";
+    uses instance-name;
+  }
+
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config" {
+    description "Adds instance name of actions in acl-entry";
+    uses instance-name;
   }
 }
