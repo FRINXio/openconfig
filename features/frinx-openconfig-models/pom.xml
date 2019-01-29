@@ -167,5 +167,9 @@
             <type>xml</type>
             <classifier>features</classifier>
         </dependency>
+        <dependency>
+            <groupId>io.frinx.openconfig</groupId>
+            <artifactId>openconfig-utils</artifactId>
+        </dependency>
     </dependencies>
 </project>

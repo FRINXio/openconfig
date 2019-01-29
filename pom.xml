@@ -55,6 +55,7 @@
     <module>evpn</module>
     <module>hsrp</module>
     <module>probes</module>
+    <module>utils</module>
 
     <module>features</module>
   </modules>
