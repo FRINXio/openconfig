@@ -9,11 +9,14 @@ module frinx-if-aggregate-extension {
 
   // import some basic types
   import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-if-aggregate { prefix oc-lag; }
   import frinx-openconfig-if-ethernet { prefix oc-eth; }
   import iana-if-type { prefix ift; }
+  import ietf-yang-types { prefix yang; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
 
   // meta
   organization "Frinx s.r.o";
@@ -43,6 +46,24 @@ module frinx-if-aggregate-extension {
     }
   }
 
+  grouping if-aggregate-address-config {
+    leaf mac-address {
+      type yang:mac-address;
+      description
+        "Assigns a MAC address to the Ethernet interface.  If not
+        specified, the corresponding operational state leaf is
+        expected to show the system-assigned MAC address.";
+    }
+
+    leaf system-id-mac {
+      type yang:mac-address;
+      description
+        "The MAC address portion of the node's System ID. This is
+        combined with the system priority to construct the 8-octet
+        system-id";
+    }
+  }
+
   // augment statements
 
   augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/" +
@@ -65,6 +86,16 @@ module frinx-if-aggregate-extension {
     uses if-aggregate-extentions-config;
   }
 
+  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config" {
+    when "oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface is a LAG";
+    }
+    ext:augment-identifier "if-lag-aug";
+    description "Adds additional Juniper specific settings to a LAG interface";
+
+    uses if-aggregate-address-config;
+  }
+
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/" +
@@ -85,5 +116,14 @@ module frinx-if-aggregate-extension {
     description "Adds LAG specific configuration to individual Ethernet interfaces";
 
     uses if-aggregate-extentions-config;
+  }
+
+ augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config" {
+   when "oc-if:type = 'ift:ieee8023adLag'" {
+     description "Active when the interface is a LAG";
+   }
+   description "Adds additional Juniper specific settings to a LAG interface";
+
+   uses if-aggregate-address-config;
   }
 }
