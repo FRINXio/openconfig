@@ -34,7 +34,7 @@ module frinx-ospf-extension {
   }
 
   grouping protocol-config {
-    leaf export-policy {
+    leaf-list export-policy {
       type leafref {
         path "/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
             "oc-rpol:policy-definition/oc-rpol:name";
