@@ -172,6 +172,15 @@ module frinx-cisco-if-extension {
     uses statistics-top;
   }
 
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+              "oc-if:subinterface" {
+    ext:augment-identifier "if-subif-cisco-hold-time-aug";
+    description "Adds Cisco specific hold-time configuration to
+                subinterfaces model";
+
+    uses oc-if:interface-phys-holdtime-top;
+  }
+
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
@@ -194,6 +203,14 @@ module frinx-cisco-if-extension {
                 subinterfaces model";
 
     uses statistics-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" +
+              "/oc-if:subinterfaces/oc-if:subinterface"{
+    description "Adds Cisco specific hold-time configuration to
+                subinterfaces model";
+
+    uses oc-if:interface-phys-holdtime-top;
   }
 
 }
