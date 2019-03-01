@@ -98,6 +98,13 @@
 ./bgp/src/main/yang/frinx-openconfig-bgp.yang
 ./bgp/src/main/yang/frinx-openconfig-bgp-policy.yang
 
+./isis/src/main/yang/frinx-openconfig-isis-types.yang
+./isis/src/main/yang/frinx-openconfig-isis-lsdb-types.yang
+./isis/src/main/yang/frinx-openconfig-isis-policy.yang
+./isis/src/main/yang/frinx-openconfig-isis-lsp.yang
+./isis/src/main/yang/frinx-openconfig-isis-routing.yang
+./isis/src/main/yang/frinx-openconfig-isis.yang
+
 ./network-instance/src/main/yang/frinx-openconfig-network-instance-l3.yang
 ./network-instance/src/main/yang/frinx-openconfig-network-instance-policy.yang
 ./network-instance/src/main/yang/frinx-openconfig-network-instance-l2.yang
@@ -131,3 +138,4 @@
 ./probes/src/main/yang/frinx-openconfig-probes-types.yang
 ./probes/src/main/yang/frinx-openconfig-probes.yang
 ./probes/src/main/yang/frinx-juniper-probes-extension.yang
+

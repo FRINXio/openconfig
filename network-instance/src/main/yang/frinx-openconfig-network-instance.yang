@@ -26,7 +26,7 @@ module frinx-openconfig-network-instance {
   import frinx-openconfig-ospfv2 { prefix "oc-ospfv2"; }
   import frinx-openconfig-policy-forwarding { prefix "oc-pf"; }
   // import openconfig-segment-routing { prefix "oc-sr"; }
-  // import openconfig-isis { prefix "oc-isis"; }
+  import frinx-openconfig-isis { prefix "oc-isis"; }
   // import openconfig-aft { prefix "oc-aft"; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
@@ -665,7 +665,6 @@ module frinx-openconfig-network-instance {
               }
             }
 
-            /*
             uses oc-isis:isis-top {
               when "../config/identifier = 'ISIS'" {
                 description
@@ -676,7 +675,6 @@ module frinx-openconfig-network-instance {
                 "Configuration and state parameters relating to Intermediate
                 System to Intermediate System (IS-IS).";
             }
-            */
           }
         }
       }

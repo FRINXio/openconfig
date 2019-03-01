@@ -73,6 +73,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.frinx.openconfig</groupId>
+            <artifactId>openconfig-isis</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.opendaylight.mdsal.model</groupId>
             <artifactId>yang-ext</artifactId>
         </dependency>
