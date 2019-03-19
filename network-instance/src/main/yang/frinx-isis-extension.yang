@@ -1,0 +1,96 @@
+module frinx-isis-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/isis/extension";
+
+  prefix "isis-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; }
+  import frinx-openconfig-isis-types { prefix "oc-isis-types"; }
+  import frinx-openconfig-isis { prefix "oc-isis"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  revision "2019-03-11" {
+    description
+      "Initial release";
+  }
+
+  grouping isis-interface-ext-config {
+    leaf level-capability {
+      type oc-isis-types:level-type;
+      default "LEVEL_1_2";
+      description
+        "ISIS level capability(level-1, level-2,vlevel-1-2).";
+    }
+  }
+
+  grouping isis-interface-timers-ext-config {
+    leaf retransmission-interval {
+      type uint32;
+      units seconds;
+      description
+        "The number of seconds that the local system waits before
+        retransmitting an unacknowledged LSA.";
+    }
+  }
+
+  // network-instances augmentations
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:isis/" +
+  "oc-ni:interfaces/oc-ni:interface/oc-ni:config" {
+    ext:augment-identifier "isis-if-conf-aug";
+    description "Extends settings on the isis interface";
+
+    uses isis-interface-ext-config;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:isis/" +
+  "oc-ni:interfaces/oc-ni:interface/oc-ni:afi-safi/oc-ni:af/oc-ni:config" {
+    description "Extends protocol/config with export-policy of isis";
+    ext:augment-identifier "isis-if-af-conf-aug";
+    uses oc-isis:isis-metric-config;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:isis/" +
+  "oc-ni:interfaces/oc-ni:interface/oc-ni:timers/oc-ni:config" {
+    description "Extends protocol/config with export-policy of isis";
+    ext:augment-identifier "isis-if-timers-conf-aug";
+    uses isis-interface-timers-ext-config;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/" +
+  "oc-ni:protocols/oc-ni:protocol/oc-ni:isis/oc-ni:interfaces/oc-ni:interface/oc-ni:config" {
+    description "Extends settings on the isis interface";
+
+    uses isis-interface-ext-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+  "oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:isis/" +
+  "oc-ni:interfaces/oc-ni:interface/oc-ni:afi-safi/oc-ni:af/oc-ni:config" {
+    description "Extends afi-safi settings on the isis interface";
+
+    uses oc-isis:isis-metric-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+  "oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:isis/" +
+  "oc-ni:interfaces/oc-ni:interface/oc-ni:timers/oc-ni:config" {
+    description "Extends timers settings on the isis interface";
+
+    uses isis-interface-timers-ext-config;
+  }
+}
