@@ -128,7 +128,7 @@ submodule frinx-openconfig-bgp-common {
     }
 
     leaf auth-password {
-      type oc-types:routing-password;
+      type oc-types:encrypted-password;
       description
         "Configures an MD5 authentication password for use with
         neighboring devices.";

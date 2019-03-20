@@ -106,6 +106,29 @@ module frinx-openconfig-types {
       viewed by particular users.";
   }
 
+  typedef encrypted-string {
+    type string {
+      pattern 'Encrypted\[(?<password>\S+)\]';
+    }
+  }
+
+  typedef plain-string {
+    type string;
+  }
+
+  typedef encrypted-password {
+    type union {
+      type encrypted-string;
+      type plain-string;
+    }
+    description
+      "This type is indicative of a password that is used within
+      a routing protocol which can be returned in plain text or
+      encrypted form to the NMS by the local system. Only one of them
+      can be used, the encrypted one is recommended. There is used
+      'Encrypted[<password goes here>]' prefix to differ from plain text password";
+  }
+
   grouping avg-min-max-stats-precision1 {
     description
       "Common nodes for recording average, minimum, and
