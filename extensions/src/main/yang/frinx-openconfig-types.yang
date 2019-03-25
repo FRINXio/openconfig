@@ -108,7 +108,7 @@ module frinx-openconfig-types {
 
   typedef encrypted-string {
     type string {
-      pattern 'Encrypted\[(?<password>\S+)\]';
+      pattern 'Encrypted\[(.+)\]';
     }
   }
 
