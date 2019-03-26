@@ -117,6 +117,7 @@
 ./network-instance/src/main/yang/frinx-bgp-extension.yang
 ./network-instance/src/main/yang/frinx-dasan-vlan-extension.yang
 ./network-instance/src/main/yang/frinx-mpls-ldp-extension.yang
+./network-instance/src/main/yang/frinx-isis-extension.yang
 
 ./bfd/src/main/yang/frinx-openconfig-bfd.yang
 ./bfd/src/main/yang/frinx-bfd-extension.yang
