@@ -262,7 +262,7 @@ module frinx-openconfig-isis {
       "This grouping defines authentication key configuration.";
 
     leaf auth-password {
-      type oc-types:routing-password;
+      type oc-types:encrypted-password;
       description
         "Authentication key string.";
     }
