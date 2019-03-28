@@ -31,8 +31,8 @@ public class IidUtils {
      * @throws NullPointerException informing about missing key - if the necessary keys are missing or doesn't match iid
      * @return InstanceIdentifier
      */
-    public static InstanceIdentifier<?> createIid(InstanceIdentifier<?> iid,
-                                                  Identifier<? extends Identifiable<?>>... keys) {
+    public static <T extends DataObject> InstanceIdentifier<T> createIid(final InstanceIdentifier<T> iid,
+            final Identifier<? extends Identifiable<?>>... keys) {
 
         List<InstanceIdentifier.PathArgument> instanceIdentifier = Lists.newArrayList();
 
@@ -67,7 +67,7 @@ public class IidUtils {
             }
         }
 
-        return InstanceIdentifier.create(instanceIdentifier);
+        return (InstanceIdentifier<T>) InstanceIdentifier.create(instanceIdentifier);
     }
 
 }
