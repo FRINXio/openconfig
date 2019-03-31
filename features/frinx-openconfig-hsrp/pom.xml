@@ -19,7 +19,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-hsrp</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.0.rc21-frinx</version>
+    <version>4.2.0.rc22-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: HSRP</name>
 
     <dependencyManagement>
