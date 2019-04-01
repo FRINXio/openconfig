@@ -36,16 +36,16 @@ module frinx-bfd {
 
   grouping bfd-config {
     leaf local-address {
-      type inet:ip-address;
+      type inet:ipv4-address;
       description
-        "Source address for BFD sessions.
+        "Ipv4 source address for BFD sessions.
         By default, IP address of interface with BFD session is used.";
     }
 
     leaf destination-address {
-      type inet:ip-address;
+      type inet:ipv4-address;
       description
-        "Destination address for BFD sessions";
+        "Ipv4 destination address for BFD sessions";
     }
 
     leaf multiplier {
@@ -69,6 +69,27 @@ module frinx-bfd {
       }
   }
 
+  grouping bfd-ipv6-config {
+    leaf destination-address {
+      type inet:ipv6-address;
+      description
+        "Ipv6 destination address for BFD sessions";
+    }
+
+    leaf multiplier {
+      type uint32;
+      description
+       "Detection multiplier for BFD sessions";
+    }
+
+    leaf min-interval {
+      type uint32;
+      units "milliseconds";
+      description
+        "Interval for sending BFD packets (in milliseconds)";
+    }
+  }
+
   grouping bfd-state {
     description
       "BFD related operational state";
@@ -82,11 +103,11 @@ module frinx-bfd {
 
     container bfd {
       description
-        "Enclosing container for BFD interface-specific
+        "Enclosing container for BFD interface-ipv4-specific
         data.";
 
       container config {
-          description "Configuration parameters for BFD";
+          description "Configuration parameters for BFD ipv4";
 
           uses bfd-config;
       }
@@ -100,6 +121,19 @@ module frinx-bfd {
         uses bfd-state;
       }
     }
+
+    container bfd-ipv6 {
+      description
+        "Enclosing container for BFD interface-ipv6-specific
+        data.";
+
+      container config {
+          description "Configuration parameters for BFD ipv6";
+
+          uses bfd-ipv6-config;
+      }
+    }
+
   }
 
   // augment statements
