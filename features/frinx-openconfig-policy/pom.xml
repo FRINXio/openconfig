@@ -19,7 +19,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-policy</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.0.rc24-frinx</version>
+    <version>4.2.0.rc25-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: Policy</name>
 
     <dependencyManagement>
