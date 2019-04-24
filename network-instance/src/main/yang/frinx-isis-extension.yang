@@ -31,7 +31,7 @@ module frinx-isis-extension {
   grouping isis-interface-ext-config {
     leaf level-capability {
       type oc-isis-types:level-type;
-      default "LEVEL_1_2";
+      // default "LEVEL_1_2";
       description
         "ISIS level capability(level-1, level-2,vlevel-1-2).";
     }
