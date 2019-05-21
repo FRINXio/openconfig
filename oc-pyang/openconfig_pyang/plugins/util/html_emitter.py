@@ -18,9 +18,9 @@ Implements an HTML documentation emitter for YANG modules
 
 """
 import os
-import re
 
 from jinja2 import Environment, FileSystemLoader
+from rstcloth.rstcloth import RstCloth
 
 import html_helper
 import yangpath
@@ -34,6 +34,19 @@ class HTMLEmitter(DocEmitter):
         """HTML emitter for top-level module documentation given a
         ModuleDoc object"""
 
+
+
+        # d.title('Example Use')
+        # d.newline()
+        # d.h2('Contents')
+        # d.directive(name="contents", fields=[('local', ''), ('backlinks', 'None')])
+        # d.newline()
+        # d.h2('Code -- shebang')
+        # d.codeblock('#!/usr/bin/env')
+        #
+        # d.print_content()
+
+        mod_r = RstCloth()
         ht = html_helper.HTMLHelper()
 
         # TODO: this is far too hardcoded
@@ -42,22 +55,35 @@ class HTMLEmitter(DocEmitter):
         # module name
         mod_div += ht.h1(mod.module_name, {"class": "module-name", "id": ("mod-" + ht.gen_html_id(mod.module_name))}, 2,
                          True)
+        mod_r.newline()
+        mod_r.h1(mod.module_name)
+        mod_r.newline()
 
         if mod.module.attrs.has_key('version'):
             mod_div += ht.h4("openconfig-version: " + mod.module.attrs['version'], {"class": "module-header"}, 2, True)
+            mod_r._add("openconfig-version: " + mod.module.attrs['version'])
 
         # module description header
         mod_div += ht.h4("Description", {"class": "module-desc-header"}, 2, True)
+        mod_r._add("Description")
+        mod_r.newline()
 
         # module description text
         paragraphs = text_to_paragraphs(mod.module.attrs['desc'])
         for para in paragraphs:
             mod_div += ht.para(para, {"class": "module-desc-text"}, 2, True)
+            mod_r._add(para)
+            mod_r.newline()
 
         mod_div += ht.h4("Imports", {"class": "module-header"}, 2, True)
+        mod_r._add("Imports")
+        mod_r.newline()
         mod_div += "<p class=\"module-desc-text\">"
         for i in mod.module.attrs['imports']:
             mod_div += "%s<br>\n" % i
+            mod_r._add(i)
+            mod_r.newline()
+
         mod_div += "</p>\n"
 
         mod_div += ht.close_tag(newline=True)
@@ -65,7 +91,9 @@ class HTMLEmitter(DocEmitter):
         # initialize and store in the module docs
         self.moduledocs[mod.module_name] = {}
         self.moduledocs[mod.module_name]['module'] = mod_div
+        mod_r.print_content()
         self.moduledocs[mod.module_name]['data'] = ""
+        self.moduledocs[mod.module_name]['r_data'] = ""
 
         # handle reference for the use-case @FRINX
         if mod.module.attrs.has_key('reference'):
@@ -152,6 +180,7 @@ class HTMLEmitter(DocEmitter):
 
         if ctx.opts.no_structure and statement.keyword in ctx.skip_keywords:
             return
+        s_r = RstCloth()
 
         ht = html_helper.HTMLHelper()
 
@@ -165,6 +194,8 @@ class HTMLEmitter(DocEmitter):
         # for 'skipped' nodes, just print the path
         if statement.keyword in self.path_only:
             s_div += ht.h4(pathstr, None, level, True)
+            s_r.newline()
+            s_r._add(pathstr)
             s_div += ht.close_tag(newline=True)
             return s_div
 
@@ -176,6 +207,12 @@ class HTMLEmitter(DocEmitter):
             s_div += ht.h4(statement_name, {"class": "frinx-text-color ", "id": statement.attrs['id']}, level, True)
         else:
             s_div += ht.h4(statement_name, {"class": "statement-name", "id": statement.attrs['id']}, level, True)
+        s_r.newline()
+        s_r._add(prefix)
+        s_r.newline()
+        s_r.r_heading_level = r_heading_level
+        s_r.r_heading_level(s_r,last,level+6)
+        s_r.newline()
 
         # node description
         if statement.attrs.has_key('desc'):
@@ -184,21 +221,22 @@ class HTMLEmitter(DocEmitter):
                     'desc'], {"class": "statement-info-text"}, level, True)
         s_div += ht.close_tag(newline=True)
 
+        # all FRINX prefixes from units
+        prefixes = ["frinx-oc-ios-docs", "frinx-oc-ios-xr-docs", "frinx-oc-ironware-docs", "frinx-oc-nos-docs",
+                    "frinx-oc-vrp-docs", "frinx-oc-nexus-docs", "frinx-oc-junos-docs", "frinx-oc-xr-docs"]
 
-
+        # frinxdoc (added by ab@frinx)
         if statement.attrs.has_key('frinx-documentation'):
-
-            prefixes = find_frinx_prefixes(statement.attrs['frinx-documentation'].keys())
             for prefix in prefixes:
 
                 if statement.attrs['frinx-documentation'].has_key(prefix):
-                    if 'frinx-oc-netconf' in prefix:
+                    if prefix == "frinx-oc-junos-docs" or prefix == "frinx-oc-xr-docs":
                         protocol = 'netconf'
                     else:
                         protocol = 'cli'
                     s_div += ht.h4( protocol + " device " + statement.attrs['frinx-documentation'][prefix]['frinx-docs-type'] + ":",
-                                   {"class": "frinx-text-color thick frinx-margin-left-medium",
-                                    "id": "ident-" + ht.gen_html_id(prefix)}, 2, True)
+                                    {"class": "frinx-text-color thick frinx-margin-left-medium",
+                                     "id": "ident-" + ht.gen_html_id(prefix)}, 2, True)
                     s_div += ht.para(
                         ht.add_tag("span", "frinx-device-type", {"class": "statement-info-label"}) + ":<br />" +
                         statement.attrs['frinx-documentation'][prefix]['frinx-docs-type'],
@@ -219,17 +257,31 @@ class HTMLEmitter(DocEmitter):
                                              statement.attrs['frinx-documentation'][prefix]['frinx-docs-reader-detail'],
                                              {"class": "statement-info-text frinx-preserve-text frinx-margin-left-big"},
                                              level, True)
+                    else:
+                        if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-writer'):
+                            if not (statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.cli.unit.utils.NoopCliWriter" or statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.unitopo.unit.utils.NoopWriter" or statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.cli.unit.utils.NoopCliListWriter" or statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.unitopo.unit.utils.NoopListWriter") :
+                                s_div += ht.para(ht.add_tag("span", "frinx-implemented-reader",
+                                                            {"class": "statement-info-label"}) + ":<br />" +
+                                                 "MISSING READER",
+                                                 {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
+
                     if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-writer'):
+                        if statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.cli.unit.utils.NoopCliWriter" and statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.unitopo.unit.utils.NoopWriter" and statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.cli.unit.utils.NoopCliListWriter" and statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.unitopo.unit.utils.NoopListWriter"  :
+                            s_div += ht.para(ht.add_tag("span", "frinx-implemented-writer",
+                                                        {"class": "statement-info-label"}) + ":<br />" +
+                                             statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'],
+                                             {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
+                            if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-writer-detail'):
+                                s_div += ht.para(ht.add_tag("span", "frinx-implemented-writer-details",
+                                                            {"class": "statement-info-label"}) + ":<br />" +
+                                                 statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer-detail'],
+                                                 {"class": "statement-info-text frinx-preserve-text frinx-margin-left-big"},
+                                                 level, True)
+                    else:
                         s_div += ht.para(ht.add_tag("span", "frinx-implemented-writer",
                                                     {"class": "statement-info-label"}) + ":<br />" +
-                                         statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'],
+                                         "MISSING WRITER",
                                          {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
-                        if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-writer-detail'):
-                            s_div += ht.para(ht.add_tag("span", "frinx-implemented-writer-details",
-                                                        {"class": "statement-info-label"}) + ":<br />" +
-                                             statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer-detail'],
-                                             {"class": "statement-info-text frinx-preserve-text frinx-margin-left-big"},
-                                             level, True)
                     s_div += ht.close_tag(newline=True)
                 s_div += ht.close_tag(newline=True)
         # add link for others
@@ -269,6 +321,7 @@ class HTMLEmitter(DocEmitter):
 
         # add this statement to the collection of data
         self.moduledocs[statement.module_doc.module_name]['data'] += s_div
+        s_r.print_content()
 
     def emitDocs(self, ctx, section=None):
         """Return the HTML output for all modules,
@@ -276,6 +329,7 @@ class HTMLEmitter(DocEmitter):
 
         ht = html_helper.HTMLHelper()
 
+        r_docs = []
         docs = []
         navs = []
         navids = []
@@ -292,6 +346,8 @@ class HTMLEmitter(DocEmitter):
             if section is not None:
                 return self.moduledocs[module_name][section]
             else:
+                r_docs.append(self.moduledocs[module_name]['r_module']._data +
+                              self.moduledocs[module_name]['data'])
                 docs.append(self.moduledocs[module_name]['module'] +
                             self.moduledocs[module_name]['typedefs'] +
                             self.moduledocs[module_name]['identities'] +
@@ -307,8 +363,9 @@ class HTMLEmitter(DocEmitter):
             doc_title = ctx.opts.doc_title
 
         s = populate_template(doc_title, docs, navs, navids)
+        return r_docs
+        # return s
 
-        return s
 
 def gen_type_info(typedoc, level=1):
     """Create and return documentation based on the type.  Expands compound
@@ -390,16 +447,16 @@ def gen_nav_tree(emitter, root_mod, level=0):
     # module link
     if is_augmented(root_mod.module):
         nav += "<li><a class=\"menu-module-name, frinx-nav\" href=\"%s\">%s</a>\n" % (
-        "#mod-" + ht.gen_html_id(root_mod.module_name), root_mod.module_name)
+            "#mod-" + ht.gen_html_id(root_mod.module_name), root_mod.module_name)
     else:
         nav += "<li><a class=\"menu-module-name\" href=\"%s\">%s</a>\n" % (
-        "#mod-" + ht.gen_html_id(root_mod.module_name), root_mod.module_name)
+            "#mod-" + ht.gen_html_id(root_mod.module_name), root_mod.module_name)
 
     nav += "<ul>\n"
     # generate links for types and identities
     if len(root_mod.typedefs) > 0:
         nav += "<li><a href=\"%s\">%s</a>\n" % (
-        "#" + ht.gen_html_id(root_mod.module_name) + "-defined-types", "Defined types")
+            "#" + ht.gen_html_id(root_mod.module_name) + "-defined-types", "Defined types")
         types = root_mod.typedefs.keys()
         nav += " <ul>\n"
         for typename in types:
@@ -409,7 +466,7 @@ def gen_nav_tree(emitter, root_mod, level=0):
 
     if len(root_mod.identities) > 0:
         nav += "<li><a href=\"%s\">%s</a>\n" % (
-        "#" + ht.gen_html_id(root_mod.module_name) + "-identities", "Identities")
+            "#" + ht.gen_html_id(root_mod.module_name) + "-identities", "Identities")
         nav += " <ul>\n"
         for base_id in root_mod.base_identities:
             derived = {key: value for key, value in root_mod.identities.items() if value.attrs['base'] == base_id}
@@ -500,8 +557,62 @@ def is_augmented(node):
     return False
 
 
-def find_frinx_prefixes(all_keys):
-    regex = re.compile(r'^frinx-oc-.*-docs$')
-    filtered_prefixes = filter(regex.search, all_keys)
-    filtered_prefixes.sort()
-    return filtered_prefixes
+def r_heading_level(self, text, level):
+    if level == 1:
+        self.heading(text, char='=')
+    if level == 2:
+        self.heading(text, char='-')
+    if level == 3:
+        self.heading(text, char='~')
+    if level == 4:
+        self.heading(text, char='+')
+    if level == 5:
+        self.heading(text, char='^')
+    if level == 6:
+        self.heading(text, char=';')
+    if level == 7:
+        self.heading(text, char='^')
+    if level == 8:
+        self.heading(text, char='_')
+    if level == 9:
+        self.heading(text, char='*')
+    if level == 10:
+        self.heading(text, char='#')
+    if level == 11:
+        self.heading(text, char='$')
+    if level == 12:
+        self.heading(text, char='%')
+    if level == 13:
+        self.heading(text, char='&')
+    if level == 14:
+        self.heading(text, char='(')
+    if level == 15:
+        self.heading(text, char=')')
+    if level == 16:
+        self.heading(text, char=',')
+    if level == 17:
+        self.heading(text, char='/')
+    if level == 18:
+        self.heading(text, char=':')
+    if level == 19:
+        self.heading(text, char='<')
+    if level == 20:
+        self.heading(text, char='>')
+    if level == 21:
+        self.heading(text, char='?')
+    if level == 22:
+        self.heading(text, char='@')
+    if level == 23:
+        self.heading(text, char='[')
+    if level == 24:
+        self.heading(text, char=']')
+    if level == 25:
+        self.heading(text, char='"')
+    if level == 26:
+        self.heading(text, char='{')
+    if level == 27:
+        self.heading(text, char='|')
+    if level == 28:
+        self.heading(text, char='}')
+    if level == 29:
+        self.heading(text, char='.')
