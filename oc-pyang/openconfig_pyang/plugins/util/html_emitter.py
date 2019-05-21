@@ -61,27 +61,27 @@ class HTMLEmitter(DocEmitter):
 
         if mod.module.attrs.has_key('version'):
             mod_div += ht.h4("openconfig-version: " + mod.module.attrs['version'], {"class": "module-header"}, 2, True)
-            mod_r._add("openconfig-version: " + mod.module.attrs['version'])
+            mod_r.content("openconfig-version: " + mod.module.attrs['version'])
 
         # module description header
         mod_div += ht.h4("Description", {"class": "module-desc-header"}, 2, True)
-        mod_r._add("Description")
+        mod_r.content("Description")
         mod_r.newline()
 
         # module description text
         paragraphs = text_to_paragraphs(mod.module.attrs['desc'])
         for para in paragraphs:
             mod_div += ht.para(para, {"class": "module-desc-text"}, 2, True)
-            mod_r._add(para)
+            mod_r.content(para)
             mod_r.newline()
 
         mod_div += ht.h4("Imports", {"class": "module-header"}, 2, True)
-        mod_r._add("Imports")
+        mod_r.content("Imports")
         mod_r.newline()
         mod_div += "<p class=\"module-desc-text\">"
         for i in mod.module.attrs['imports']:
             mod_div += "%s<br>\n" % i
-            mod_r._add(i)
+            mod_r.content(i)
             mod_r.newline()
 
         mod_div += "</p>\n"
@@ -195,7 +195,7 @@ class HTMLEmitter(DocEmitter):
         if statement.keyword in self.path_only:
             s_div += ht.h4(pathstr, None, level, True)
             s_r.newline()
-            s_r._add(pathstr)
+            s_r.content(pathstr)
             s_div += ht.close_tag(newline=True)
             return s_div
 
@@ -208,7 +208,7 @@ class HTMLEmitter(DocEmitter):
         else:
             s_div += ht.h4(statement_name, {"class": "statement-name", "id": statement.attrs['id']}, level, True)
         s_r.newline()
-        s_r._add(prefix)
+        s_r.content(prefix)
         s_r.newline()
         s_r.r_heading_level = r_heading_level
         s_r.r_heading_level(s_r,last,level+6)
