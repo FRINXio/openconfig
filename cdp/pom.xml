@@ -13,12 +13,12 @@
     <parent>
         <groupId>io.frinx.openconfig</groupId>
         <artifactId>openconfig-parent</artifactId>
-        <version>4.2.1.rc6-frinx</version>
+        <version>4.2.1.rc7-frinx-SNAPSHOT</version>
         <relativePath>../openconfig-parent</relativePath>
     </parent>
 
     <artifactId>openconfig-cdp</artifactId>
-    <version>4.2.1.rc6-frinx</version>
+    <version>4.2.1.rc7-frinx-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <dependencies>
