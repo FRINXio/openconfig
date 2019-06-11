@@ -50,6 +50,7 @@
 ./policy/src/main/yang/frinx-openconfig-routing-policy.yang
 
 ./local-routing/src/main/yang/frinx-openconfig-local-routing.yang
+./local-routing/src/main/yang/frinx-local-routing-types.yang
 
 ./lldp/src/main/yang/frinx-openconfig-lldp.yang
 
@@ -118,6 +119,7 @@
 ./network-instance/src/main/yang/frinx-dasan-vlan-extension.yang
 ./network-instance/src/main/yang/frinx-mpls-ldp-extension.yang
 ./network-instance/src/main/yang/frinx-isis-extension.yang
+./network-instance/src/main/yang/frinx-local-routing-extension.yang
 
 ./bfd/src/main/yang/frinx-openconfig-bfd.yang
 ./bfd/src/main/yang/frinx-bfd-extension.yang
