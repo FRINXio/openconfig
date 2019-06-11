@@ -28,6 +28,7 @@ import org.opendaylight.mdsal.binding.generator.impl.BindingGeneratorImpl;
 import org.opendaylight.mdsal.binding.model.api.GeneratedType;
 import org.opendaylight.mdsal.binding.model.api.ParameterizedType;
 import org.opendaylight.mdsal.binding.model.api.Type;
+import org.opendaylight.yangtools.yang.binding.BindingMapping;
 import org.opendaylight.yangtools.yang.binding.ChildOf;
 import org.opendaylight.yangtools.yang.common.QName;
 import org.opendaylight.yangtools.yang.model.api.AugmentationSchemaNode;
@@ -82,7 +83,8 @@ final class GeneratorExecution implements AutoCloseable {
 
     private void executeModule(Module module) {
         Collection<DataSchemaNode> childNodes = module.getChildNodes();
-        template.addModuleStart(module);
+        template.addModuleStart(module, BindingMapping.getRootPackageName(module.getQNameModule()));
+
         processChildNodes(module, Optional.empty(), childNodes, Collections.emptyList(), Collections.emptyList());
     }
 
