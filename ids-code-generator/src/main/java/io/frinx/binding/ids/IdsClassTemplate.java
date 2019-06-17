@@ -16,17 +16,17 @@ import java.util.Optional;
 import java.util.stream.StreamSupport;
 import org.apache.commons.lang3.StringUtils;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.opendaylight.yangtools.yang.binding.YangModuleInfo;
 import org.opendaylight.yangtools.yang.common.QName;
 import org.opendaylight.yangtools.yang.model.api.AugmentationSchemaNode;
 import org.opendaylight.yangtools.yang.model.api.DataSchemaNode;
 import org.opendaylight.yangtools.yang.model.api.Module;
 import org.opendaylight.yangtools.yang.model.api.SchemaPath;
 
-final class IdsClassTemplate {
 
+final class IdsClassTemplate {
     static final String IID_AUGMENTATION_METHOD = "augmentation";
     static final String IID_CHILD_METHOD = "child";
-
     static final String CLS_NAME = "IIDs";
     private static final String PACKAGE_TEMPLATE = "package %s;\n\n";
     private static final String IMPORT_TEMPLATE = "import %s;\n\n";
@@ -35,14 +35,16 @@ final class IdsClassTemplate {
     private static final String MODULE_START = "\n\t// Module: %s %s\n\n";
     private static final String MODULE_AUG_START = "\n\t// Module(Augmentations): %s %s\n\n";
     private static final String CONSTANT_JAVADOC = "\t/**\n\t * %s\n\t**/\n";
-    private static final String CONSTANT_DEFINITION = "\tpublic static final InstanceIdentifier<%s> %s = %s(%s.class)"
-            + ";\n";
+    private static final String CONSTANT_DEFINITION = "\tpublic static final InstanceIdentifier<%s> %s = %s(%s.class);";
+    private static final String CONSTANT_DEFINITION_YANG_MODULE_INFO = "\tpublic static final YangModuleInfo %s = "
+            + "%s.$YangModuleInfoImpl.getInstance()" + ";\n";
 
     private final StringBuilder result = new StringBuilder();
 
     IdsClassTemplate(String packageName) {
         result.append(String.format(PACKAGE_TEMPLATE, packageName));
         result.append(String.format(IMPORT_TEMPLATE, InstanceIdentifier.class.getName()));
+        result.append(String.format(IMPORT_TEMPLATE, YangModuleInfo.class.getName()));
         result.append(CLASS_DECLARATION_TEMPLATE);
     }
 
@@ -56,10 +58,15 @@ final class IdsClassTemplate {
         return result.toString();
     }
 
-    void addModuleStart(Module module) {
+    void addModuleStart(Module module, String rootPackageName) {
         result.append(String.format(MODULE_START,
                 module.getQNameModule().getNamespace().toString(),
                 module.getName()));
+        result.append(String.format(CONSTANT_DEFINITION_YANG_MODULE_INFO, createConstantName(module), rootPackageName));
+    }
+
+    private static String createConstantName(Module module) {
+        return module.getName().toUpperCase().replaceAll("-", "_");
     }
 
     void addModuleAugStart(Module module) {
@@ -81,7 +88,6 @@ final class IdsClassTemplate {
                     : IID_CHILD_METHOD;
             parentCode = parentVarName.get() + "." + method;
         }
-
         result.append(String.format(CONSTANT_JAVADOC, toConstantHeader(schemaPath)));
         result.append(String.format(CONSTANT_DEFINITION, fqn, varName, parentCode, fqn));
     }
