@@ -1,0 +1,204 @@
+module frinx-oam {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/oam";
+
+  prefix "frinx-oam";
+
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-oam-types { prefix oam-types; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "This module defines configuration and operational state data
+     for ethernet OAM";
+
+  revision "2019-06-19" {
+    description
+      "Created ethernet OAM entries.";
+    reference "3.1.9";
+  }
+
+  grouping ethernet-cfm-interface {
+    description
+      "interface configuration for ethernet CFM";
+
+    container cfm {
+      description
+        "CFM interface configuration";
+
+      container domains {
+        description
+          "Domain-specific interface configuration";
+
+        list domain {
+          key "domain-name";
+          description
+            "Configuration for a particular Maintenance Domain";
+
+          leaf domain-name {
+            type leafref {
+              path "../config/domain-name";
+            }
+            description "Maintenance Domain";
+          }
+
+          container config {
+            description
+              "Configuration for Maintenance Domain";
+
+            leaf domain-name {
+              type string;
+              description "Maintenance Domain";
+            }
+          }
+
+          container mep {
+            description "MEP configuration";
+
+            container config {
+              description "configuration for MEP";
+
+              leaf ma-name {
+                type string;
+                description "MA name";
+              }
+
+              leaf mep-id {
+                type uint16 {
+                  range "1 .. 8191";
+                }
+                description "MEP ID";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  grouping oam-top {
+    description
+      "Top level configuration container for ethernet OAM data";
+
+    container oam {
+      description
+        "Top level configuration container for ethernet OAM data";
+
+      container cfm {
+        description
+          "Ethernet connectivity fault management.  Also includes
+          options that are associated with specific interfaces, such
+          as maintenance endpoint domains.";
+        reference "IEEE 802.1ag";
+
+        container domains {
+          description
+            "Domain-specific global configuration";
+
+          list domain {
+            key "domain-name";
+            description
+              "Configuration for a particular Maintenance
+              Domain";
+
+            leaf domain-name {
+              type leafref {
+                path "../config/domain-name";
+              }
+              description "Maintenance Domain";
+            }
+
+            container config {
+              leaf domain-name {
+                type string;
+                description "Maintenance Domain";
+              }
+
+              leaf level {
+                type oam-types:domain-level;
+                description "Maintenance Domain Level";
+              }
+            }
+
+            container mas {
+              description "MA-Specific configuration";
+
+              list ma {
+                key ma-name;
+                description
+                  "Configuration for a particular MA";
+
+                leaf ma-name {
+                  type leafref {
+                    path "../config/ma-name";
+                  }
+                  description "MA name";
+                }
+
+                container config {
+                  description "Configuration for MA";
+
+                  leaf ma-name {
+                    type string;
+                    description "MA name";
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // data definition statements
+  uses oam-top;
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses oam-top;
+  }
+
+  // augment statements
+  augment "/oc-if:interfaces/oc-if:interface" {
+    ext:augment-identifier "if-cfm-aug";
+    description "Adds ethernet CFM configuration to interfaces model";
+
+    uses ethernet-cfm-interface;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+              "oc-if:subinterface" {
+    ext:augment-identifier "if-subif-cfm-aug";
+    description "Adds ethernet CFM configuration to subinterfaces model";
+
+    uses ethernet-cfm-interface;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
+    description "Adds ethernet CFM configuration to interfaces model";
+
+    uses ethernet-cfm-interface;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" +
+              "/oc-if:subinterfaces/oc-if:subinterface"{
+    description "Adds ethernet CFM configuration to subinterfaces model";
+
+    uses ethernet-cfm-interface;
+  }
+}

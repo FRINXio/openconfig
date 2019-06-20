@@ -139,11 +139,6 @@
             </dependency>
             <dependency>
                 <groupId>io.frinx.openconfig</groupId>
-                <artifactId>openconfig-probes</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.frinx.openconfig</groupId>
                 <artifactId>openconfig-snmp</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -185,6 +180,11 @@
             <dependency>
                 <groupId>io.frinx.openconfig</groupId>
                 <artifactId>openconfig-utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.frinx.openconfig</groupId>
+                <artifactId>openconfig-oam</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

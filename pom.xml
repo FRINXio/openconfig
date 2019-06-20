@@ -57,6 +57,7 @@
     <module>probes</module>
     <module>utils</module>
     <module>isis</module>
+    <module>oam</module>
 
     <module>features</module>
   </modules>

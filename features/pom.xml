@@ -52,5 +52,6 @@
         <module>frinx-openconfig-evpn</module>
         <module>frinx-openconfig-probes</module>
         <module>frinx-openconfig-isis</module>
+        <module>frinx-openconfig-oam</module>
     </modules>
 </project>

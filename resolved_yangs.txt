@@ -140,3 +140,6 @@
 ./probes/src/main/yang/frinx-openconfig-probes.yang
 ./probes/src/main/yang/frinx-juniper-probes-extension.yang
 
+./oam/src/main/yang/frinx-oam-types.yang
+./oam/src/main/yang/frinx-oam.yang
+
