@@ -108,10 +108,13 @@ module frinx-openconfig-bgp-policy {
 
   typedef bgp-set-med-type {
     type union {
-      type uint32;
+      // Swapped the definition order of uint32 and string.
+      // e.g. the value of "+90" should be treated as string, not uint32.
       type string {
-        pattern '^[+-][0-9]+$';
+        // Modified regex to deal with by FrinxODL correctly.
+        pattern '[+-][0-9]+';
       }
+      type uint32;
       type enumeration {
         enum IGP {
           description "set the MED value to the IGP cost toward the
