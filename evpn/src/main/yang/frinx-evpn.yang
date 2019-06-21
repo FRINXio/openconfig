@@ -158,6 +158,14 @@ module frinx-evpn {
           type boolean;
           description "Is EVPN enabled";
         }
+        leaf cost-out {
+          type boolean;
+          description "Is cost-out set";
+        }
+        leaf startup-cost-in {
+          type uint32;
+          description "startup-cost-in value in seconds.";
+        }
       }
       uses evpn-groups;
       uses evpn-interfaces;
