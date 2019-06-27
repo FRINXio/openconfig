@@ -9,6 +9,7 @@ module frinx-isis-extension {
 
   // import some basic types
   import frinx-openconfig-network-instance { prefix oc-ni; }
+  import frinx-openconfig-routing-policy { prefix oc-rpol; }
 
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
@@ -28,6 +29,24 @@ module frinx-isis-extension {
       "Initial release";
   }
 
+  typedef Isis-internal-level {
+    type enumeration {
+      enum NOT_SET {
+        value 0;
+        description "Level not set";
+      }
+      enum LEVEL_1 {
+        value 1;
+        description "Level1";
+      }
+      enum LEVEL_2 {
+        value 2;
+        description "Level2";
+      }
+    }
+    description "Isis internal level";
+  }
+
   grouping isis-interface-ext-config {
     leaf level-capability {
       type oc-isis-types:level-type;
@@ -44,6 +63,74 @@ module frinx-isis-extension {
       description
         "The number of seconds that the local system waits before
         retransmitting an unacknowledged LSA.";
+    }
+  }
+
+  grouping isis-global-ext-config {
+    leaf-list max-link-metric {
+      type Isis-internal-level;
+    }
+    description "Level to which configuration applies";
+  }
+
+  grouping isis-redistribution-ext-config {
+    container redistributions {
+      description "Protocol redistribution configuration";
+
+      list redistribution {
+        key "protocol instance";
+        description
+          "Redistribution of other protocols into this IS-IS instance";
+
+        leaf protocol {
+          type leafref {
+            path "../config/protocol";
+          }
+          description
+            "The protocol to be redistributed.
+            As for now, supported protocol is isis only.";
+        }
+
+        leaf instance {
+          type leafref {
+            path "../config/instance";
+          }
+          description "Protocol Instance Identifier.";
+        }
+
+        container config {
+          leaf protocol {
+            type string;
+            description
+              "The protocol to be redistributed.";
+          }
+          leaf instance {
+            type string;
+            description "Protocol Instance Identifier.";
+          }
+
+          leaf level {
+            type oc-isis-types:level-type;
+            description "Levels to redistribute routes into.";
+          }
+
+          leaf metric {
+            type uint32;
+            description
+              "Metric for redistributed routes:
+              <0-63> for narrow, <0-16777215> for wide";
+          }
+
+          leaf route-policy {
+            type leafref {
+              path "/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
+                "oc-rpol:policy-definition/oc-rpol:name";
+            }
+            description
+              "Route policy to control redistribution.";
+          }
+        }
+      }
     }
   }
 
@@ -70,6 +157,22 @@ module frinx-isis-extension {
     uses isis-interface-timers-ext-config;
   }
 
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:isis/" +
+  "oc-ni:global/oc-ni:config" {
+    description "Extends global configuration of isis";
+    ext:augment-identifier "isis-global-conf-aug";
+
+    uses isis-global-ext-config;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:isis/" +
+  "oc-ni:global/oc-ni:afi-safi/oc-ni:af" {
+    description "Extends global/afi-safi with redistribution config of isis";
+    ext:augment-identifier "isis-global-afi-safi-conf-aug";
+
+    uses isis-redistribution-ext-config;
+  }
+
   // uniconfig augmentations
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/" +
   "oc-ni:protocols/oc-ni:protocol/oc-ni:isis/oc-ni:interfaces/oc-ni:interface/oc-ni:config" {
@@ -92,5 +195,21 @@ module frinx-isis-extension {
     description "Extends timers settings on the isis interface";
 
     uses isis-interface-timers-ext-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+  "oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:isis/" +
+  "oc-ni:global/oc-ni:config" {
+    description "Extends global configuration of isis";
+
+    uses isis-global-ext-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+  "oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:isis/" +
+  "oc-ni:global/oc-ni:afi-safi/oc-ni:af" {
+    description "Extends global/afi-safi with redistribution config of isis";
+
+    uses isis-redistribution-ext-config;
   }
 }
