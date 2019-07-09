@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 
-Implements an HTML documentation emitter for YANG modules
+Implements an RST documentation emitter for YANG modules
 
 """
 import os
@@ -28,14 +28,9 @@ from doc_emitter import DocEmitter
 from yangdoc_defs import YangDocDefs
 
 
-class HTMLEmitter(DocEmitter):
+class RSTEmitter(DocEmitter):
 
     def genModuleDoc(self, mod, ctx):
-        """HTML emitter for top-level module documentation given a
-        ModuleDoc object"""
-
-
-
         # d.title('Example Use')
         # d.newline()
         # d.h2('Contents')
@@ -47,123 +42,32 @@ class HTMLEmitter(DocEmitter):
         # d.print_content()
 
         mod_r = RstCloth()
-        ht = html_helper.HTMLHelper()
-
-        # TODO: this is far too hardcoded
-        mod_div = ht.open_tag("div", newline=True)
-
-        # module name
-        mod_div += ht.h1(mod.module_name, {"class": "module-name", "id": ("mod-" + ht.gen_html_id(mod.module_name))}, 2,
-                         True)
         mod_r.newline()
         mod_r.h1(mod.module_name)
         mod_r.newline()
 
         if mod.module.attrs.has_key('version'):
-            mod_div += ht.h4("openconfig-version: " + mod.module.attrs['version'], {"class": "module-header"}, 2, True)
-            mod_r.content("openconfig-version: " + mod.module.attrs['version'])
+            mod_r.h4("openconfig-version: " + mod.module.attrs['version'])
 
         # module description header
-        mod_div += ht.h4("Description", {"class": "module-desc-header"}, 2, True)
-        mod_r.content("Description")
+        mod_r.h4("Description")
         mod_r.newline()
 
         # module description text
         paragraphs = text_to_paragraphs(mod.module.attrs['desc'])
         for para in paragraphs:
-            mod_div += ht.para(para, {"class": "module-desc-text"}, 2, True)
             mod_r.content(para)
             mod_r.newline()
 
-        mod_div += ht.h4("Imports", {"class": "module-header"}, 2, True)
-        mod_r.content("Imports")
+        mod_r.h4("Imports")
         mod_r.newline()
-        mod_div += "<p class=\"module-desc-text\">"
         for i in mod.module.attrs['imports']:
-            mod_div += "%s<br>\n" % i
             mod_r.content(i)
             mod_r.newline()
 
-        mod_div += "</p>\n"
-
-        mod_div += ht.close_tag(newline=True)
-
         # initialize and store in the module docs
-        self.moduledocs[mod.module_name] = {}
-        self.moduledocs[mod.module_name]['module'] = mod_div
         print('\n'.join(mod_r._data).encode('utf-8'))
-        self.moduledocs[mod.module_name]['data'] = ""
-        self.moduledocs[mod.module_name]['r_data'] = ""
-
-        # handle reference for the use-case @FRINX
-        if mod.module.attrs.has_key('reference'):
-            self.moduledocs[mod.module_name]['reference'] = mod.module.attrs['reference']
-        # handle typedefs
-        if len(mod.typedefs) > 0:
-            types_div = ht.open_tag("div", newline=True)
-            types_div += ht.h3("Defined types",
-                               {"class": "module-types-header", "id": mod.module_name + "-defined-types"}, 2, True)
-
-            for (typename, td) in mod.typedefs.iteritems():
-                types_div += ht.h4(typename, {"class": "module-type-name", "id": "type-" + ht.gen_html_id(typename)}, 2,
-                                   True)
-                if td.attrs.has_key('desc'):
-                    types_div += ht.para(
-                        ht.add_tag("span", "description:" + ht.br(newline=True), {"class": "module-type-text-label"}) +
-                        td.attrs['desc'], {"class": "module-type-text"}, 2, True)
-                types_div += gen_type_info(td.typedoc, 2)
-
-                for prop in YangDocDefs.type_leaf_properties:
-                    if td.attrs.has_key(prop):
-                        types_div += ht.para(
-                            ht.add_tag("span", prop, {"class": "module-type-text-label"}) + ": " + td.attrs[prop],
-                            {"class": "module-type-text"}, 2, True)
-
-            types_div += ht.close_tag(newline=True)
-        else:
-            # module doesn't have any typedefs
-            types_div = ""
-
-        # store the typedef docs
-        self.moduledocs[mod.module_name]['typedefs'] = types_div
-
-        # handle identities
-        if len(mod.identities) > 0:
-            idents_div = ht.open_tag("div", newline=True)
-            idents_div += ht.h3("Identities", {"class": "module-types-header", "id": mod.module_name + "-identities"},
-                                2, True)
-
-            for base_id in mod.base_identities:
-                idents_div += ht.h4("base: " + base_id,
-                                    {"class": "module-type-name", "id": "ident-" + ht.gen_html_id(base_id)}, 2, True)
-                idents_div += ht.para(
-                    ht.add_tag("span", "description:" + ht.br(newline=True), {"class": "module-type-text-label"}) +
-                    mod.identities[base_id].attrs['desc'], {"class": "module-type-text"}, 2, True)
-
-                # collect all of the identities that have base_id as
-                # their base
-                # TODO(aashaikh): this needs to be updated to handle nested identities / multiple inheritance
-                derived = {key: value for key, value in mod.identities.items() if value.attrs['base'] == base_id}
-                # emit the identities derived from the current base
-                for (idname, id) in derived.iteritems():
-                    idents_div += ht.h4(idname, {"class": "module-type-name", "id": "ident-" + ht.gen_html_id(idname)},
-                                        2, True)
-                    idents_div += ht.para(
-                        ht.add_tag("span", "description:", {"class": "module-type-text-label"}) + ht.br(newline=True) +
-                        id.attrs['desc'], {"class": "module-type-text"}, 2, True)
-                    idents_div += ht.para(ht.add_tag("span", "base identity: ", {"class": "module-type-text-label"})
-                                          + ht.add_tag("a", id.attrs['base'],
-                                                       {"href": "#ident-" + ht.gen_html_id(id.attrs['base'])}),
-                                          {"class": "module-type-text"}, 2, True)
-
-                idents_div += ht.close_tag(newline=True)
-        else:
-            # module doesn't have any identities
-            idents_div = ""
-
-        # store the identity docs
-        self.moduledocs[mod.module_name]['identities'] = idents_div
-        gen_nav_tree(self, mod, 0)
+        # gen_nav_tree(self, mod, 0)
 
     def create_links(self, use_cases):
         ht = html_helper.HTMLHelper()
@@ -320,7 +224,7 @@ class HTMLEmitter(DocEmitter):
                     {"class": "statement-info-text"}, level, True)
 
         # add this statement to the collection of data
-        self.moduledocs[statement.module_doc.module_name]['data'] += s_div
+        #self.moduledocs[statement.module_doc.module_name]['data'] += s_div
         s_r.print_content()
 
     def emitDocs(self, ctx, section=None):
@@ -354,16 +258,16 @@ class HTMLEmitter(DocEmitter):
                 navs.append(self.moduledocs[module_name]['navlist'])
                 navids.append(self.moduledocs[module_name]['navid'])
 
-        if ctx.opts.doc_title is None:
+        #if ctx.opts.doc_title is None:
             # just use the name of the first module returned by the dict if no title
             # is supplied
-            doc_title = self.moduledocs.iterkeys().next()
-        else:
-            doc_title = ctx.opts.doc_title
+        #    doc_title = self.moduledocs.iterkeys().next()
+        #else:
+        doc_title = "bla"
 
         s = populate_template(doc_title, docs, navs, navids)
-        return r_docs
-        # return s
+        #return r_docs
+        return s
 
 
 def gen_type_info(typedoc, level=1):
