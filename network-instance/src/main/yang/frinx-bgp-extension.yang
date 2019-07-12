@@ -49,6 +49,15 @@ module frinx-bgp-extension {
     }
   }
 
+  grouping default-originate-group {
+    leaf send-default-route-route-policy {
+      type leafref {
+        path "/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
+          "oc-rpol:policy-definition/oc-rpol:name";
+      }
+    }
+  }
+
   // network-instances augmentations
   augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:local-aggregates/oc-ni:aggregate/oc-ni:config" {
     ext:augment-identifier "ni-prot-agg-aug";
@@ -65,6 +74,22 @@ module frinx-bgp-extension {
     uses soft-reconfiguration-group;
   }
 
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/" +
+    "oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:ipv4-unicast/oc-ni:config" {
+    ext:augment-identifier "bgp-ne-af-ipv4-unicast-aug";
+    description "Extends bgp neighbor afi-safi ipv4-unicast config";
+
+    uses default-originate-group;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/" +
+    "oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:ipv6-unicast/oc-ni:config" {
+    ext:augment-identifier "bgp-ne-af-ipv6-unicast-aug";
+    description "Extends bgp neighbor afi-safi ipv6-unicast config";
+
+    uses default-originate-group;
+  }
+
   // uniconfig augmentations
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/" +
     "oc-ni:local-aggregates/oc-ni:aggregate/oc-ni:config" {
@@ -78,5 +103,21 @@ module frinx-bgp-extension {
     description "Extends bgp neighbor afi-safi config with soft-reconfiguration field for uniconfig topology";
 
     uses soft-reconfiguration-group;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+    "oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/" +
+    "oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:ipv4-unicast/oc-ni:config" {
+    description "Extends bgp neighbor afi-safi ipv4-unicast config";
+
+    uses default-originate-group;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+    "oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/" +
+    "oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:ipv6-unicast/oc-ni:config" {
+    description "Extends bgp neighbor afi-safi ipv6-unicast config";
+
+    uses default-originate-group;
   }
 }
