@@ -58,6 +58,7 @@
     <module>utils</module>
     <module>isis</module>
     <module>oam</module>
+    <module>stp</module>
 
     <module>features</module>
   </modules>
