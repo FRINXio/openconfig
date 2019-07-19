@@ -39,6 +39,15 @@ module frinx-oam {
       description
         "CFM interface configuration";
 
+      container config {
+        description "Configuration for ethernet CFM";
+
+        leaf enabled {
+          type boolean;
+          description "Is ethernet CFM enabled";
+        }
+      }
+
       container domains {
         description
           "Domain-specific interface configuration";
@@ -103,6 +112,15 @@ module frinx-oam {
           options that are associated with specific interfaces, such
           as maintenance endpoint domains.";
         reference "IEEE 802.1ag";
+
+        container config {
+          description "Configuration for ethernet CFM";
+
+          leaf enabled {
+            type boolean;
+            description "Is ethernet CFM enabled";
+          }
+        }
 
         container domains {
           description
