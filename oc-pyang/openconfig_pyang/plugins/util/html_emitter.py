@@ -18,9 +18,9 @@ Implements an HTML documentation emitter for YANG modules
 
 """
 import os
+import re
 
 from jinja2 import Environment, FileSystemLoader
-from rstcloth.rstcloth import RstCloth
 
 import html_helper
 import yangpath
@@ -34,19 +34,6 @@ class HTMLEmitter(DocEmitter):
         """HTML emitter for top-level module documentation given a
         ModuleDoc object"""
 
-
-
-        # d.title('Example Use')
-        # d.newline()
-        # d.h2('Contents')
-        # d.directive(name="contents", fields=[('local', ''), ('backlinks', 'None')])
-        # d.newline()
-        # d.h2('Code -- shebang')
-        # d.codeblock('#!/usr/bin/env')
-        #
-        # d.print_content()
-
-        mod_r = RstCloth()
         ht = html_helper.HTMLHelper()
 
         # TODO: this is far too hardcoded
@@ -55,34 +42,22 @@ class HTMLEmitter(DocEmitter):
         # module name
         mod_div += ht.h1(mod.module_name, {"class": "module-name", "id": ("mod-" + ht.gen_html_id(mod.module_name))}, 2,
                          True)
-        mod_r.newline()
-        mod_r.h1(mod.module_name)
-        mod_r.newline()
 
         if mod.module.attrs.has_key('version'):
             mod_div += ht.h4("openconfig-version: " + mod.module.attrs['version'], {"class": "module-header"}, 2, True)
-            mod_r.content("openconfig-version: " + mod.module.attrs['version'])
 
         # module description header
         mod_div += ht.h4("Description", {"class": "module-desc-header"}, 2, True)
-        mod_r.content("Description")
-        mod_r.newline()
 
         # module description text
         paragraphs = text_to_paragraphs(mod.module.attrs['desc'])
         for para in paragraphs:
             mod_div += ht.para(para, {"class": "module-desc-text"}, 2, True)
-            mod_r.content(para)
-            mod_r.newline()
 
         mod_div += ht.h4("Imports", {"class": "module-header"}, 2, True)
-        mod_r.content("Imports")
-        mod_r.newline()
         mod_div += "<p class=\"module-desc-text\">"
         for i in mod.module.attrs['imports']:
             mod_div += "%s<br>\n" % i
-            mod_r.content(i)
-            mod_r.newline()
 
         mod_div += "</p>\n"
 
@@ -91,7 +66,7 @@ class HTMLEmitter(DocEmitter):
         # initialize and store in the module docs
         self.moduledocs[mod.module_name] = {}
         self.moduledocs[mod.module_name]['module'] = mod_div
-        print('\n'.join(mod_r._data).encode('utf-8'))
+        # print('\n'.join(mod_r._data).encode('utf-8'))
         self.moduledocs[mod.module_name]['data'] = ""
         self.moduledocs[mod.module_name]['r_data'] = ""
 
@@ -180,7 +155,6 @@ class HTMLEmitter(DocEmitter):
 
         if ctx.opts.no_structure and statement.keyword in ctx.skip_keywords:
             return
-        s_r = RstCloth()
 
         ht = html_helper.HTMLHelper()
 
@@ -194,8 +168,6 @@ class HTMLEmitter(DocEmitter):
         # for 'skipped' nodes, just print the path
         if statement.keyword in self.path_only:
             s_div += ht.h4(pathstr, None, level, True)
-            s_r.newline()
-            s_r.content(pathstr)
             s_div += ht.close_tag(newline=True)
             return s_div
 
@@ -207,12 +179,6 @@ class HTMLEmitter(DocEmitter):
             s_div += ht.h4(statement_name, {"class": "frinx-text-color ", "id": statement.attrs['id']}, level, True)
         else:
             s_div += ht.h4(statement_name, {"class": "statement-name", "id": statement.attrs['id']}, level, True)
-        s_r.newline()
-        s_r.content(prefix)
-        s_r.newline()
-        s_r.r_heading_level = r_heading_level
-        s_r.r_heading_level(s_r,last,level+6)
-        s_r.newline()
 
         # node description
         if statement.attrs.has_key('desc'):
@@ -321,7 +287,6 @@ class HTMLEmitter(DocEmitter):
 
         # add this statement to the collection of data
         self.moduledocs[statement.module_doc.module_name]['data'] += s_div
-        s_r.print_content()
 
     def emitDocs(self, ctx, section=None):
         """Return the HTML output for all modules,
@@ -329,7 +294,6 @@ class HTMLEmitter(DocEmitter):
 
         ht = html_helper.HTMLHelper()
 
-        r_docs = []
         docs = []
         navs = []
         navids = []
@@ -346,7 +310,6 @@ class HTMLEmitter(DocEmitter):
             if section is not None:
                 return self.moduledocs[module_name][section]
             else:
-                r_docs.append(self.moduledocs[module_name]['data'])
                 docs.append(self.moduledocs[module_name]['module'] +
                             self.moduledocs[module_name]['typedefs'] +
                             self.moduledocs[module_name]['identities'] +
@@ -362,8 +325,7 @@ class HTMLEmitter(DocEmitter):
             doc_title = ctx.opts.doc_title
 
         s = populate_template(doc_title, docs, navs, navids)
-        return r_docs
-        # return s
+        return s
 
 
 def gen_type_info(typedoc, level=1):
