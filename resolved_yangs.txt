@@ -37,6 +37,7 @@
 ./interfaces/src/main/yang/frinx-if-aggregate-extension.yang
 
 ./interfaces/src/main/yang/frinx-juniper-if-extension.yang
+./interfaces/src/main/yang/frinx-if-ethernet-extension.yang
 
 ./netflow/src/main/yang/frinx-netflow.yang
 

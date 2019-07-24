@@ -1,0 +1,96 @@
+module frinx-if-ethernet-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/ethernet-ext";
+
+  prefix "if-eth-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-if-aggregate { prefix oc-lag; }
+  import frinx-openconfig-if-ethernet { prefix oc-eth; }
+  import iana-if-type { prefix ift; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing ethernet specific features.";
+
+  revision "2019-07-24" {
+    description
+      "Initial release";
+    reference "3.1.9";
+  }
+
+  // grouping statements
+
+  grouping if-ethernet-extentions-group {
+    container arp {
+      description "Configure Address Resolution Protocol";
+
+      container config {
+        leaf cache-timeout {
+          type uint32;
+          units seconds;
+          description
+            "The number of seconds that an entry remains in the ARP cache";
+        }
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface" {
+    when "oc-if:type = 'ift:ethernetCsmacd' or oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface type is Ethernet or LAG";
+    }
+    ext:augment-identifier "if-aug-eth-ext";
+    description "Extends settings on Ethernet interface and LAG interface";
+
+    uses if-ethernet-extentions-group;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface" {
+    when "oc-if:type = 'ift:ethernetCsmacd' or oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface type is Ethernet or LAG";
+    }
+    ext:augment-identifier "subif-aug-eth-ext";
+    description "Extends settings on subinterface of Ethernet and LAG";
+
+    uses if-ethernet-extentions-group;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+    "oc-if:interfaces/oc-if:interface" {
+    when "oc-if:type = 'ift:ethernetCsmacd' or oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface type is Ethernet or LAG";
+    }
+    description "Extends settings on Ethernet interface and LAG interface";
+
+    uses if-ethernet-extentions-group;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+    "oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface" {
+    when "oc-if:type = 'ift:ethernetCsmacd' or oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface type is Ethernet or LAG";
+    }
+    description "Extends settings on subinterface of Ethernet and LAG";
+
+    uses if-ethernet-extentions-group;
+  }
+}
