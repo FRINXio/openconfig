@@ -1,0 +1,67 @@
+module frinx-brocade-if-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/brocade-extension";
+
+  prefix "brocade-if-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing BROCADE specific features.";
+
+  revision "2019-07-26" {
+    description
+      "Initial release";
+    reference "3.1.7";
+  }
+
+  grouping brocade-if-extension-config {
+    leaf priority {
+      type uint8 {
+        range "0..7";
+      }
+      description "The priority index";
+    }
+
+    leaf priority-force {
+      type boolean;
+
+      description
+        "This forces the configured priority when
+        determining the priority relative to other priority values of incoming packets.";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:config/" {
+    description "Priority and priority-force attribute";
+    ext:augment-identifier "if-brocade-priority-aug";
+
+    uses brocade-if-extension-config;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/" +
+    "oc-if:config" {
+    description "Priority and priority-force attribute";
+
+    uses brocade-if-extension-config;
+  }
+}
