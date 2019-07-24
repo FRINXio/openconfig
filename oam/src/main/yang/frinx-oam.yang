@@ -91,6 +91,13 @@ module frinx-oam {
                 }
                 description "MEP ID";
               }
+
+              leaf cos {
+                type uint8 {
+                  range "0 .. 7";
+                }
+                description "Ethernet CoS";
+              }
             }
           }
         }
@@ -172,6 +179,30 @@ module frinx-oam {
                   leaf ma-name {
                     type string;
                     description "MA name";
+                  }
+
+                  leaf continuity-check-interval {
+                    type oam-types:ccm-interval;
+                    description "Continuity Check Message Interval";
+                  }
+
+                  leaf continuity-check-loss-threshold {
+                    type uint32 {
+                      range "2 .. 255";
+                    }
+                    description "Continuity Check Message Loss Threshold";
+                  }
+
+                  leaf-list mep-crosscheck {
+                    type uint16 {
+                      range "1 .. 8191";
+                    }
+                    description "Crosscheck MEP ID";
+                  }
+
+                  leaf efd {
+                    type boolean;
+                    description "Enable EFD to bring down ports when MEPs detect errors";
                   }
                 }
               }
