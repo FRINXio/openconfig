@@ -115,6 +115,7 @@
 ./network-instance/src/main/yang/frinx-cisco-mpls-te-extension.yang
 ./network-instance/src/main/yang/frinx-cisco-pf-interfaces-extension.yang
 ./network-instance/src/main/yang/frinx-juniper-pf-interfaces-extension.yang
+./network-instance/src/main/yang/frinx-brocade-pf-interfaces-extension.yang
 ./network-instance/src/main/yang/frinx-mpls-rsvp-extension.yang
 ./network-instance/src/main/yang/frinx-cisco-ospf-extension.yang
 ./network-instance/src/main/yang/frinx-bgp-extension.yang
