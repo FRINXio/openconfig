@@ -11,6 +11,7 @@ module frinx-bfd {
   import ietf-inet-types { prefix "inet"; }
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-openconfig-if-aggregate { prefix oc-lag; }
+  import iana-if-type { prefix ift; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }

@@ -12,7 +12,6 @@ module frinx-juniper-if-extension {
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
-  import yang-ext { prefix ext; revision-date "2013-07-09"; }
 
   // meta
   organization "Frinx s.r.o";

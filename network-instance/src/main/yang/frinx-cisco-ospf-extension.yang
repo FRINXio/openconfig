@@ -10,7 +10,6 @@ module frinx-cisco-ospf-extension {
   // import some basic types
   import frinx-openconfig-network-instance { prefix oc-ni; }
   import frinx-openconfig-ospf-types { prefix oc-ospf-types; }
-  import frinx-openconfig-ospfv2 { prefix oc-ospfv2; }
 
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
