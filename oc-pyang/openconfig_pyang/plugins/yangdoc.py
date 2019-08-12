@@ -78,7 +78,6 @@ class DocsPlugin(plugin.PyangPlugin):
         modulenames = [m.arg for m in modules]
         if not ctx.opts.ignore_errors:
             for (epos, etag, eargs) in ctx.errors:
-                print(epos)
                 if (epos.top.arg in modulenames and
                         error.is_error(error.err_level(etag))):
                     raise error.EmitError("%s contains errors" % epos.top.arg)
