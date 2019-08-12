@@ -9,6 +9,7 @@ module frinx-mpls-rsvp-extension {
 
   // import some basic types
   import frinx-openconfig-network-instance { prefix oc-netinst; }
+  import frinx-openconfig-network-instance-types { prefix oc-ni-types; }
   import yang-ext { prefix ext; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }

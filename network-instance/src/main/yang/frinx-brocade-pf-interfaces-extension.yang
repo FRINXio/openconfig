@@ -8,11 +8,11 @@ module frinx-brocade-pf-interfaces-extension {
   prefix "brocade-pf-if-ext";
 
   // import some basic types
-  import ietf-inet-types { prefix "inet"; }
   import frinx-openconfig-network-instance { prefix oc-netinst; }
   import yang-ext { prefix ext; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-openconfig-network-instance-types { prefix oc-ni-types; }
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
 
   // meta

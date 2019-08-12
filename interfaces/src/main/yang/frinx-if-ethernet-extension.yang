@@ -9,8 +9,6 @@ module frinx-if-ethernet-extension {
 
   // import some basic types
   import frinx-openconfig-interfaces { prefix oc-if; }
-  import frinx-openconfig-if-aggregate { prefix oc-lag; }
-  import frinx-openconfig-if-ethernet { prefix oc-eth; }
   import iana-if-type { prefix ift; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }

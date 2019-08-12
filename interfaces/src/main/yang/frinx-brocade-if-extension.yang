@@ -49,7 +49,7 @@ module frinx-brocade-if-extension {
 
   // augment statements
 
-  augment "/oc-if:interfaces/oc-if:interface/oc-if:config/" {
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
     description "Priority and priority-force attribute";
     ext:augment-identifier "if-brocade-priority-aug";
 
@@ -58,8 +58,7 @@ module frinx-brocade-if-extension {
 
   // uniconfig augmentations
 
-  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/" +
-    "oc-if:config" {
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:config" {
     description "Priority and priority-force attribute";
 
     uses brocade-if-extension-config;

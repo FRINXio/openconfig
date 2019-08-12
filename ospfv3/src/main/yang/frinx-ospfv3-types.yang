@@ -7,10 +7,6 @@ module frinx-ospfv3-types {
 
   prefix "frinx-ospfv3-types";
 
-  // import some basic types
-  import ietf-yang-types { prefix "yang"; }
-  import frinx-openconfig-extensions { prefix "oc-ext"; }
-
   // meta
   organization "Frinx s.r.o";
 

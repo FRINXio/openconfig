@@ -8,8 +8,8 @@ module frinx-juniper-pf-interfaces-extension {
   prefix "juniper-pf-if-ext";
 
   // import some basic types
-  import ietf-inet-types { prefix "inet"; }
   import frinx-openconfig-network-instance { prefix oc-netinst; }
+  import frinx-openconfig-network-instance-types { prefix oc-ni-types; }
   import yang-ext { prefix ext; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }

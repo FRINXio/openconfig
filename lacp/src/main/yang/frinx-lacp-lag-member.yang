@@ -8,11 +8,11 @@ module frinx-lacp-lag-member {
   prefix "lacp-lag-mem";
 
   // import some basic types
-  import ietf-inet-types { prefix "inet"; }
   import frinx-openconfig-interfaces { prefix oc-if; }
   import frinx-openconfig-lacp { prefix oc-lacp; }
   import yang-ext { prefix ext; }
   import frinx-openconfig-if-ethernet { prefix oc-eth; }
+  import iana-if-type { prefix ift; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
