@@ -56,11 +56,11 @@ module frinx-openconfig-vlan-types {
       "Default TPID value for 802.1q single-tagged VLANs.";
   }
 
-  identity TPID_0X8A88 {
+  identity TPID_0X88A8 {
     base TPID_TYPES;
     description
-      "TPID value for 802.1ad provider bridging, Q-in-Q,
-      or stacked VLANs";
+      "TPID value for 802.1ad provider bridging, QinQ or
+      stacked VLANs.";
   }
 
   identity TPID_0X9100 {
