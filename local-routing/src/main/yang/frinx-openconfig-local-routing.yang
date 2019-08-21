@@ -143,12 +143,13 @@ module frinx-openconfig-local-routing {
     }
 
     leaf next-hop {
-      type union {
-        type inet:ip-address;
-        // DEVIATION: missing getter LocalStaticNexthopConfig$NextHop.getLocalDefinedNextHop()
-        // in generated java class causing problems with binding codecs
-        // type local-defined-next-hop;
-      }
+      // type union {
+      //   type inet:ip-address;
+      //   // DEVIATION: missing getter LocalStaticNexthopConfig$NextHop.getLocalDefinedNextHop()
+      //   // in generated java class causing problems with binding codecs
+      //   // type local-defined-next-hop;
+      // }
+      type inet:ip-address;
       description
         "The next-hop that is to be used for the static route
         - this may be specified as an IP address, an interface
