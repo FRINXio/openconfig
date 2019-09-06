@@ -54,5 +54,6 @@
         <module>frinx-openconfig-isis</module>
         <module>frinx-openconfig-stp</module>
         <module>frinx-openconfig-oam</module>
+        <module>frinx-openconfig-ipsec</module>
     </modules>
 </project>

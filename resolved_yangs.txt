@@ -149,3 +149,5 @@
 ./oam/src/main/yang/frinx-oam.yang
 
 ./stp/src/main/yang/frinx-stp.yang
+
+./ipsec/src/main/yang/frinx-ipsec.yang

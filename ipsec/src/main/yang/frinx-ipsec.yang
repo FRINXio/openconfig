@@ -1,0 +1,173 @@
+module frinx-ipsec {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/ipsec";
+
+  prefix "frinx-ipsec";
+
+  import ietf-inet-types { prefix "inet"; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "This module defines configuration and operational state data
+    for IPsec";
+
+  revision "2019-09-19" {
+    description
+      "Created IPsec entries.";
+    reference "3.1.10";
+  }
+
+  // grouping statements
+
+  grouping ipsec-top {
+    description
+      "Top level configuration container for IPsec data";
+
+    container ipsec {
+      description
+        "Top level configuration container for IPsec data";
+
+      uses ipsec-client-groups;
+    }
+  }
+
+  grouping ipsec-client-groups {
+    description "Configuration of IPsec client groups";
+
+    container client-groups {
+      description "Configuration of IPsec client groups";
+
+      list client-group {
+        key "group-name";
+
+        description "Configuration of IPsec client group";
+
+        leaf group-name {
+          type leafref {
+            path "../config/group-name";
+          }
+          description "group name";
+        }
+
+        container config {
+          description "Configuration of IPsec client group";
+
+          leaf group-name {
+            description "group name";
+            type string;
+          }
+        }
+
+        container clients {
+          description "Configuration of IPsec client";
+
+          list client {
+            key "client-id";
+
+            description "Configuration of IPsec client";
+
+            leaf client-id {
+              type leafref {
+                path "../config/client-id";
+              }
+              description "client ID";
+            }
+
+            container config {
+              description "Configuration of IPsec client";
+
+              leaf client-id {
+                description "client ID";
+                type string;
+              }
+
+              leaf enabled {
+                description "Whether client is enabled";
+                type boolean;
+              }
+            }
+
+            uses client-identification;
+            uses security-association;
+          }
+        }
+      }
+    }
+  }
+
+  grouping client-identification {
+    description "Configuration of client identification";
+
+    container client-identification {
+      description "Configuration of IPsec client ID";
+
+      container config {
+        description "Configuration of IPsec client ID";
+
+        leaf idi-host {
+          type inet:host;
+          description "Initiator host information";
+        }
+
+        leaf peer-prefix {
+          type inet:ip-prefix;
+          description "Peer prefix information";
+        }
+      }
+    }
+  }
+
+  grouping security-association {
+    container security-association {
+      description "Configurations of security assosiation";
+
+      uses tunneling-sa;
+    }
+  }
+
+  grouping tunneling-sa {
+    container tunneling {
+      description "Configurations of tunnel setup";
+
+      container config {
+        description "Configurations of tunnel setup";
+
+        leaf private-interface-name {
+          description "Private interface name used for tunnel setup";
+          type string;
+        }
+
+        leaf private-service-id {
+          description "Service id used for tunnel setup";
+          type uint32;
+        }
+
+        leaf tunnel-template-id {
+          description "Tunnel template id used for tunnel setup";
+          type uint32;
+        }
+      }
+    }
+  }
+
+  //data definition statements
+  uses ipsec-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses ipsec-top;
+  }
+}

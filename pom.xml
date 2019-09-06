@@ -59,6 +59,7 @@
     <module>isis</module>
     <module>oam</module>
     <module>stp</module>
+    <module>ipsec</module>
 
     <module>features</module>
   </modules>
