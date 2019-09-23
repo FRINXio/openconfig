@@ -414,15 +414,17 @@ def collect_child_doc(node, parent, top):
 
                 frinx_device_type = child.search_one((module_name, u'frinx-docs-device-type'))
                 frinx_device_version = child.search_one((module_name, u'frinx-docs-device-version'))
+                frinx_device_protocol = child.search_one((module_name, u'frinx-docs-device-protocol'))
                 frinx_reader = child.search_one((module_name, u'frinx-docs-reader'))
                 frinx_reader_detail = child.search_one((module_name, u'frinx-docs-reader-detail'))
                 frinx_writer = child.search_one((module_name, u'frinx-docs-writer'))
                 frinx_writer_detail = child.search_one((module_name, u'frinx-docs-writer-detail'))
-
                 statement.attrs['frinx-documentation'][child.i_module.i_prefix][
                     'frinx-docs-type'] = frinx_device_type.arg
                 statement.attrs['frinx-documentation'][child.i_module.i_prefix][
                     'frinx-docs-version'] = frinx_device_version.arg
+                statement.attrs['frinx-documentation'][child.i_module.i_prefix][
+                    'frinx-docs-protocol'] = frinx_device_protocol.arg
                 if frinx_reader is not None:
                     statement.attrs['frinx-documentation'][child.i_module.i_prefix][
                         'frinx-docs-reader'] = frinx_reader.arg

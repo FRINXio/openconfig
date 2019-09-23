@@ -187,68 +187,58 @@ class HTMLEmitter(DocEmitter):
                     'desc'], {"class": "statement-info-text"}, level, True)
         s_div += ht.close_tag(newline=True)
 
-        # all FRINX prefixes from units
-        prefixes = ["frinx-oc-ios-docs", "frinx-oc-ios-xr-docs", "frinx-oc-ironware-docs", "frinx-oc-nos-docs",
-                    "frinx-oc-vrp-docs", "frinx-oc-nexus-docs", "frinx-oc-junos-docs", "frinx-oc-xr-docs"]
-
         # frinxdoc (added by ab@frinx)
         if statement.attrs.has_key('frinx-documentation'):
-            for prefix in prefixes:
+            for prefix in statement.attrs['frinx-documentation']:
+                s_div += ht.h4(statement.attrs['frinx-documentation'][prefix]['frinx-docs-protocol']
+                                + " device " + statement.attrs['frinx-documentation'][prefix]['frinx-docs-type'] + ":",
+                                {"class": "frinx-text-color thick frinx-margin-left-medium",
+                                 "id": "ident-" + ht.gen_html_id(prefix)}, 2, True)
+                s_div += ht.para(
+                    ht.add_tag("span", "frinx-device-type", {"class": "statement-info-label"}) + ":<br />" +
+                    statement.attrs['frinx-documentation'][prefix]['frinx-docs-type'],
+                    {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
+                s_div += ht.para(
+                    ht.add_tag("span", "frinx-supported-versions", {"class": "statement-info-label"}) + ":<br />" +
+                    statement.attrs['frinx-documentation'][prefix]['frinx-docs-version'],
+                    {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
 
-                if statement.attrs['frinx-documentation'].has_key(prefix):
-                    if prefix == "frinx-oc-junos-docs" or prefix == "frinx-oc-xr-docs":
-                        protocol = 'netconf'
-                    else:
-                        protocol = 'cli'
-                    s_div += ht.h4( protocol + " device " + statement.attrs['frinx-documentation'][prefix]['frinx-docs-type'] + ":",
-                                    {"class": "frinx-text-color thick frinx-margin-left-medium",
-                                     "id": "ident-" + ht.gen_html_id(prefix)}, 2, True)
-                    s_div += ht.para(
-                        ht.add_tag("span", "frinx-device-type", {"class": "statement-info-label"}) + ":<br />" +
-                        statement.attrs['frinx-documentation'][prefix]['frinx-docs-type'],
-                        {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
-                    s_div += ht.para(
-                        ht.add_tag("span", "frinx-supported-versions", {"class": "statement-info-label"}) + ":<br />" +
-                        statement.attrs['frinx-documentation'][prefix]['frinx-docs-version'],
-                        {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
-
-                    if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-reader'):
-                        s_div += ht.para(ht.add_tag("span", "frinx-implemented-reader",
+                if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-reader'):
+                    s_div += ht.para(ht.add_tag("span", "frinx-implemented-reader",
+                                                {"class": "statement-info-label"}) + ":<br />" +
+                                     statement.attrs['frinx-documentation'][prefix]['frinx-docs-reader'],
+                                     {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
+                    if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-reader-detail'):
+                        s_div += ht.para(ht.add_tag("span", "frinx-implemented-reader-details",
                                                     {"class": "statement-info-label"}) + ":<br />" +
-                                         statement.attrs['frinx-documentation'][prefix]['frinx-docs-reader'],
-                                         {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
-                        if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-reader-detail'):
-                            s_div += ht.para(ht.add_tag("span", "frinx-implemented-reader-details",
-                                                        {"class": "statement-info-label"}) + ":<br />" +
-                                             statement.attrs['frinx-documentation'][prefix]['frinx-docs-reader-detail'],
-                                             {"class": "statement-info-text frinx-preserve-text frinx-margin-left-big"},
-                                             level, True)
-                    else:
-                        if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-writer'):
-                            if not (statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.cli.unit.utils.NoopCliWriter" or statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.unitopo.unit.utils.NoopWriter" or statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.cli.unit.utils.NoopCliListWriter" or statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.unitopo.unit.utils.NoopListWriter") :
-                                s_div += ht.para(ht.add_tag("span", "frinx-implemented-reader",
-                                                            {"class": "statement-info-label"}) + ":<br />" +
-                                                 "MISSING READER",
-                                                 {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
-
+                                         statement.attrs['frinx-documentation'][prefix]['frinx-docs-reader-detail'],
+                                         {"class": "statement-info-text frinx-preserve-text frinx-margin-left-big"},
+                                         level, True)
+                else:
                     if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-writer'):
-                        if statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.cli.unit.utils.NoopCliWriter" and statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.unitopo.unit.utils.NoopWriter" and statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.cli.unit.utils.NoopCliListWriter" and statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.unitopo.unit.utils.NoopListWriter"  :
-                            s_div += ht.para(ht.add_tag("span", "frinx-implemented-writer",
+                        if not (statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.cli.unit.utils.NoopCliWriter" or statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.unitopo.unit.utils.NoopWriter" or statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.cli.unit.utils.NoopCliListWriter" or statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] == "io.frinx.unitopo.unit.utils.NoopListWriter") :
+                            s_div += ht.para(ht.add_tag("span", "frinx-implemented-reader",
                                                         {"class": "statement-info-label"}) + ":<br />" +
-                                             statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'],
+                                             "MISSING READER",
                                              {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
-                            if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-writer-detail'):
-                                s_div += ht.para(ht.add_tag("span", "frinx-implemented-writer-details",
-                                                            {"class": "statement-info-label"}) + ":<br />" +
-                                                 statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer-detail'],
-                                                 {"class": "statement-info-text frinx-preserve-text frinx-margin-left-big"},
-                                                 level, True)
-                    else:
+
+                if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-writer'):
+                    if statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.cli.unit.utils.NoopCliWriter" and statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.unitopo.unit.utils.NoopWriter" and statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.cli.unit.utils.NoopCliListWriter" and statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'] != "io.frinx.unitopo.unit.utils.NoopListWriter"  :
                         s_div += ht.para(ht.add_tag("span", "frinx-implemented-writer",
                                                     {"class": "statement-info-label"}) + ":<br />" +
-                                         "MISSING WRITER",
+                                         statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer'],
                                          {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
-                    s_div += ht.close_tag(newline=True)
+                        if statement.attrs['frinx-documentation'][prefix].has_key('frinx-docs-writer-detail'):
+                            s_div += ht.para(ht.add_tag("span", "frinx-implemented-writer-details",
+                                                        {"class": "statement-info-label"}) + ":<br />" +
+                                             statement.attrs['frinx-documentation'][prefix]['frinx-docs-writer-detail'],
+                                             {"class": "statement-info-text frinx-preserve-text frinx-margin-left-big"},
+                                             level, True)
+                else:
+                    s_div += ht.para(ht.add_tag("span", "frinx-implemented-writer",
+                                                {"class": "statement-info-label"}) + ":<br />" +
+                                     "MISSING WRITER",
+                                     {"class": "statement-info-text frinx-margin-left-medium"}, level, True)
                 s_div += ht.close_tag(newline=True)
         # add link for others
         elif statement.attrs.has_key('frinx-usecase'):
