@@ -53,6 +53,8 @@ class DeviceEmitter(DocEmitter):
                 'frinx-docs-type']
             self.moduledocs[prefix]['device-version'] = statement.attrs['frinx-documentation'][fixed_prefix][
                 'frinx-docs-version']
+            self.moduledocs[prefix]['device-protocol'] = statement.attrs['frinx-documentation'][fixed_prefix][
+                'frinx-docs-protocol']
 
     def emitDocs(self, ctx, section=None):
         """Creates files for each frinx prefix we have found. Returns list of all prefixes"""
@@ -63,9 +65,10 @@ class DeviceEmitter(DocEmitter):
             docs = recursive_structure_builder(self.moduledocs[prefix]['nodes'])
             name = self.moduledocs[prefix]['device-name']
             version = self.moduledocs[prefix]['device-version']
+            protocol = self.moduledocs[prefix]['device-protocol']
             dst_path_with_filename = os.path.join(DIR, prefix + ".html")
             output_file = open(dst_path_with_filename, "w")
-            output_file.write(populate_template(name, docs, version))
+            output_file.write(populate_template(name, docs, version, protocol))
             output_file.close()
         # As we already create all needed files we return atleast list of all prefixes used.
         # Which can be used in jenkins to help automate website building.
@@ -120,7 +123,7 @@ def find_frinx_prefixes(all_keys):
     return filter(regex.search, all_keys)
 
 
-def populate_template(device_name, docs, device_version):
+def populate_template(device_name, docs, device_version, device_protocol):
     """Populate HTML templates with the documentation content"""
 
     template_path = os.path.dirname(__file__) + "/../templates/devicedoc"
@@ -130,6 +133,7 @@ def populate_template(device_name, docs, device_version):
 
     return template.render({'name': device_name,
                             'version': device_version,
+                            'protocol': device_protocol,
                             'htmldocs': docs})
 
 
