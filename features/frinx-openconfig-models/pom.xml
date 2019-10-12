@@ -19,7 +19,7 @@
 
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-models</artifactId>
-    <version>4.2.3.rc12-frinx</version>
+    <version>4.2.3.rc13-frinx-SNAPSHOT</version>
     <packaging>feature</packaging>
     <name>Frinx :: Openconfig :: Models</name>
 
