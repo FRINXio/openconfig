@@ -19,7 +19,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-lacp</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.3.rc17-frinx</version>
+    <version>4.2.3.rc18-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: LACP</name>
 
     <dependencyManagement>
