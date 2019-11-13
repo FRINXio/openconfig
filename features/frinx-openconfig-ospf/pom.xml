@@ -19,7 +19,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-ospf</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.3.rc18-frinx-SNAPSHOT</version>
+    <version>4.2.3.rc18-frinx</version>
     <name>Frinx :: Openconfig :: OSPF</name>
 
     <dependencyManagement>
