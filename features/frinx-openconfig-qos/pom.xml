@@ -19,7 +19,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-qos</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.4.rc1-frinx-SNAPSHOT</version>
+    <version>4.2.4.rc1-frinx</version>
     <name>Frinx :: Openconfig :: QoS</name>
 
     <dependencyManagement>
