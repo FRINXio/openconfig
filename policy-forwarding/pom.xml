@@ -13,12 +13,12 @@
     <parent>
         <groupId>io.frinx.openconfig</groupId>
         <artifactId>openconfig-parent</artifactId>
-        <version>4.2.4.rc7-frinx</version>
+        <version>4.2.4.rc8-frinx-SNAPSHOT</version>
         <relativePath>../openconfig-parent</relativePath>
     </parent>
 
     <artifactId>openconfig-policy-forwarding</artifactId>
-    <version>4.2.4.rc7-frinx</version>
+    <version>4.2.4.rc8-frinx-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <dependencies>

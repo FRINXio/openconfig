@@ -19,7 +19,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-interfaces</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.4.rc7-frinx</version>
+    <version>4.2.4.rc8-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: Interfaces</name>
 
     <dependencyManagement>
