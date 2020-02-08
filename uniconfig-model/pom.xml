@@ -18,7 +18,7 @@
 
   <groupId>io.frinx.openconfig</groupId>
   <artifactId>uniconfig-model</artifactId>
-  <version>4.2.4.rc9-frinx-SNAPSHOT</version>
+  <version>4.2.4.rc9-frinx</version>
   <packaging>bundle</packaging>
 
   <dependencies>
