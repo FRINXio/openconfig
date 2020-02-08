@@ -19,7 +19,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-if-ip</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.4.rc9-frinx</version>
+    <version>4.2.4.rc10-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: Interface IP</name>
 
     <dependencyManagement>
