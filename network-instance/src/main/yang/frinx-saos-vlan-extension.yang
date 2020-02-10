@@ -1,0 +1,84 @@
+module frinx-saos-vlan-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/vlan/saos";
+  prefix "saos-vlan-ext";
+
+  // import some basic types
+  import frinx-saos-network-instance-type-extension { prefix saos-ni-type; }
+  import frinx-openconfig-network-instance { prefix oc-netinst; }
+  import frinx-openconfig-vlan-types { prefix oc-vlan-types; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig vlan models,
+    containing saos specific features.";
+
+  revision "2020-02-10" {
+    description
+      "Initial release";
+    reference "4.1.0";
+  }
+
+  // grouping statements
+  grouping saos-vlan-extension-config {
+    leaf egress-tpid {
+      type identityref {
+        base oc-vlan-types:TPID_TYPES;
+      }
+      // default oc-vlan-types:TPID_0X8100;
+      description
+        "Optionally set the tag protocol identifier field (TPID) that
+        is accepted on the VLAN";
+    }
+  }
+
+  grouping saos-vlan-extension-config-stat {
+    leaf statistics {
+      type boolean;
+
+      description "Statistics flag for L2VSICP NI vlan";
+    }
+  }
+
+  // augment statements
+  augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:vlans/oc-netinst:vlan/oc-netinst:config" {
+    description "Adds saos specific configuration to vlan config model";
+    uses saos-vlan-extension-config;
+  }
+
+  augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:vlans/oc-netinst:vlan/oc-netinst:config" {
+    description "Adds saos specific configuration to vlan config model";
+    when "oc-netinst:type = 'saos-ni-type:L2VSICP'" {
+      description "Active when the network-instance is a L2VSICP";
+    }
+    uses saos-vlan-extension-config-stat;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/"
+        + "oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:vlans/oc-netinst:vlan/oc-netinst:config" {
+    description "Adds saos specific configuration to vlan config model";
+    uses saos-vlan-extension-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/"
+        + "oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:vlans/oc-netinst:vlan/oc-netinst:config" {
+    description "Adds saos specific configuration to vlan config model";
+    when "oc-netinst:type = 'saos-ni-type:L2VSICP'" {
+      description "Active when the network-instance is a L2VSICP";
+    }
+    uses saos-vlan-extension-config-stat;
+  }
+}
