@@ -83,6 +83,12 @@ module frinx-saos-if-extension {
         }
       }
     }
+
+    leaf-list vlan-ids {
+      type string;
+      description
+        "Identifier for the vlan-id associated with the port";
+    }
   }
 
   // augment statements
