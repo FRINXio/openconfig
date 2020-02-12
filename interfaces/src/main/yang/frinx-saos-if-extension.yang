@@ -70,6 +70,19 @@ module frinx-saos-if-extension {
       description
         "Set virtual switch ingress filter.";
     }
+
+    leaf vlan-ethertype-policy {
+      type enumeration {
+        enum all {
+          description
+            "type all";
+        }
+        enum vlan-tpid {
+          description
+            "type vlan-tpid";
+        }
+      }
+    }
   }
 
   // augment statements
