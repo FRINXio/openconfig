@@ -11,6 +11,35 @@ module frinx-uniconfig-topology {
     description "Initial revision";
   }
 
+  grouping uniconfig-node-status {
+    leaf connection-status {
+      config false;
+      type enumeration {
+        enum installing {
+          description
+            "Creation of Unified or Uniconfig mountpoint including initial sync-from-network task.";
+        }
+        enum installed {
+          description
+            "Uniconfig mountpoint has been successfully created.";
+        }
+        enum failed {
+          description
+            "An error occurred during creation of Unified or Uniconfig mountpoint.";
+        }
+      }
+      description
+        "Status of Uniconfig mountpoint.";
+    }
+
+    leaf status-message {
+      config false;
+      type string;
+      description
+        "Description of Uniconfig node status/reason of failure.";
+    }
+  }
+
   augment "/nt:network-topology/nt:topology/nt:topology-types" {
     ext:augment-identifier "uniconfig-topology";
     container uniconfig {
@@ -24,6 +53,6 @@ module frinx-uniconfig-topology {
       description
         "Target element for augmentations from OpenConfig configuration";
     }
+    uses uniconfig-node-status;
   }
-
 }
