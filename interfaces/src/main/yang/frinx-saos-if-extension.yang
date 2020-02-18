@@ -89,6 +89,19 @@ module frinx-saos-if-extension {
       description
         "Identifier for the vlan-id associated with the port";
     }
+
+    leaf ingress-to-egress-qmap {
+      type enumeration {
+        enum NNI-NNI {
+          description
+            "NNI-NNI";
+        }
+        enum Default-RCOS {
+          description
+            "Default-RCOS";
+        }
+      }
+    }
   }
 
   // augment statements
