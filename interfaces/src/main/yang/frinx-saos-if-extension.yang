@@ -102,6 +102,21 @@ module frinx-saos-if-extension {
         }
       }
     }
+
+    leaf forward-unlearned {
+      type boolean;
+      description
+        "The Forward-Unlearned option allows for the forwarding or dropping of frames
+         containing unknown, that is, unlearned, source MAC addresses when the
+         SAC limit has been reached on a port. The Forward-Unlearned option
+         is turned on by default for each port.";
+    }
+
+    leaf max-dynamic-macs {
+      type uint16;
+      description
+        "The maximum number of allowed dynamic MAC address";
+    }
   }
 
   // augment statements
