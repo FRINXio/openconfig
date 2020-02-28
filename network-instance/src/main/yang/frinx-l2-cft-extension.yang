@@ -31,53 +31,159 @@ module frinx-l2-cft-extension {
   }
 
   grouping l2-cft-extension {
-    description "Enclosing container for the list of subinterfaces associated with a physical interface";
-    container cft {
-      description "Cft container";
-      leaf cftName {
-        type leafref {
-          path "../config/cftName";
+    description
+      "Enclosing container for the list of subinterfaces associated with a physical interface";
+      container cfts {
+        description
+          "Container for the list of cft.";
+
+        container config {
+          description
+            "Configuration parameters for cfts.";
+
+          leaf mode {
+            type string;
+              description "Name of cft mode";
+          }
         }
-        description "Name of cft";
-      }
-      container config {
-        description "Cft config container";
-        leaf mode {
-          type string;
-          description "Name of cft";
-        }
-        leaf cftName {
-          type string;
-          description "Name of cft";
-        }
-      }
-      container ctrl-protocols {
-        list ctrl-protocol {
-          key "name";
-          description "List of protocols";
-          leaf name {
+
+        list cft {
+          key "cftName";
+
+          description "List of cft";
+
+          leaf cftName {
             type leafref {
-               path "../config/name";
+              path "../config/cftName";
             }
+            description "Name of cft";
           }
           container config {
-            leaf name {
+            description "Cft config container";
+
+            leaf cftName {
               type string;
-              description "Name of cft";
+                description "Name of cft profile";
             }
-            leaf disposition {
-              type enumeration {
-                enum DISCARD {
-                  description "Discard disposition";
+            container ctrl-protocols {
+              list ctrl-protocol {
+                key "name";
+                description "List of protocols";
+                leaf name {
+                  type enumeration {
+                     enum 802.1x {
+                      description
+                        "802.1x";
+                    }
+                    enum all-bridges-block {
+                      description
+                        "all-bridges-block";
+                    }
+                    enum bridge-rsvd-0B0F {
+                      description
+                        "bridge-rsvd-0B0F";
+                    }
+                    enum bridge-rsvd-0C0D {
+                      description
+                        "bridge-rsvd-0C0D";
+                    }
+                    enum cisco-cdp {
+                      description
+                        "cisco-cdp";
+                    }
+                    enum cisco-dtp {
+                      description
+                        "cisco-dtp";
+                    }
+                    enum cisco-pagp {
+                      description
+                        "cisco-pagp";
+                    }
+                    enum cisco-pvst {
+                      description
+                        "cisco-pvst";
+                    }
+                    enum cisco-stp-uplink-fast {
+                      description
+                        "cisco-stp-uplink-fast";
+                    }
+                    enum cisco-udld {
+                      description
+                        "cisco-udld";
+                    }
+                    enum cisco-vtp {
+                      description
+                        "cisco-vtp";
+                    }
+                    enum elmi {
+                      description
+                        "elmi";
+                    }
+                    enum esmc {
+                      description
+                        "esmc";
+                    }
+                    enum garp-block {
+                      description
+                        "garp-block";
+                    }
+                    enum gmrp {
+                      description
+                        "gmrp";
+                    }
+                    enum gvrp {
+                      description
+                        "gvrp";
+                    }
+                    enum lacp {
+                      description
+                        "lacp";
+                    }
+                    enum lacp-marker {
+                      description
+                        "lacp-marker";
+                    }
+                    enum lldp {
+                      description
+                        "lldp";
+                    }
+                    enum mef-ce2-bridge-block {
+                      description
+                        "mef-ce2-bridge-block";
+                    }
+                    enum oam {
+                      description
+                        "oam";
+                    }
+                    enum ptp-peer-delay {
+                      description
+                        "ptp-peer-delay";
+                    }
+                    enum vlan-bridge {
+                      description
+                        "vlan-bridge";
+                    }
+                    enum xstp {
+                      description
+                        "xstp";
+                    }
+                  }
+                  description "Name of ctrl-protocol";
                 }
-                enum FORWARD {
-                  description "Forward disposition";
-                }
-                enum EGRESS-L2PTTRANSLATE {
-                  description "Egress disposition";
-                }
+                leaf disposition {
+                  type enumeration {
+                    enum DISCARD {
+                     description "Discard disposition";
+                    }
+                    enum FORWARD {
+                      description "Forward disposition";
+                    }
+                    enum EGRESS-L2PTTRANSLATE {
+                      description "Egress disposition";
+                    }
+                  }
+                 description "Disposition of cft";
               }
-              description "Disposition of cft";
             }
           }
         }
