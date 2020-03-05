@@ -60,7 +60,7 @@
     <module>oam</module>
     <module>stp</module>
     <module>ipsec</module>
-
+    <module>broadcast-containment</module>
     <module>features</module>
   </modules>
 

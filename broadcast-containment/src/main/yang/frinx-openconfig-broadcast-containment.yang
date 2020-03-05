@@ -1,0 +1,146 @@
+module frinx-openconfig-broadcast-containment {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/broadcast-containment";
+
+  prefix "oc-bc";
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Model for managing broadcast-containment";
+
+  revision "2020-03-03" {
+    description
+      "Initial release";
+    reference "4.2.4";
+  }
+
+  grouping filter-interfaces-config {
+    description
+      "Configuration parameters relating to a filter interface";
+
+    leaf name {
+      type string;
+      description
+        "name of the interface";
+    }
+
+    leaf filter {
+      type string;
+      description
+        "Reference to filter name";
+    }
+  }
+
+  grouping broadcast-containment-filter-config {
+    description
+      "Configuration parameters relating to a top-level broadcast-containment";
+
+    leaf name {
+      type string;
+      description
+        "name of the broadcast-containment filter";
+    }
+
+    leaf rate {
+      type uint64;
+      description
+        "This is the rate in kilobits.
+         The configured rate normalizes to the rate equal to or
+         greater than the configured value in 64 kilobit increments in
+         order to be processed by the hardware.";
+    }
+
+    leaf-list containment-clasification {
+      type string;
+      description
+        "this is the list of traffic classes covered by the filter";
+    }
+  }
+
+  grouping broadcast-containment-top {
+    description
+      "Top-level grouping containing a list of broadcast-containments.";
+
+    container filters {
+      description "broadcast containment filters";
+
+      list filter {
+        key "name";
+
+        description
+          "Broadcast containment configured on the local system";
+
+        leaf name {
+          type leafref {
+            path "../interfaces/interface/config/filter";
+          }
+          description
+            "A unique name identifying the filter";
+        }
+
+        container config {
+          description
+            "Configuration parameters relating to a broadcast-containment";
+
+          uses broadcast-containment-filter-config;
+        }
+
+        container interfaces {
+          description
+            "The interfaces that are associated with this broadcast-containment filter";
+
+          list interface {
+            key "name";
+            unique "config/interface config";
+
+            description
+              "An interface associated with the broadcast-containment filter";
+
+            leaf name {
+              type leafref {
+                path "../config/name";
+              }
+              description
+                "A reference to an identifier for this interface which
+                acts as a key for this list";
+            }
+
+            container config {
+              description
+                "Configuration parameters relating to the associated interface";
+
+              uses filter-interfaces-config;
+            }
+          }
+        }
+      }
+
+      leaf enabled {
+        type boolean;
+        description
+          "Is broadcast-containment enabled";
+      }
+    }
+  }
+
+  uses broadcast-containment-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    description "Added broadcast-containment to configuration";
+    uses broadcast-containment-top;
+  }
+}

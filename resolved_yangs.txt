@@ -151,3 +151,5 @@
 ./stp/src/main/yang/frinx-stp.yang
 
 ./ipsec/src/main/yang/frinx-ipsec.yang
+
+./broadcast-containment/src/main/yang/frinx-openconfig-broadcast-containment.yang

@@ -55,5 +55,6 @@
         <module>frinx-openconfig-stp</module>
         <module>frinx-openconfig-oam</module>
         <module>frinx-openconfig-ipsec</module>
+        <module>frinx-openconfig-broadcast-containment</module>
     </modules>
 </project>
