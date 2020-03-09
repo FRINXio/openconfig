@@ -127,6 +127,20 @@ module frinx-saos-qos-extension {
     }
   }
 
+  grouping saos-qos-2r3c-config {
+    leaf congestion-avoidance {
+      type string;
+      description
+        "Congestion avoidance profile name for traffic-services.";
+    }
+    leaf weight {
+      type uint32;
+      units bytes;
+      description
+        "Scheduler weight parameter for traffic-services";
+    }
+  }
+
   // augment statements
   augment "/oc-qos:qos/oc-qos:config" {
     ext:augment-identifier "saos-qos-aug";
@@ -152,6 +166,12 @@ module frinx-saos-qos-extension {
     uses saos-qos-sc-policy-config;
   }
 
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:two-rate-three-color/oc-qos:config" {
+    ext:augment-identifier "saos-qos-2r3c-aug";
+    description "Adds saos specific configuration to qos two-rate-three-color config model";
+    uses saos-qos-2r3c-config;
+  }
+
   // uniconfig augmentations
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:config" {
     description "Adds saos specific configuration to qos config model";
@@ -171,5 +191,10 @@ module frinx-saos-qos-extension {
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:config" {
     description "Adds saos specific configuration to qos scheduler policy config model";
     uses saos-qos-sc-policy-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:two-rate-three-color/oc-qos:config" {
+    description "Adds saos specific configuration to qos two-rate-three-color config model";
+    uses saos-qos-2r3c-config;
   }
 }
