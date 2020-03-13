@@ -1,0 +1,127 @@
+module frinx-l2-cft-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/cft/extension";
+
+  prefix "l2-cft-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing SAOS specific features.";
+
+  revision "2020-02-20" {
+    description
+      "Initial release";
+    reference "4.2.4";
+  }
+
+  grouping l2-cft-extension {
+    description "Enclosing container for the list of subinterfaces associated with a physical interface";
+    container cft {
+      description "Cft container";
+      leaf cftName {
+        type leafref {
+          path "../config/cftName";
+        }
+        description "Name of cft";
+      }
+      container config {
+        description "Cft config container";
+        leaf mode {
+          type string;
+          description "Name of cft";
+        }
+        leaf cftName {
+          type string;
+          description "Name of cft";
+        }
+      }
+      container ctrl-protocols {
+        list ctrl-protocol {
+          key "name";
+          description "List of protocols";
+          leaf name {
+            type leafref {
+               path "../config/name";
+            }
+          }
+          container config {
+            leaf name {
+              type string;
+              description "Name of cft";
+            }
+            leaf disposition {
+              type enumeration {
+                enum DISCARD {
+                  description "Discard disposition";
+                }
+                enum FORWARD {
+                  description "Forward disposition";
+                }
+                enum EGRESS-L2PTTRANSLATE {
+                  description "Egress disposition";
+                }
+              }
+              description "Disposition of cft";
+            }
+          }
+        }
+      }
+    }
+  }
+
+  grouping l2-cft-if-extension {
+    description "containter for interface config";
+    container interface-cft {
+      description "interface-cft container";
+      leaf profile {
+        type string;
+        description "Name of cft profile";
+      }
+      leaf enabled {
+        type boolean;
+        description "port enable/disable";
+      }
+    }
+  }
+
+  // augment statements
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:config" {
+    description "Adds SAOS specific configuration to network-instance model";
+    ext:augment-identifier "l2-cft-ext";
+    uses l2-cft-extension;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:interfaces/oc-ni:interface/oc-ni:config" {
+    description "Adds SAOS specific configuration to network-instance/interface model";
+    ext:augment-identifier "l2-cft-if-ext";
+    uses l2-cft-if-extension;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:config" {
+    description "Adds SAOS specific configuration to network-instance model";
+    uses l2-cft-extension;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:interfaces/oc-ni:interface/oc-ni:config" {
+    description "Adds SAOS specific configuration to network-instance/interface model";
+    uses l2-cft-if-extension;
+  }
+}
