@@ -167,6 +167,10 @@ module frinx-l2-cft-extension {
                       description
                         "xstp";
                     }
+                    enum bridge-block {
+                      description
+                        "bridge-block";
+                    }
                   }
                   description "Name of ctrl-protocol";
                 }
