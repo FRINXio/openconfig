@@ -35,12 +35,6 @@ module frinx-openconfig-broadcast-containment {
       description
         "name of the interface";
     }
-
-    leaf filter {
-      type string;
-      description
-        "Reference to filter name";
-    }
   }
 
   grouping broadcast-containment-filter-config {
@@ -84,7 +78,7 @@ module frinx-openconfig-broadcast-containment {
 
         leaf name {
           type leafref {
-            path "../interfaces/interface/config/filter";
+            path "../config/name";
           }
           description
             "A unique name identifying the filter";
