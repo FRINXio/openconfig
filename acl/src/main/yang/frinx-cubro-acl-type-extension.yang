@@ -1,0 +1,33 @@
+module frinx-cubro-acl-type-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/acl/cubro";
+  prefix "cubro-acltype-ext";
+
+  // import some basic types
+  import frinx-openconfig-acl { prefix "oc-acl-types"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig acl type,
+    containing cubro specific features.";
+
+  revision "2020-03-20" {
+    description
+      "Initial release";
+    reference "4.2.4";
+  }
+
+  identity ACL_IP {
+    base oc-acl-types:ACL_TYPE;
+    description
+      "IP-layer ACLs with IP addresses";
+  }
+}
