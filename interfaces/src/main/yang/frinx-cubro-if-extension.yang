@@ -1,0 +1,78 @@
+module frinx-cubro-if-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/cubro-extension";
+
+  prefix "cubro-if-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing CUBRO specific features.";
+
+  revision "2020-03-17" {
+    description
+      "Initial release";
+    reference "4.2.4";
+  }
+
+  grouping cubro-if-extension-config {
+    leaf rx {
+      type boolean;
+        description "rx capability";
+    }
+    leaf speed {
+      type string;
+        description "selected speed";
+    }
+    leaf-list elag {
+      type uint8 {
+        range "1 .. 128";
+      }
+    }
+    leaf innerhash {
+      type boolean;
+        description "innerhash enabled/disabled";
+    }
+    leaf inneracl {
+      type boolean;
+        description "inneracl enabled/disabled";
+    }
+    leaf vxlanterminated {
+      type boolean;
+        description "vxlanterminated enabled/disabled";
+    }
+
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description "Adds CUBRO specific configuration to interfaces model";
+    ext:augment-identifier "if-cubro-aug";
+
+    uses cubro-if-extension-config;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description "Adds CUBRO specific configuration to interfaces model";
+
+    uses cubro-if-extension-config;
+  }
+}
