@@ -7,7 +7,9 @@ module frinx-cubro-acl-type-extension {
   prefix "cubro-acltype-ext";
 
   // import some basic types
-  import frinx-openconfig-acl { prefix "oc-acl-types"; }
+  import frinx-openconfig-acl { prefix "oc-acl"; }
+  import frinx-openconfig-packet-match-types { prefix oc-pkt-match-types; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
 
   // meta
   organization "Frinx s.r.o";
@@ -26,8 +28,63 @@ module frinx-cubro-acl-type-extension {
   }
 
   identity ACL_IP {
-    base oc-acl-types:ACL_TYPE;
+    base oc-acl:ACL_TYPE;
     description
       "IP-layer ACLs with IP addresses";
+  }
+
+  identity FORWARD {
+    base oc-acl:FORWARDING_ACTION;
+    description
+      "Forward packets matching ACE";
+  }
+
+  grouping elog {
+    description
+      "Egress type is elag";
+
+    leaf elog {
+      type uint32;
+      description
+        "elag number";
+    }
+
+    leaf operation {
+      type identityref {
+        base OPERATION_TYPE;
+      }
+      description
+        "Type of operation for ACL entry";
+    }
+  }
+
+  identity OPERATION_TYPE {
+    description
+      "Operation type for cubro ACL entry";
+  }
+
+  identity COUNT {
+    base OPERATION_TYPE;
+    description
+      "Count packets matching this entry";
+  }
+
+  identity IP_ANY  {
+    base oc-pkt-match-types:IP_PROTOCOL;
+    description
+      "Any internet protocol";
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config" {
+      description "Add elog into acl-entry";
+
+      uses elog;
+    }
+
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config" {
+    description "Add elog into acl-entry";
+    ext:augment-identifier "acl-cubro-aug";
+
+    uses elog;
   }
 }
