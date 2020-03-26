@@ -176,13 +176,13 @@ module frinx-l2-cft-extension {
                 }
                 leaf disposition {
                   type enumeration {
-                    enum DISCARD {
+                    enum discard {
                      description "Discard disposition";
                     }
-                    enum FORWARD {
+                    enum forward {
                       description "Forward disposition";
                     }
-                    enum EGRESS-L2PTTRANSLATE {
+                    enum egress-l2pttranslate {
                       description "Egress disposition";
                     }
                   }
