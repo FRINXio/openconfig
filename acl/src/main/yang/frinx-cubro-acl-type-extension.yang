@@ -39,14 +39,22 @@ module frinx-cubro-acl-type-extension {
       "Forward packets matching ACE";
   }
 
-  grouping elog {
+  grouping egress {
     description
-      "Egress type is elag";
+      "Egress type";
 
-    leaf elog {
+    leaf egress-type {
+      type identityref {
+        base EGRESS_TYPE;
+      }
+      description
+        "Type of egress";
+    }
+
+    leaf egress-value {
       type uint32;
       description
-        "elag number";
+        "egress value";
     }
 
     leaf operation {
@@ -56,6 +64,17 @@ module frinx-cubro-acl-type-extension {
       description
         "Type of operation for ACL entry";
     }
+  }
+
+  identity EGRESS_TYPE {
+    description
+      "Egress type for cubro ACL entry";
+  }
+
+  identity ELAG {
+    base EGRESS_TYPE;
+    description
+      "Egress type is elag";
   }
 
   identity OPERATION_TYPE {
@@ -78,13 +97,13 @@ module frinx-cubro-acl-type-extension {
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config" {
       description "Add elog into acl-entry";
 
-      uses elog;
+      uses egress;
     }
 
   augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config" {
     description "Add elog into acl-entry";
     ext:augment-identifier "acl-cubro-aug";
 
-    uses elog;
+    uses egress;
   }
 }
