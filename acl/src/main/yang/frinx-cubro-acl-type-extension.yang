@@ -33,12 +33,6 @@ module frinx-cubro-acl-type-extension {
       "IP-layer ACLs with IP addresses";
   }
 
-  identity FORWARD {
-    base oc-acl:FORWARDING_ACTION;
-    description
-      "Forward packets matching ACE";
-  }
-
   grouping egress {
     description
       "Egress type";
