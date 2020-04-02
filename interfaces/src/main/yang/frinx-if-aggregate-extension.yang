@@ -64,6 +64,13 @@ module frinx-if-aggregate-extension {
     }
   }
 
+  grouping if-aggregate-extension {
+    leaf subinterface-name {
+      type string;
+      description "Name of the subinterface";
+    }
+  }
+
   // augment statements
 
   augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/" +
@@ -96,6 +103,14 @@ module frinx-if-aggregate-extension {
     uses if-aggregate-address-config;
   }
 
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/" +
+    "oc-if:config" {
+    description "The name of the subinterface";
+    ext:augment-identifier "saos-8-sub-if-name-aug";
+
+    uses if-aggregate-extension;
+  }
+
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/" +
@@ -118,12 +133,19 @@ module frinx-if-aggregate-extension {
     uses if-aggregate-extentions-config;
   }
 
- augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config" {
-   when "oc-if:type = 'ift:ieee8023adLag'" {
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-lag:aggregation/oc-lag:config" {
+    when "oc-if:type = 'ift:ieee8023adLag'" {
      description "Active when the interface is a LAG";
-   }
-   description "Adds additional Juniper specific settings to a LAG interface";
+    }
+    description "Adds additional Juniper specific settings to a LAG interface";
 
-   uses if-aggregate-address-config;
+    uses if-aggregate-address-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+    "oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-if:config" {
+    description "The name of the subinterface";
+
+    uses if-aggregate-extension;
   }
 }
