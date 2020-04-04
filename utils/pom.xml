@@ -40,7 +40,7 @@
         <dependency>
             <groupId>org.opendaylight.mdsal</groupId>
             <artifactId>yang-binding</artifactId>
-            <version>0.12.2-Oxygen-SR2.4_2_4_rc17-frinxodl-SNAPSHOT</version>
+            <version>0.12.2-Oxygen-SR2.4_2_4_rc17-frinxodl</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
