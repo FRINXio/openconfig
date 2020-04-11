@@ -13,13 +13,13 @@
     <parent>
         <groupId>io.frinx.translate.unit.commons</groupId>
         <artifactId>checkstyle-frinx-parent</artifactId>
-        <version>4.2.4.rc18-frinx</version>
+        <version>4.2.4.rc19-frinx-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>ids-code-generator</artifactId>
-    <version>4.2.4.rc18-frinx</version>
+    <version>4.2.4.rc19-frinx-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <dependencyManagement>
