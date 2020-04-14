@@ -1,0 +1,55 @@
+module frinx-saos-ni-if-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/saos/interface";
+
+  prefix "saos-ifc-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+  import ietf-interfaces { prefix ietf-if; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing SAOS specific features.";
+
+  revision "2020-04-14" {
+    description
+      "Initial release";
+    reference "4.2.4";
+  }
+
+  grouping saos-ni-if-extension-config {
+    leaf type {
+      type identityref {
+        base ietf-if:interface-type;
+      }
+      description "The type of the interface.";
+    }
+  }
+
+  // augment statements
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:interfaces/oc-ni:interface/oc-ni:config" {
+    description "Adds SAOS specific configuration to network-instance/interface model";
+    ext:augment-identifier "saos-8-ni-ifc-aug";
+    uses saos-ni-if-extension-config;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:interfaces/oc-ni:interface/oc-ni:config" {
+    description "Adds SAOS specific configuration to network-instance/interface model";
+    uses saos-ni-if-extension-config;
+  }
+}
