@@ -56,5 +56,6 @@
         <module>frinx-openconfig-oam</module>
         <module>frinx-openconfig-ipsec</module>
         <module>frinx-openconfig-broadcast-containment</module>
+        <module>frinx-openconfig-l2-cft</module>
     </modules>
 </project>

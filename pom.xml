@@ -61,6 +61,7 @@
     <module>stp</module>
     <module>ipsec</module>
     <module>broadcast-containment</module>
+    <module>l2-cft</module>
     <module>features</module>
   </modules>
 
