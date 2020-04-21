@@ -84,12 +84,6 @@ module frinx-saos-if-extension {
       }
     }
 
-    leaf-list vlan-ids {
-      type string;
-      description
-        "Identifier for the vlan-id associated with the port";
-    }
-
     leaf ingress-to-egress-qmap {
       type enumeration {
         enum NNI-NNI {
@@ -119,6 +113,28 @@ module frinx-saos-if-extension {
     }
   }
 
+  grouping saos-if-extension-l2-cft {
+    description "Reference to l2-cft profile.";
+
+    container cft-profile {
+      description "Containter for l2-cft profile.";
+
+      container config {
+        description "Configuration parameters for l2-cft profile.";
+
+        leaf name {
+          type string;
+          description "Name of l2-cft profile.";
+        }
+
+        leaf enabled {
+          type boolean;
+          description "Port enable/disable.";
+        }
+      }
+    }
+  }
+
   // augment statements
 
   augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
@@ -128,11 +144,24 @@ module frinx-saos-if-extension {
     uses saos-if-extension-config;
   }
 
+  augment "/oc-if:interfaces/oc-if:interface" {
+    description "Adds SAOS specific configuration to interfaces model";
+    ext:augment-identifier "saos-6-if-cft-aug";
+
+    uses saos-if-extension-l2-cft;
+  }
+
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:config" {
     description "Adds SAOS specific configuration to interfaces model";
 
     uses saos-if-extension-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
+    description "Adds SAOS specific configuration to interfaces model";
+
+    uses saos-if-extension-l2-cft;
   }
 }
