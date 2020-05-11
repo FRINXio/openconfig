@@ -162,6 +162,21 @@ module frinx-acl-extension {
     }
   }
 
+  grouping acl-set-extension-config {
+    leaf default-fwd-action {
+      type identityref {
+        base oc-acl:FORWARDING_ACTION;
+      }
+      description "The default filter action on the acl profile.";
+    }
+
+    leaf enabled {
+      type boolean;
+        description "Enable/disable an ACL profile.";
+    }
+  }
+
+  // augment statements
   augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config" {
     ext:augment-identifier "acl-set-acl-entry-transport-port-named-aug";
     uses src-dst-port-named;
@@ -189,6 +204,23 @@ module frinx-acl-extension {
     uses acl-icmp-type;
   }
 
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:config" {
+    description "Adds terminal name to acl-entry config";
+    uses term-name;
+  }
+
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config" {
+    description "Adds instance name of actions in acl-entry";
+    uses instance-name;
+  }
+
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:config" {
+    description "Adds SAOS specific configuration to acl model";
+    ext:augment-identifier "saos-6-acl-set-aug";
+    uses acl-set-extension-config;
+  }
+
+  // uniconfig augmentations
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config" {
     uses src-dst-port-named;
   }
@@ -218,18 +250,13 @@ module frinx-acl-extension {
     uses term-name;
   }
 
-  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:config" {
-    description "Adds terminal name to acl-entry config";
-    uses term-name;
-  }
-
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config" {
     description "Adds instance name of actions in acl-entry";
     uses instance-name;
   }
 
-  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config" {
-    description "Adds instance name of actions in acl-entry";
-    uses instance-name;
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:config" {
+    description "Adds SAOS specific configuration to acl model";
+    uses acl-set-extension-config;
   }
 }
