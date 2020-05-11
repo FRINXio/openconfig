@@ -65,6 +65,12 @@ module frinx-saos-vs-extension {
         description
           "value from 0-7";
     }
+
+    leaf tagged-pvst-l2pt {
+      type boolean;
+        description
+          "Enable/disable tagged-pvst-l2pt for virtual-switch";
+    }
   }
 
   // augment statements
