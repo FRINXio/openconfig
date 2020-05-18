@@ -135,6 +135,43 @@ module frinx-saos-if-extension {
     }
   }
 
+  grouping saos-if-extension-pm-instances {
+
+    container pm-instances {
+      description "Container for pm-instances.";
+
+      list pm-instance {
+        key "name";
+
+        description "pm-instance.";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description
+            "Name of pm-instance.";
+        }
+
+        container config {
+          description
+            "Config container of pm-instance.";
+
+          leaf name {
+            type string;
+              description
+                "Name of pm-instance.";
+          }
+
+          leaf bin-count {
+            type string;
+            description "Number of history bins.";
+          }
+        }
+      }
+    }
+  }
+
   // augment statements
 
   augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
@@ -151,6 +188,13 @@ module frinx-saos-if-extension {
     uses saos-if-extension-l2-cft;
   }
 
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface" {
+    description "Adds SAOS specific configuration to interfaces model";
+    ext:augment-identifier "saos-8-pm-instance-aug";
+
+    uses saos-if-extension-pm-instances;
+  }
+
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:config" {
@@ -163,5 +207,12 @@ module frinx-saos-if-extension {
     description "Adds SAOS specific configuration to interfaces model";
 
     uses saos-if-extension-l2-cft;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/" +
+    " oc-if:subinterfaces/oc-if:subinterface" {
+    description "Adds SAOS specific configuration to interfaces model";
+
+    uses saos-if-extension-pm-instances;
   }
 }
