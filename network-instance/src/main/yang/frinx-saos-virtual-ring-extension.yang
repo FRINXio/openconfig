@@ -32,6 +32,56 @@ module frinx-saos-virtual-ring-extension {
   }
 
   // grouping statements
+  grouping saos-logical-ring-extension {
+    description
+      "Enclosing container for logical ring.";
+
+    container logical-ring {
+      description
+        "Container for logical ring.";
+
+      container config {
+        description
+          "Configuration parameters for logical ring.";
+
+        leaf name {
+          type string;
+            description "Name of logical ring.";
+        }
+
+        leaf west-port {
+          type string;
+          description "West port id.";
+        }
+
+        leaf east-port {
+          type string;
+          description "East port id.";
+        }
+      }
+
+      container cfm-service {
+        description
+          "Container for cfm services.";
+
+        container config {
+          description
+            "Configuration parameters for cfm services.";
+
+          leaf west-port-cfm-service {
+            type string;
+            description "West port cfm service.";
+          }
+
+          leaf east-port-cfm-service {
+            type string;
+            description "East port cfm service.";
+          }
+        }
+      }
+    }
+  }
+
   grouping saos-virtual-ring-extension {
     description
       "Enclosing container for the list of virtual rings associated with a network instance";
@@ -64,6 +114,7 @@ module frinx-saos-virtual-ring-extension {
                 "Name of ring.";
           }
         }
+        uses saos-logical-ring-extension;
       }
     }
   }
