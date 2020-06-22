@@ -57,5 +57,6 @@
         <module>frinx-openconfig-ipsec</module>
         <module>frinx-openconfig-broadcast-containment</module>
         <module>frinx-openconfig-l2-cft</module>
+        <module>frinx-openconfig-ring</module>
     </modules>
 </project>
