@@ -27,6 +27,7 @@ from pyang import statements
 
 from util import yangpath
 from util.device_emitter import DeviceEmitter
+from util.usecase_emitter import UsecaseEmitter
 from util.html_emitter import HTMLEmitter
 from util.rst_emitter import RSTEmitter
 from util.markdown_emitter import MarkdownEmitter
@@ -521,7 +522,7 @@ def escape_html(str):
 
 # Check for frinx augment modules without any information
 def check_for_no_information(mod):
-    if len(mod.typedefs) < 0 and len(mod.identities) < 0 and len(mod.children):
+    if len(mod.typedefs) > 0 and len(mod.identities) > 0:
         return True
     else:
         return False

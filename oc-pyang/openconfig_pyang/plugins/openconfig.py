@@ -560,7 +560,6 @@ class OCLintFunctions(object):
               "Couldn't open module %s" % stmt.pos.ref)
       return
 
-    #key_re = re.compile(r"^([ ]+)?key([ ]+)(?P<arg>[^\"]);$")
     key_re = re.compile(r"^([ ]+)?key([ ]+)(?P<arg>[^\"][a-zA-Z0-9\-_]+);$")
     quoted_re = re.compile(r"^\".*\"$")
 
