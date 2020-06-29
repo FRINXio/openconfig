@@ -210,7 +210,7 @@ module frinx-saos-if-extension {
   }
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/" +
-    " oc-if:subinterfaces/oc-if:subinterface" {
+    "oc-if:subinterfaces/oc-if:subinterface" {
     description "Adds SAOS specific configuration to interfaces model";
 
     uses saos-if-extension-pm-instances;

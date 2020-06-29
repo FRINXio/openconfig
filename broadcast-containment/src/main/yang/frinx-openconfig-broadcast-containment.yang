@@ -97,7 +97,6 @@ module frinx-openconfig-broadcast-containment {
 
           list interface {
             key "name";
-            unique "config/interface config";
 
             description
               "An interface associated with the broadcast-containment filter";
