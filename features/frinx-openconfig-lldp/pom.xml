@@ -19,7 +19,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-lldp</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.5.rc7-frinx</version>
+    <version>4.2.5.rc8-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: LLDP</name>
 
     <dependencyManagement>
