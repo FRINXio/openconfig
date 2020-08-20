@@ -32,6 +32,93 @@ module frinx-cisco-if-extension {
 
   // grouping statements
 
+  grouping cisco-if-extension-config {
+
+    leaf port-type {
+      type enumeration {
+        enum eni {
+          description
+            "ENI port-type";
+        }
+        enum nni {
+          description
+            "NNI port-type";
+        }
+        enum uni {
+          description
+            "UNI port-type";
+        }
+      }
+    }
+
+    leaf snmp-trap-link-status {
+      type boolean;
+      description
+        "Allow SNMP LINKUP and LINKDOWN traps";
+    }
+
+    leaf switchport-mode {
+      type enumeration {
+        enum trunk {
+          description
+            "Set trunking mode to TRUNK unconditionally";
+        }
+      }
+    }
+
+    leaf switchport-access-vlan {
+      type uint32 {
+        range "1..4094";
+      }
+      description
+        "VLAN ID of the VLAN when this port is in access mode";
+    }
+
+    leaf-list switchport-trunk-allowed-vlan-add {
+      type uint32 {
+        range "1 .. 4094";
+      }
+      description
+        "VLAN IDs of the allowed VLANs when this port is in trunking mode";
+    }
+
+    leaf ip-redirects {
+      type boolean;
+      description
+        "Enable sending ICMP Redirect messages";
+    }
+
+    leaf ip-unreachables {
+      type boolean;
+      description
+        "Enable sending ICMP Unreachable messages";
+    }
+
+    leaf ip-proxy-arp {
+      type boolean;
+      description
+        "Enable proxy ARP";
+    }
+
+    uses service-policy;
+  }
+
+  grouping service-policy {
+    container service-policy {
+      leaf input {
+        type string;
+        description
+          "Assign policy-map to the input of an interface";
+      }
+
+      leaf output {
+        type string;
+        description
+          "Assign policy-map to the output of an interface";
+      }
+    }
+  }
+
   grouping statistics-config {
     leaf load-interval {
       type uint32 {
@@ -156,6 +243,13 @@ module frinx-cisco-if-extension {
     uses statistics-top;
   }
 
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    ext:augment-identifier "if-cisco-ext-aug";
+    description "Adds Cisco specific statistics configuration to
+                interfaces model";
+
+    uses cisco-if-extension-config;
+  }
   augment "/oc-if:interfaces/oc-if:interface" {
     description "Adds Reverse Path Forwarding (RPF) checking to
                 interface model";
@@ -170,6 +264,15 @@ module frinx-cisco-if-extension {
                 subinterfaces model";
 
     uses statistics-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+                "oc-if:subinterface/oc-if:config" {
+    ext:augment-identifier "if-subif-cisco-ext-aug";
+    description "Adds Cisco specific statistics configuration to
+               subinterfaces model";
+
+    uses cisco-if-extension-config;
   }
 
   augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
@@ -190,6 +293,13 @@ module frinx-cisco-if-extension {
     uses statistics-top;
   }
 
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description "Adds Cisco specific statistics configuration to
+                    interfaces model";
+
+    uses cisco-if-extension-config;
+  }
+
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
     description "Adds Reverse Path Forwarding (RPF) checking to
                 interface model";
@@ -205,6 +315,13 @@ module frinx-cisco-if-extension {
     uses statistics-top;
   }
 
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" +
+              "/oc-if:subinterfaces/oc-if:subinterface/oc-if:config"{
+    description "Adds Cisco specific statistics configuration to
+                subinterfaces model";
+
+    uses cisco-if-extension-config;
+  }
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" +
               "/oc-if:subinterfaces/oc-if:subinterface"{
     description "Adds Cisco specific hold-time configuration to
