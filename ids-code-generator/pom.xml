@@ -35,14 +35,14 @@
             <dependency>
                 <groupId>org.opendaylight.mdsal</groupId>
                 <artifactId>mdsal-artifacts</artifactId>
-                <version>2.4.2-Oxygen-SR2.4_2_5_rc13-frinxodl</version>
+                <version>2.4.2-Oxygen-SR2.4_2_5_rc14-frinxodl-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.opendaylight.yangtools</groupId>
                 <artifactId>yangtools-artifacts</artifactId>
-                <version>2.0.5-Oxygen-SR2.4_2_5_rc13-frinxodl</version>
+                <version>2.0.5-Oxygen-SR2.4_2_5_rc14-frinxodl-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
