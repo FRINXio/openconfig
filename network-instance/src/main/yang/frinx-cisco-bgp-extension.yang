@@ -1,0 +1,91 @@
+module frinx-cisco-bgp-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/bgp/cisco-extension";
+
+  prefix "bgp-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+  import yang-ext { prefix ext; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig bgp models,
+    containing CISCO specific features.";
+
+  revision "2020-08-17" {
+    description
+      "Initial release";
+    reference "4.2.5";
+  }
+
+  grouping bgp-global-config-extension {
+    leaf log-neighbor-changes {
+      type boolean;
+      description "Parameter to enable/disable logging message generation of BGP neighbor changes.";
+    }
+  }
+
+  grouping global-afi-safi-config-extension {
+    leaf auto-summary {
+      type boolean;
+      description "Parameter to enable/disable automatic network number summarization.";
+    }
+
+    leaf redistribute-connected {
+      type boolean;
+      description "Redistribute connected";
+    }
+
+    leaf redistribute-static {
+      type boolean;
+      description "Redistribute static";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/" +
+          "oc-ni:global/oc-ni:config" {
+    description "Adds CISCO specific configuration to bgp global model.";
+    ext:augment-identifier "bgp-global-config-aug";
+
+    uses bgp-global-config-extension;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/" +
+          "oc-ni:global/oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:config" {
+    description "Adds CISCO specific configuration to bgp global model.";
+    ext:augment-identifier "global-afi-safi-config-aug";
+
+    uses global-afi-safi-config-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/" +
+          "oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:global/oc-ni:config" {
+    description "Adds CISCO specific configuration to bgp global model.";
+
+    uses bgp-global-config-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/" +
+          " oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:global/oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:config" {
+    description "Adds CISCO specific configuration to bgp global model.";
+
+    uses global-afi-safi-config-extension;
+  }
+}
