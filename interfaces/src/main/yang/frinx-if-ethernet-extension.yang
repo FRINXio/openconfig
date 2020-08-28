@@ -9,6 +9,7 @@ module frinx-if-ethernet-extension {
 
   // import some basic types
   import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-if-ethernet { prefix oc-eth; }
   import iana-if-type { prefix ift; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
@@ -29,6 +30,11 @@ module frinx-if-ethernet-extension {
     description
       "Initial release";
     reference "3.1.9";
+  }
+
+  identity SPEED_AUTO {
+    base oc-eth:ETHERNET_SPEED;
+    description "Auto negotiated Ethernet speed";
   }
 
   // grouping statements
