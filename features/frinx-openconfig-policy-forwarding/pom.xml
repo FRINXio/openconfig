@@ -27,7 +27,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-policy-forwarding</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.5.rc14-frinx</version>
+    <version>4.2.5.rc15-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: Policy Forwarding</name>
 
     <dependencyManagement>
