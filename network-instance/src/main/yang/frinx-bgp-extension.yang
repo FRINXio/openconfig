@@ -27,6 +27,35 @@ module frinx-bgp-extension {
       "Initial release";
   }
 
+  identity BGP_VERSION {
+    description
+      "BGP version number";
+  }
+
+  identity VERSION_4 {
+    base BGP_VERSION;
+    description
+      "BGP version 4";
+  }
+
+  identity VERSION_UNKNOWN {
+    base BGP_VERSION;
+    description
+      "Older and/or unsupported BGP version";
+  }
+
+  grouping bgp-neighbor-config-extension {
+    description "CISCO specific BGP configuration";
+
+    leaf neighbor-version {
+      type identityref {
+        base BGP_VERSION;
+      }
+      description
+        "Version of neighbors BGP";
+    }
+  }
+
   grouping local-aggregates-policy {
     leaf-list apply-policy {
       type leafref {
@@ -83,6 +112,14 @@ module frinx-bgp-extension {
   }
 
   // network-instances augmentations
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/" +
+          "oc-ni:neighbors/oc-ni:neighbor/oc-ni:config" {
+    description "Extends BGP neighbor configuration";
+    ext:augment-identifier "bgp-neighbor-config-aug";
+
+    uses bgp-neighbor-config-extension;
+  }
+
   augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:local-aggregates/oc-ni:aggregate/oc-ni:config" {
     ext:augment-identifier "ni-prot-agg-aug";
     description "Extends local-aggregates/aggregate/config with apply-policy";
@@ -131,6 +168,13 @@ module frinx-bgp-extension {
   }
 
   // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/" +
+          "oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/oc-ni:config" {
+    description "Extends bgp neighbor configuration for uniconfig topology";
+
+    uses bgp-neighbor-config-extension;
+  }
+
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/" +
     "oc-ni:local-aggregates/oc-ni:aggregate/oc-ni:config" {
     description "Extends local-aggregates/aggregate/config with apply-policy for uniconfig topology";
