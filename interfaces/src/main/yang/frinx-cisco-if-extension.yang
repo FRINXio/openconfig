@@ -63,6 +63,14 @@ module frinx-cisco-if-extension {
           description
             "Set trunking mode to TRUNK unconditionally";
         }
+        enum access {
+          description
+            "Set trunking mode to ACCESS unconditionally";
+        }
+        enum dot1q-tunnel {
+          description
+            "Set trunking mode to TUNNEL unconditionally";
+        }
       }
     }
 
