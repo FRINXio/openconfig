@@ -27,7 +27,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-ring</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.5.rc22-frinx-SNAPSHOT</version>
+    <version>4.2.5.rc22-frinx</version>
     <name>Frinx :: Openconfig :: RING</name>
 
     <dependencyManagement>
