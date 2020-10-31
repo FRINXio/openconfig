@@ -27,7 +27,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-probes</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.5.rc25-frinx</version>
+    <version>4.2.5.rc26-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: Probe</name>
 
     <dependencyManagement>
