@@ -27,7 +27,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-vlan</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.5.rc25-frinx-SNAPSHOT</version>
+    <version>4.2.5.rc25-frinx</version>
     <name>Frinx :: Openconfig :: VLAN</name>
 
     <dependencyManagement>
