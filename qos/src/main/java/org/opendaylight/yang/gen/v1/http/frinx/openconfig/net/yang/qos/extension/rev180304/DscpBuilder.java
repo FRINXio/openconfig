@@ -9,17 +9,17 @@ package org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.qos.extensio
  * loss of user code.
  *
  */
-public class DscpValueBuilder {
+public class DscpBuilder {
 
-    private DscpValueBuilder() {
+    private DscpBuilder() {
         //Exists only to defeat instantiation.
     }
 
-    public static org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.qos.extension.rev180304.DscpValue getDefaultInstance(java.lang.String defaultValue) {
+    public static org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.qos.extension.rev180304.Dscp getDefaultInstance(java.lang.String defaultValue) {
         try {
-            return new DscpValue(new DscpNumber(Short.valueOf(defaultValue)));
+            return new Dscp(new org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.types.inet.rev170403.Dscp(Short.valueOf(defaultValue)));
         } catch (NumberFormatException e) {
-            return new DscpValue(getDscpEnum(defaultValue));
+            return new Dscp(getDscpEnum(defaultValue));
         }
     }
 
