@@ -9,6 +9,7 @@ module frinx-qos-extension {
 
   // import some basic types
   import frinx-openconfig-qos { prefix oc-qos; }
+  import frinx-openconfig-inet-types { prefix oc-inet; }
   import yang-ext { prefix ext; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
@@ -52,113 +53,87 @@ module frinx-qos-extension {
   }
 
   typedef dscp-enumeration {
-      type enumeration {
-        enum af11;
-        enum af12;
-        enum af13;
-        enum af21;
-        enum af22;
-        enum af23;
-        enum af31;
-        enum af32;
-        enum af33;
-        enum af41;
-        enum af42;
-        enum af43;
-        enum cs1;
-        enum cs2;
-        enum cs3;
-        enum cs4;
-        enum cs5;
-        enum cs6;
-        enum cs7;
-        enum default;
-        enum ef;
-      }
-  }
-
-  typedef dscp-number {
-    type uint8 {
-      range "0..63";
+    type enumeration {
+      enum af11;
+      enum af12;
+      enum af13;
+      enum af21;
+      enum af22;
+      enum af23;
+      enum af31;
+      enum af32;
+      enum af33;
+      enum af41;
+      enum af42;
+      enum af43;
+      enum cs1;
+      enum cs2;
+      enum cs3;
+      enum cs4;
+      enum cs5;
+      enum cs6;
+      enum cs7;
+      enum default;
+      enum ef;
     }
   }
 
-  typedef dscp-value {
+  typedef dscp {
     type union {
       type dscp-enumeration;
-      type dscp-number;
+      type oc-inet:dscp;
     }
   }
 
-  typedef cos-value {
+  typedef cos {
     type uint8 {
       range "0..7";
     }
   }
 
-  typedef dei-value {
+  typedef dei {
     type uint8 {
       range "0..1";
     }
   }
 
   grouping qos-scheduler-actions {
-    leaf cos {
-      type cos-value;
-      description
-        "Rewrite packet cos and send it.";
+    leaf cos-transmit {
+      type cos;
+      description "Rewrite packet cos and send it.";
     }
 
-    leaf dei {
-      type dei-value;
-      description
-        "Rewrite packet dei and send it.";
+    leaf dei-transmit {
+      type dei;
+      description "Rewrite packet dei and send it.";
     }
 
-    leaf dscp {
-      type dscp-value;
-      description
-        "Set dscp and send it.";
+    leaf dscp-transmit {
+      type dscp;
+      description "Set dscp and send it.";
     }
 
-    leaf qos {
+    leaf qos-transmit {
       type qos-group;
-      description
-        "Set qos-group and send it.";
+      description "Set qos-group and send it.";
     }
 
     leaf transmit {
       type boolean;
-      description
-        "Transmit packet if true.";
-    }
-  }
-
-  grouping qos-condition-dscp-config {
-    container dscp {
-      list dscp-list {
-        leaf-list dscp-value-list {
-          ordered-by user;
-          type dscp-value;
-          description "List of the DSCP (Differentiated services code point)";
-        }
-      }
+      description "Transmit packet if true.";
     }
   }
 
   grouping qos-condition-cos-config {
     container cos {
-      list cos-list {
-        leaf inner {
-          type boolean;
-          description "Inner tag to match flag";
-        }
+      leaf inner {
+        type boolean;
+        description "Inner tag to match flag";
+      }
 
-        leaf-list cos-value-list {
-          ordered-by user;
-          type cos-value;
-          description "List of the CoS (Class of Service) values";
-        }
+      leaf cos {
+        type cos;
+        description "CoS (Class of Service) value";
       }
     }
   }
@@ -179,7 +154,6 @@ module frinx-qos-extension {
       description "List of precedences valid for both ipv4 and ipv6";
     }
 
-    uses qos-condition-dscp-config;
     uses qos-condition-cos-config;
   }
 
@@ -196,6 +170,10 @@ module frinx-qos-extension {
       type precedence;
       description "List of precedences valid for ipv4.";
     }
+
+    leaf dscp-enum {
+      type dscp-enumeration;
+    }
   }
 
   augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions/oc-qos:ipv6/oc-qos:config" {
@@ -210,6 +188,10 @@ module frinx-qos-extension {
       ordered-by user;
       type precedence;
       description "List of precedences valid for ipv6.";
+    }
+
+    leaf dscp-enum {
+      type dscp-enumeration;
     }
   }
 
@@ -248,23 +230,46 @@ module frinx-qos-extension {
     description "Adds CoS (Class of Service)";
 
     leaf cos {
-      type cos-value;
+      type cos;
       description "CoS (Class of Service) value";
     }
   }
 
-  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:two-rate-three-color/oc-qos:conform-action/oc-qos:config" {
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:conform-action/oc-qos:config" {
     ext:augment-identifier "qos-conform-action-aug";
     description "Adds conform actions to scheduler";
 
     uses qos-scheduler-actions;
   }
 
-  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:two-rate-three-color/oc-qos:exceed-action/oc-qos:config" {
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:exceed-action/oc-qos:config" {
     ext:augment-identifier "qos-exceed-action-aug";
     description "Adds exceed actions to scheduler";
 
     uses qos-scheduler-actions;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    ext:augment-identifier "qos-max-queue-depth-bps-aug";
+    description "Adds QoS maximum queue depth in bits per second";
+
+    leaf max-queue-depth-bps {
+      type uint32;
+      units bps;
+      description
+        "When the scheduler is specified to be a shaper - the
+        maximum depth of the queue in bits per second is the value
+        specified by this leaf.";
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:config" {
+    ext:augment-identifier "qos-service-policy-aug";
+    description "Adds service-policy to scheduler";
+
+    leaf service-policy {
+      type string;
+    }
   }
 
   // uniconfig augmentations
@@ -282,7 +287,6 @@ module frinx-qos-extension {
       description "List of precedences valid for both ipv4 and ipv6.";
     }
 
-    uses qos-condition-dscp-config;
     uses qos-condition-cos-config;
   }
 
@@ -298,6 +302,10 @@ module frinx-qos-extension {
       type precedence;
       description "List of precedences valid for ipv4.";
     }
+
+    leaf dscp-enum {
+      type dscp-enumeration;
+    }
   }
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions/oc-qos:ipv6/oc-qos:config" {
@@ -311,6 +319,10 @@ module frinx-qos-extension {
       ordered-by user;
       type precedence;
       description "List of precedences valid for ipv6.";
+    }
+
+    leaf dscp-enum {
+      type dscp-enumeration;
     }
   }
 
@@ -346,20 +358,41 @@ module frinx-qos-extension {
     description "Adds CoS (Class of Service)";
 
     leaf cos {
-      type cos-value;
+      type cos;
       description "CoS (Class of Service) value";
     }
   }
 
-  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:two-rate-three-color/oc-qos:conform-action/oc-qos:config" {
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:conform-action/oc-qos:config" {
     description "Adds conform actions to scheduler";
 
     uses qos-scheduler-actions;
   }
 
-  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:two-rate-three-color/oc-qos:exceed-action/oc-qos:config" {
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:exceed-action/oc-qos:config" {
     description "Adds exceed actions to scheduler";
 
     uses qos-scheduler-actions;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    description "Adds QoS maximum queue depth in bits per second";
+
+    leaf max-queue-depth-bps {
+      type uint32;
+      units bps;
+      description
+        "When the scheduler is specified to be a shaper - the
+        maximum depth of the queue in bits per second is the value
+        specified by this leaf.";
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:config" {
+    description "Adds service-policy to scheduler";
+
+    leaf service-policy {
+      type string;
+    }
   }
 }
