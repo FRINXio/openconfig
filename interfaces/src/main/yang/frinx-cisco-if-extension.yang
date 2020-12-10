@@ -109,6 +109,7 @@ module frinx-cisco-if-extension {
     }
 
     uses service-policy;
+    uses storm-control;
   }
 
   grouping service-policy {
@@ -123,6 +124,41 @@ module frinx-cisco-if-extension {
         type string;
         description
           "Assign policy-map to the output of an interface";
+      }
+    }
+  }
+
+  grouping storm-control {
+    list storm-control {
+      key "address";
+      ordered-by user;
+
+      leaf address {
+        type enumeration {
+          enum broadcast {
+            description
+              "Broadcast address storm control";
+          }
+          enum multicast {
+            description
+              "Multicast address storm control";
+          }
+          enum unicast {
+            description
+              "Unicast address storm control";
+          }
+        }
+        mandatory true;
+      }
+
+      leaf level {
+        type decimal64 {
+          fraction-digits 2;
+          range "0 .. 100";
+        }
+        mandatory true;
+        description
+          "Rising threshold level (percentage)";
       }
     }
   }
