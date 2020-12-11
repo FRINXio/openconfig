@@ -47,14 +47,6 @@ module frinx-saos-vlan-extension {
     }
   }
 
-  grouping saos-vlan-extension-config-stat {
-    leaf statistics {
-      type boolean;
-
-      description "Statistics flag for L2VSICP NI vlan";
-    }
-  }
-
   grouping saos-vlan-logical-extension-config {
     leaf ingress-l2-transform {
       type string;
@@ -108,14 +100,6 @@ module frinx-saos-vlan-extension {
     uses saos-vlan-extension-config;
   }
 
-  augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:vlans/oc-netinst:vlan/oc-netinst:config" {
-    description "Adds saos specific configuration to vlan config model";
-    when "oc-netinst:type = 'saos-ni-type:L2VSICP'" {
-      description "Active when the network-instance is a L2VSICP";
-    }
-    uses saos-vlan-extension-config-stat;
-  }
-
   augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-vlan:vlan/oc-vlan:config" {
     description "Adds saos specific configuration to vlan config model";
     ext:augment-identifier "saos-8-vlan-logical-aug";
@@ -135,15 +119,6 @@ module frinx-saos-vlan-extension {
         + "oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:vlans/oc-netinst:vlan/oc-netinst:config" {
     description "Adds saos specific configuration to vlan config model";
     uses saos-vlan-extension-config;
-  }
-
-  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/"
-        + "oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:vlans/oc-netinst:vlan/oc-netinst:config" {
-    description "Adds saos specific configuration to vlan config model";
-    when "oc-netinst:type = 'saos-ni-type:L2VSICP'" {
-      description "Active when the network-instance is a L2VSICP";
-    }
-    uses saos-vlan-extension-config-stat;
   }
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/"
