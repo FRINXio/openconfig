@@ -27,7 +27,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-l2-cft</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.6.rc6-frinx-SNAPSHOT</version>
+    <version>4.2.6.rc6-frinx</version>
     <name>Frinx :: Openconfig :: L2CFT</name>
 
     <dependencyManagement>
