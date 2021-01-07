@@ -176,6 +176,21 @@ module frinx-acl-extension {
     }
   }
 
+  identity ACL_IPV4_STANDARD {
+    base oc-acl:ACL_TYPE;
+    description
+      "Standard IPv4 ACL allows to control
+      traffic only by the source IP address.";
+  }
+
+  identity ACL_IPV4_EXTENDED {
+    base oc-acl:ACL_TYPE;
+    description
+      "Extended IPv4 ACL allows to control
+      traffic by the source and destination
+      IP address.";
+  }
+
   // augment statements
   augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config" {
     ext:augment-identifier "acl-set-acl-entry-transport-port-named-aug";
