@@ -107,6 +107,169 @@ module frinx-snmp {
     //TODO: placeholder for operational state related to snmp
   }
 
+  grouping snmp-view-top {
+    description
+      "Top-level grouping for view data";
+
+    container views {
+      description
+        "Enclosing container for SNMP views";
+
+      list view {
+        key "name";
+        description
+          "List of view elements";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description
+            "Reference to list key name";
+        }
+
+        container config {
+          description
+            "Configuration data for views";
+
+          uses snmp-view-config;
+        }
+
+        container state {
+          config false;
+          description
+            "Operational state data for views";
+
+          uses snmp-view-config;
+          uses snmp-view-state;
+        }
+      }
+    }
+  }
+
+  grouping snmp-view-config {
+    description
+      "Configuration data for views";
+
+    leaf name {
+      type string;
+      description
+        "Name of the view";
+    }
+
+    list mib {
+      key "name";
+
+      leaf name {
+        type string;
+        mandatory true;
+        description
+          "MIB view family name.";
+      }
+
+      leaf inclusion {
+        type enumeration {
+          enum included {
+            description
+              "MIB family is included in the view";
+          }
+          enum excluded {
+            description
+              "MIB family is excluded from the view";
+          }
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  grouping snmp-view-state {
+    description
+      "Operational state data for views";
+  }
+
+  grouping snmp-community-top {
+    description
+      "Top-level grouping for community data";
+
+    container communities {
+      description
+        "Enclosing container for SNMP communities";
+
+      list community {
+        key "name";
+        description
+          "List of community elements";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description
+            "Reference to list key name";
+        }
+
+        container config {
+          description
+            "Configuration data for communities";
+
+          uses snmp-community-config;
+        }
+
+        container state {
+          config false;
+          description
+            "Operational state data for communities";
+
+          uses snmp-community-config;
+          uses snmp-community-state;
+        }
+      }
+    }
+  }
+
+  grouping snmp-community-config {
+    description
+      "Configuration data for communities";
+
+    leaf name {
+      type string;
+      description
+        "Name of the community";
+    }
+
+    leaf view {
+      type string;
+      description
+        "Name of the view";
+    }
+
+    leaf access-list {
+      type string;
+      description
+        "Name of the IPv4 access list allowing access";
+    }
+
+    leaf access {
+      type enumeration {
+        enum ro {
+          description
+            "Read-only access";
+        }
+        enum rw {
+          description
+            "Read-write access";
+        }
+      }
+      mandatory true;
+    }
+  }
+
+  grouping snmp-community-state {
+    description
+      "Operational state data for communities";
+  }
+
   grouping snmp-top {
     description
       "Top-level grouping for snmp data";
@@ -117,6 +280,8 @@ module frinx-snmp {
         data.";
 
       uses snmp-interfaces-structural;
+      uses snmp-view-top;
+      uses snmp-community-top;
     }
   }
 
