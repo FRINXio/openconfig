@@ -27,7 +27,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-broadcast-containment</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.6.rc9-frinx</version>
+    <version>4.2.6.rc10-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: BC</name>
 
     <dependencyManagement>
