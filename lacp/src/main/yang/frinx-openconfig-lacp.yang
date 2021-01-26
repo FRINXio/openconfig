@@ -59,6 +59,10 @@ module frinx-openconfig-lacp {
           "Interface is a passive member, i.e., it participates
           with an active partner";
       }
+      enum ON {
+        description
+          "Enable Etherchannel only";
+      }
     }
     description
       "Describes the LACP membership type, active or passive, of the
