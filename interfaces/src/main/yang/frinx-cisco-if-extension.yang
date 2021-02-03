@@ -90,6 +90,69 @@ module frinx-cisco-if-extension {
         "VLAN IDs of the allowed VLANs when this port is in trunking mode";
     }
 
+    leaf switchport-port_security-enable {
+      type boolean;
+      description
+        "Enables port security on the interface.";
+    }
+
+    leaf switchport-port_security-maximum {
+      type uint32 {
+        range "1 .. 3072";
+      }
+      description
+        "Sets the maximum number of secure MAC addresses for the interface.";
+    }
+
+    leaf switchport-port_security-violation {
+      type enumeration {
+        enum protect {
+          description
+            "Drops packets with unknown source addresses until you remove a sufficient
+             number of secure MAC addresses to drop below the maximum value.";
+        }
+        enum restrict {
+          description
+            "Drops packets with unknown source addresses until you remove a sufficient
+             number of secure MAC addresses to drop below the maximum value and causes
+             the SecurityViolation counter to increment.";
+        }
+        enum shutdown {
+          description
+            "Puts the interface into the error-disabled state immediately and sends
+             an SNMP trap notification.";
+        }
+      }
+    }
+
+    leaf switchport-port_security-aging-time {
+      type uint32 {
+        range "1 .. 1440";
+      }
+      description
+        "Configures the secure MAC address aging time on the port.
+         The aging_time range is 1 to 1440 minutes (default is 0).";
+    }
+
+    leaf switchport-port_security-aging-type {
+      type enumeration {
+        enum absolute {
+          description
+            "Absolute aging(default)";
+        }
+        enum inactivity {
+          description
+            "Aging based on inactivity time period.";
+        }
+      }
+    }
+
+    leaf switchport-port_security-aging-static {
+      type boolean;
+      description
+        "Enable aging for configured secure addresses.";
+    }
+
     leaf ip-redirects {
       type boolean;
       description
