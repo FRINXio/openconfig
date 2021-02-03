@@ -138,6 +138,13 @@ module frinx-qos-extension {
     }
   }
 
+  grouping qos-interface-config {
+    leaf service-policy {
+      type string;
+      description "Name of the policy map used to attach to an interface";
+    }
+  }
+
   // augment statements
   augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
     ext:augment-identifier "qos-condition-aug";
@@ -272,6 +279,18 @@ module frinx-qos-extension {
     }
   }
 
+  augment "/oc-qos:qos/oc-qos:interfaces/oc-qos:interface/oc-qos:input/oc-qos:config" {
+    ext:augment-identifier "qos-ingress-interface-aug";
+    description "Adds additional configuration to ingress interface";
+    uses qos-interface-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:interfaces/oc-qos:interface/oc-qos:output/oc-qos:config" {
+    ext:augment-identifier "qos-egress-interface-aug";
+    description "Adds additional configuration to egress interface";
+    uses qos-interface-config;
+  }
+
   // uniconfig augmentations
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
     description "Adds QoS Group to conditions";
@@ -394,5 +413,15 @@ module frinx-qos-extension {
     leaf service-policy {
       type string;
     }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:interfaces/oc-qos:interface/oc-qos:input/oc-qos:config" {
+    description "Adds additional configuration to ingress interface";
+    uses qos-interface-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:interfaces/oc-qos:interface/oc-qos:output/oc-qos:config" {
+    description "Adds additional configuration to egress interface";
+    uses qos-interface-config;
   }
 }
