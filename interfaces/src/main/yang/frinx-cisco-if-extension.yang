@@ -112,6 +112,7 @@ module frinx-cisco-if-extension {
     uses storm-control;
   }
 
+  // service-policy was moved to qos-interfaces
   grouping service-policy {
     container service-policy {
       leaf input {
