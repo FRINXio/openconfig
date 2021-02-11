@@ -48,6 +48,30 @@ module frinx-oam {
         }
       }
 
+      container mip {
+        description
+            "Configuration for a particular Maintenance Intermediate Point";
+
+        list level {
+
+          key "level";
+          description
+            "Configuration for a particular Maintenance Level";
+
+          leaf level {
+            type uint8 {
+              range "0 .. 7";
+            }
+            description "Maintenance Level";
+          }
+
+          leaf-list vlan {
+            type string;
+            description "List of VLANs";
+          }
+        }
+      }
+
       container domains {
         description
           "Domain-specific interface configuration";
