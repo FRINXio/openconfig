@@ -64,6 +64,7 @@
     <module>stp</module>
     <module>l2-cft</module>
     <module>broadcast-containment</module>
+    <module>privilege</module>
     <module>ring</module>
 
     <module>features</module>

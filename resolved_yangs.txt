@@ -155,3 +155,5 @@
 ./l2-cft/src/main/yang/frinx-openconfig-broadcast-containment.yang
 
 ./ring/src/main/yang/frinx-openconfig-ring.yang
+
+./privilege/src/main/yang/frinx-privilege.yang
