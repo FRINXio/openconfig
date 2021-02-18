@@ -214,6 +214,11 @@
             </dependency>
             <dependency>
                 <groupId>io.frinx.openconfig</groupId>
+                <artifactId>openconfig-privilege</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.frinx.openconfig</groupId>
                 <artifactId>uniconfig-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -411,6 +416,13 @@
             <dependency>
                 <groupId>io.frinx.openconfig</groupId>
                 <artifactId>frinx-openconfig-configuration-metadata</artifactId>
+                <type>xml</type>
+                <classifier>features</classifier>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.frinx.openconfig</groupId>
+                <artifactId>frinx-openconfig-privilege</artifactId>
                 <type>xml</type>
                 <classifier>features</classifier>
                 <version>${project.version}</version>

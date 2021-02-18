@@ -66,5 +66,6 @@
         <module>frinx-openconfig-broadcast-containment</module>
         <module>frinx-openconfig-l2-cft</module>
         <module>frinx-openconfig-ring</module>
+        <module>frinx-openconfig-privilege</module>
     </modules>
 </project>

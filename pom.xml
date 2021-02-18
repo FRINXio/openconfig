@@ -70,6 +70,7 @@
     <module>ipsec</module>
     <module>broadcast-containment</module>
     <module>l2-cft</module>
+    <module>privilege</module>
     <module>ring</module>
     <module>features</module>
   </modules>
