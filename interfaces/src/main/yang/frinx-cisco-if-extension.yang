@@ -171,6 +171,30 @@ module frinx-cisco-if-extension {
         "Enable proxy ARP";
     }
 
+    leaf-list l2-protocols {
+      type string;
+      description
+        "Entries for tunnel Layer2 protocols";
+    }
+
+    leaf lldp-transmit {
+      type boolean;
+      description
+        "Enable LLDP transmission on interface";
+    }
+
+    leaf lldp-receive {
+      type boolean;
+      description
+        "Enable LLDP reception on interface";
+    }
+
+    leaf cdp-enable {
+      type boolean;
+      description
+        "Enable CDP on interface";
+    }
+
     uses service-policy;
     uses storm-control;
   }
