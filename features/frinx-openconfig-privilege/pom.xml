@@ -27,7 +27,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-privilege</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.7.rc8-frinx</version>
+    <version>4.2.7.rc9-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: Privilege</name>
 
     <dependencyManagement>
