@@ -197,7 +197,6 @@ module frinx-cisco-if-extension {
 
     uses service-policy;
     uses storm-control;
-    uses service-instance-top;
   }
 
   // service-policy was moved to qos-interfaces
@@ -438,6 +437,14 @@ module frinx-cisco-if-extension {
   // augment statements
 
   augment "/oc-if:interfaces/oc-if:interface" {
+    ext:augment-identifier "if-cisco-service-instance-aug";
+    description "Adds Cisco specific service instance
+                configuration to interfaces model";
+
+    uses service-instance-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface" {
     ext:augment-identifier "if-cisco-stats-aug";
     description "Adds Cisco specific statistics configuration to
                 interfaces model";
@@ -487,6 +494,13 @@ module frinx-cisco-if-extension {
   }
 
   // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
+    description "Adds Cisco specific service instance
+                configuration to interfaces model";
+
+    uses service-instance-top;
+  }
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
     description "Adds Cisco specific statistics configuration to
