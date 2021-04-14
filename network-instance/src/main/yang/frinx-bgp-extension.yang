@@ -54,6 +54,11 @@ module frinx-bgp-extension {
       description
         "Version of neighbors BGP";
     }
+
+    leaf as-override {
+      type boolean;
+      description "Override matching AS-number while sending update";
+    }
   }
 
   grouping local-aggregates-policy {
@@ -91,6 +96,11 @@ module frinx-bgp-extension {
     leaf log-neighbor-changes {
       type boolean;
       description "Parameter to enable/disable logging message generation of BGP neighbor changes.";
+    }
+
+    leaf default-information-originate {
+      type boolean;
+      description "Parameter to enable/disable control distribution of default information";
     }
   }
 
