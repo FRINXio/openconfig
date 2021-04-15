@@ -278,6 +278,13 @@ module frinx-cisco-if-extension {
 
           uses service-instance-config;
         }
+
+        container encapsulation {
+          description
+            "Encapsulation data for service instance";
+
+          uses service-instance-encapsulation;
+        }
       }
     }
   }
@@ -302,21 +309,21 @@ module frinx-cisco-if-extension {
       description
         "EVC attached to the service instance";
     }
+  }
 
-    container encapsulation {
-      leaf untagged {
-        type boolean;
-        description
-          "Untagged encapsulation";
-      }
+  grouping service-instance-encapsulation {
+    leaf untagged {
+      type boolean;
+      description
+        "Untagged encapsulation";
+    }
 
-      leaf-list dot1q {
-        type uint16 {
-          range "1 .. 4094";
-        }
-        description
-          "Dot1q encapsulation VLAN IDs";
+    leaf-list dot1q {
+      type uint16 {
+        range "1 .. 4094";
       }
+      description
+        "Dot1q encapsulation VLAN IDs";
     }
   }
 
