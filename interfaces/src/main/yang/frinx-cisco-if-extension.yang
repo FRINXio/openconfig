@@ -197,6 +197,7 @@ module frinx-cisco-if-extension {
 
     uses service-policy;
     uses storm-control;
+    uses service-instance-top;
   }
 
   // service-policy was moved to qos-interfaces
@@ -247,6 +248,75 @@ module frinx-cisco-if-extension {
         mandatory true;
         description
           "Rising threshold level (percentage)";
+      }
+    }
+  }
+
+  grouping service-instance-top {
+    description
+      "Top-level grouping for service instance data";
+
+    container service-instances {
+      description
+        "Enclosing container for service instances";
+
+      list service-instance {
+        key "id";
+        description
+          "List of service instances";
+
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+          description
+            "Reference to service instance identifier";
+        }
+
+        container config {
+          description
+            "Configuration data for service instance";
+
+          uses service-instance-config;
+        }
+      }
+    }
+  }
+
+  grouping service-instance-config {
+    leaf id {
+      type uint32 {
+        range "1 .. 4000";
+      }
+      description
+        "Service instance identifier";
+    }
+
+    leaf trunk {
+      type boolean;
+      description
+        "Flag whether service instance is trunk";
+    }
+
+    leaf evc {
+      type string;
+      description
+        "EVC attached to the service instance";
+    }
+
+    container encapsulation {
+      leaf untagged {
+        type boolean;
+        description
+          "Untagged encapsulation";
+      }
+
+      leaf-list dot1q {
+        type uint16 {
+          range "1 .. 4094";
+        }
+        description
+          "Dot1q encapsulation VLAN IDs";
       }
     }
   }
