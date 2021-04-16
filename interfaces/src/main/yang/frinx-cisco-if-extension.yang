@@ -285,6 +285,13 @@ module frinx-cisco-if-extension {
 
           uses service-instance-encapsulation;
         }
+
+        container l2protocol {
+          description
+            "Encapsulation data for service instance";
+
+          uses service-instance-l2protocol;
+        }
       }
     }
   }
@@ -324,6 +331,59 @@ module frinx-cisco-if-extension {
       }
       description
         "Dot1q encapsulation VLAN IDs";
+    }
+  }
+
+  grouping service-instance-l2protocol {
+    leaf protocol-type {
+      description "Defines a protocol type of l2protocol";
+      type enumeration {
+        enum tunnel {
+          description
+            "tunnel L2 control protocol packets as data";
+        }
+        enum peer {
+          description
+            "peer L2 control protocol packets as data";
+        }
+        enum forward {
+          description
+            "forward L2 control protocol packets as data";
+        }
+      }
+    }
+    leaf-list protocol {
+      description "Concrete protocol for l2protocol and its type";
+      type enumeration {
+        enum cdp {
+          description
+            "Cisco Discovery Protocol";
+        }
+        enum vtp {
+          description
+            "Vlan Trunking Protocol";
+        }
+        enum lacp {
+          description
+            "LACP Protocol";
+        }
+        enum lldp {
+          description
+            "Link Layer Discovery Protocol";
+        }
+        enum mmrp {
+          description
+            "Multiple MAC Registration Protocol";
+        }
+        enum mvrp {
+          description
+            "Multiple VLAN Registration Protocol";
+        }
+        enum stp {
+          description
+            "Spanning Tree Protocol";
+        }
+      }
     }
   }
 
