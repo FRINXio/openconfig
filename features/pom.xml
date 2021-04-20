@@ -67,5 +67,6 @@
         <module>frinx-openconfig-l2-cft</module>
         <module>frinx-openconfig-ring</module>
         <module>frinx-openconfig-privilege</module>
+        <module>frinx-openconfig-evc</module>
     </modules>
 </project>

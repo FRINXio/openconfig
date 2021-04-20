@@ -159,3 +159,5 @@
 ./ring/src/main/yang/frinx-openconfig-ring.yang
 
 ./privilege/src/main/yang/frinx-privilege.yang
+
+./evc/src/main/yang/frinx-openconfig-evc.yang

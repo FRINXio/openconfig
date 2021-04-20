@@ -73,6 +73,7 @@
     <module>privilege</module>
     <module>ring</module>
     <module>features</module>
+    <module>evc</module>
   </modules>
 
   <build>
