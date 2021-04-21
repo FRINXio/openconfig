@@ -66,6 +66,7 @@
     <module>broadcast-containment</module>
     <module>privilege</module>
     <module>ring</module>
+    <module>evc</module>
 
     <module>features</module>
   </modules>
