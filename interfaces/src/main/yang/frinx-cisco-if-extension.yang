@@ -195,6 +195,24 @@ module frinx-cisco-if-extension {
         "Enable CDP on interface";
     }
 
+    leaf fhrp-minimum-delay {
+      type uint16 {
+        range "0 .. 3600";
+      }
+      units seconds;
+      description
+        "FHRP minimum delay timer";
+    }
+
+    leaf fhrp-reload-delay {
+      type uint16 {
+        range "0 .. 3600";
+      }
+      units seconds;
+      description
+        "FHRP reload delay timer";
+    }
+
     uses service-policy;
     uses storm-control;
   }
