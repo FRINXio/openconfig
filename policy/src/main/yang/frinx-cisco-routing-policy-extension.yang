@@ -1,0 +1,96 @@
+module frinx-cisco-routing-policy-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/routing-policy/cisco";
+
+  prefix "cisco-rpol-ext";
+
+  // import some basic types
+  import frinx-openconfig-routing-policy { prefix "oc-rpol";}
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig routing-policy models,
+    containing CISCO specific features.";
+
+  revision "2021-04-22" {
+    description
+      "Initial release";
+    reference "4.2.7";
+  }
+
+  // Route map set operation type
+
+  identity SET_OPERATION {
+    description
+      "Value for route map to permit/deny set operations.";
+  }
+
+  identity PERMIT {
+    base SET_OPERATION;
+    description
+      "Route map permits set operations";
+  }
+
+  identity DENY {
+    base SET_OPERATION;
+    description
+      "Route map denies set operations";
+  }
+
+  // grouping statements
+
+  grouping cisco-rpol-extension-config {
+    description
+      "Match values from routing table";
+    leaf-list ip-prefix-list {
+      type string;
+      description
+        "IP specific information.";
+    }
+    leaf ipv6-prefix-list {
+      type string;
+      description
+        "IPv6 specific information.";
+    }
+    leaf set-operation {
+      type identityref {
+        base SET_OPERATION;
+      }
+      description
+        "Value for route map to permit/deny set operations.";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-rpol:routing-policy/oc-rpol:policy-definitions/oc-rpol:policy-definition/oc-rpol:statements
+    /oc-rpol:statement/oc-rpol:config" {
+    ext:augment-identifier "prefix-list-aug";
+    description "Adds Cisco specific configuration to routing policy model";
+
+    uses cisco-rpol-extension-config;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-rpol:routing-policy/oc-rpol:policy-definitions
+    /oc-rpol:policy-definition/oc-rpol:statements/oc-rpol:statement/oc-rpol:config" {
+    description "Adds Cisco specific configuration to routing policy model";
+
+    uses cisco-rpol-extension-config;
+  }
+}
