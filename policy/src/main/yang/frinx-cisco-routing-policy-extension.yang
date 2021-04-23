@@ -12,7 +12,6 @@ module frinx-cisco-routing-policy-extension {
 
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
-
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
   import yang-ext { prefix ext; revision-date "2013-07-09"; }
 
@@ -53,6 +52,24 @@ module frinx-cisco-routing-policy-extension {
 
   // grouping statements
 
+  grouping cisco-prefix-config-extension {
+
+    leaf sequence-id {
+      type uint32;
+      description
+        "Unique sequence number for the policy rule.";
+    }
+
+    leaf operation {
+      type identityref {
+        base SET_OPERATION;
+      }
+      description
+        "Specifies the forwarding operation. Operation
+          must be specified for each prefix-list entry";
+    }
+  }
+
   grouping cisco-rpol-extension-config {
     description
       "Match values from routing table";
@@ -85,6 +102,15 @@ module frinx-cisco-routing-policy-extension {
     uses cisco-rpol-extension-config;
   }
 
+  augment "/oc-rpol:routing-policy/oc-rpol:defined-sets/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:prefixes" +
+        "/oc-rpol:prefix/oc-rpol:config" {
+    ext:augment-identifier "prefix-config-aug";
+    description "Adds Cisco specific configuration to
+                prefix model";
+
+    uses cisco-prefix-config-extension;
+  }
+
   // uniconfig augmentations
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-rpol:routing-policy/oc-rpol:policy-definitions
@@ -92,5 +118,13 @@ module frinx-cisco-routing-policy-extension {
     description "Adds Cisco specific configuration to routing policy model";
 
     uses cisco-rpol-extension-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-rpol:routing-policy/oc-rpol:defined-sets" +
+        "/oc-rpol:prefix-sets/oc-rpol:prefix-set/oc-rpol:prefixes/oc-rpol:prefix/oc-rpol:config" {
+    description "Adds Cisco specific statistics configuration to
+                routing policy model";
+
+    uses cisco-prefix-config-extension;
   }
 }
