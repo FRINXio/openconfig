@@ -55,6 +55,11 @@ module frinx-bgp-extension {
         "Version of neighbors BGP";
     }
 
+    leaf fall-over-mode {
+        type boolean;
+        description "Fall-over bfd mode relating to the BGP neighbor";
+    }
+
     leaf as-override {
       type boolean;
       description "Override matching AS-number while sending update";
