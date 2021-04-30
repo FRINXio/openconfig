@@ -40,6 +40,77 @@ module frinx-bfd-extension {
     }
   }
 
+  grouping bfd-template-config {
+    leaf name {
+      type string;
+      description
+        "Bfd-template identifier";
+    }
+    leaf type {
+      description
+        "Single/multi-hop template";
+      type enumeration {
+        enum multi-hop {
+          description
+            "multi-hop template";
+        }
+        enum single-hop {
+         description
+           "Single-hop template";
+        }
+      }
+    }
+  }
+
+  grouping bfd-template-interval {
+    leaf min-tx {
+      description
+        "Minimum transmit interval capability";
+       type string;
+     }
+
+     leaf min-rx {
+       description
+         "Minimum receive interval capability";
+       type string;
+     }
+
+     leaf multiplier {
+       description
+         "Multiplier value used to compute holddown";
+       type string;
+     }
+  }
+
+  grouping config-bfd-template-grouping {
+    container bfd-templates {
+      description
+        "Enclosing container for bfd template";
+      list bfd-template {
+        key "name";
+        description
+          "List of bfd templates";
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description
+            "Reference to bfd-template identifier";
+        }
+        container config {
+          description
+            "Configuration data for bfd-template";
+          uses bfd-template-config;
+        }
+        container interval {
+          description
+            "Transmit interval between BFD packets";
+          uses bfd-template-interval;
+        }
+      }
+    }
+  }
+
   // augment statements
 
   augment "/oc-bfd:bfd/oc-bfd:interfaces/oc-bfd:interface/oc-bfd:config" {
@@ -63,7 +134,14 @@ module frinx-bfd-extension {
     description "Extends BFD settings on the OSPFv2 area interface";
 
     uses ext-bfd:bfd-top;
-}
+  }
+
+  augment "/oc-bfd:bfd" {
+    ext:augment-identifier "bfd-temp-aug";
+    description "Extends bfd-template settings on the BFD";
+
+    uses config-bfd-template-grouping;
+  }
 
   // uniconfig augmentations
 
@@ -85,6 +163,12 @@ module frinx-bfd-extension {
     description "Extends BFD settings on the OSPFv2 area interface";
 
     uses ext-bfd:bfd-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-bfd:bfd" {
+    description "Extends bfd-template settings on the BFD";
+
+    uses config-bfd-template-grouping;
   }
 
 }
