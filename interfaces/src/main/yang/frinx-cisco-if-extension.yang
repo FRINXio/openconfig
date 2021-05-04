@@ -269,15 +269,6 @@ module frinx-cisco-if-extension {
     }
   }
 
-  typedef bridge-domain {
-    type union {
-      type boolean;
-      type uint16 {
-        range "1 .. 4095";
-      }
-    }
-  }
-
   grouping service-instance-top {
     description
       "Top-level grouping for service instance data";
@@ -345,7 +336,7 @@ module frinx-cisco-if-extension {
     }
 
     leaf bridge-domain {
-      type bridge-domain;
+      type string;
       description
         "Specifies the BDI interface to use";
     }
