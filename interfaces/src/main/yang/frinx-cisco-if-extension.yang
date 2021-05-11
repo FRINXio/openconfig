@@ -310,6 +310,13 @@ module frinx-cisco-if-extension {
 
           uses service-instance-l2protocol;
         }
+
+        container bridge-domain {
+          description
+            "Bridge domain data for service instance";
+
+          uses service-instance-bridge-domain;
+        }
       }
     }
   }
@@ -333,12 +340,6 @@ module frinx-cisco-if-extension {
       type string;
       description
         "EVC attached to the service instance";
-    }
-
-    leaf bridge-domain {
-      type string;
-      description
-        "Specifies the BDI interface to use";
     }
   }
 
@@ -408,6 +409,22 @@ module frinx-cisco-if-extension {
             "Spanning Tree Protocol";
         }
       }
+    }
+  }
+
+  grouping service-instance-bridge-domain {
+    leaf value {
+      type string;
+      description
+        "Specifies the BDI interface to use";
+    }
+
+    leaf group-number {
+      type uint8 {
+        range "0 .. 13";
+      }
+      description
+        "Specifies the split-horizon group number";
     }
   }
 
