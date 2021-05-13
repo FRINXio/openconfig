@@ -127,6 +127,8 @@
 ./bfd/src/main/yang/frinx-openconfig-bfd.yang
 ./bfd/src/main/yang/frinx-bfd-extension.yang
 
+./fhrp/src/main/yang/frinx-openconfig-fhrp.yang
+
 ./qos/src/main/yang/frinx-openconfig-qos-types.yang
 ./qos/src/main/yang/frinx-openconfig-qos-elements.yang
 ./qos/src/main/yang/frinx-openconfig-qos-interfaces.yang

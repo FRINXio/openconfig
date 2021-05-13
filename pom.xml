@@ -74,6 +74,7 @@
     <module>ring</module>
     <module>features</module>
     <module>evc</module>
+    <module>fhrp</module>
   </modules>
 
   <build>

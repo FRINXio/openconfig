@@ -51,6 +51,7 @@
         <module>frinx-openconfig-snmp</module>
         <module>frinx-openconfig-logging</module>
         <module>frinx-openconfig-bfd</module>
+        <module>frinx-openconfig-fhrp</module>
         <module>frinx-openconfig-netflow</module>
         <module>frinx-openconfig-qos</module>
         <module>frinx-openconfig-configuration-metadata</module>
