@@ -306,7 +306,7 @@ module frinx-cisco-if-extension {
 
         container l2protocol {
           description
-            "Encapsulation data for service instance";
+            "L2 protocol data for service instance";
 
           uses service-instance-l2protocol;
         }
