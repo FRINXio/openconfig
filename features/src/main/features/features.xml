@@ -207,11 +207,6 @@
     <bundle>mvn:io.frinx.openconfig/openconfig-ring/{{VERSION}}</bundle>
   </feature>
 
-  <feature name='openconfig-evc' version='${project.version}'>
-    <feature version='${project.version}'>openconfig-platform</feature>
-    <bundle>mvn:io.frinx.openconfig/openconfig-evc/{{VERSION}}</bundle>
-  </feature>
-
   <feature name='openconfig-models' version='${project.version}' description="All available openconfig models">
     <bundle>mvn:io.frinx.openconfig/openconfig-utils/{{VERSION}}</bundle>
     <feature version='${project.version}'>openconfig-interfaces</feature>
@@ -242,7 +237,6 @@
     <feature version='${project.version}'>openconfig-broadcast-containment</feature>
     <feature version='${project.version}'>openconfig-privilege</feature>
     <feature version='${project.version}'>openconfig-ring</feature>
-    <feature version='${project.version}'>openconfig-evc</feature>
   </feature>
 
 </features>
