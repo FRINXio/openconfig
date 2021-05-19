@@ -53,7 +53,6 @@ module frinx-cisco-routing-policy-extension {
   // grouping statements
 
   grouping cisco-prefix-config-extension {
-
     leaf sequence-id {
       type uint32;
       description
@@ -67,6 +66,22 @@ module frinx-cisco-routing-policy-extension {
       description
         "Specifies the forwarding operation. Operation
           must be specified for each prefix-list entry";
+    }
+
+    leaf minimum-prefix-length {
+      type uint8 {
+        range "0 .. 128";
+      }
+      description
+        "Minimum prefix length to be matched";
+    }
+
+    leaf maximum-prefix-length {
+      type uint8 {
+        range "0 .. 128";
+      }
+      description
+        "Maximum prefix length to be matched";
     }
   }
 
