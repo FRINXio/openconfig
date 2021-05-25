@@ -171,6 +171,12 @@ module frinx-cisco-if-extension {
         "Enable proxy ARP";
     }
 
+    leaf ipv6-nd-ra-suppress {
+      type string;
+      description
+        "Enable IPv6 interface subcommands.";
+    }
+
     leaf-list l2-protocols {
       type string;
       description
