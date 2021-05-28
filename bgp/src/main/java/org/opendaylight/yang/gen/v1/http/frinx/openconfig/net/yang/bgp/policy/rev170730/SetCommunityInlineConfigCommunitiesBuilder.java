@@ -1,5 +1,8 @@
 package org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.policy.rev170730;
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.policy.rev170730.SetCommunityInlineConfig.Communities;
+import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.BgpStdCommunityType;
+import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.NOADVERTISE;
+import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.NOEXPORT;
 
 /**
  * The purpose of generated class in src/main/java for Union types is to create new instances of unions from a string representation.
@@ -13,7 +16,14 @@ import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.policy.re
 public class SetCommunityInlineConfigCommunitiesBuilder {
 
     public static Communities getDefaultInstance(java.lang.String defaultValue) {
-        throw new java.lang.UnsupportedOperationException("Not yet implemented");
+        if (defaultValue.matches("[\\d:]+")) {
+            return new SetCommunityInlineConfig.Communities(new BgpStdCommunityType(defaultValue));
+        } else if (defaultValue.equals("no-export")) {
+            return new SetCommunityInlineConfig.Communities(NOEXPORT.class);
+        } else if (defaultValue.equals("no-advertise")) {
+            return new SetCommunityInlineConfig.Communities(NOADVERTISE.class);
+        }
+        throw new IllegalArgumentException("Did not match community for value: " + defaultValue);
     }
 
 }
