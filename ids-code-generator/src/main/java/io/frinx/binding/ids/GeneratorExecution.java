@@ -16,8 +16,10 @@
 
 package io.frinx.binding.ids;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
+import io.frinx.binding.ids.BindingLookup.GeneratedTypeMeta;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -115,13 +117,15 @@ final class GeneratorExecution implements AutoCloseable {
     }
 
     private void processAugmentation(Module module, AugmentationSchemaNode augNode) {
-        BindingLookup.AugmentationMeta currentAugMeta = BindingLookup.extractAugMeta(augNode, context, types);
+        List<GeneratedTypeMeta> currentAugMetas = BindingLookup.extractAugMeta(augNode, context, types);
+        GeneratedTypeMeta currentAugMeta = Iterables.getLast(currentAugMetas);
+
         List<Type> augTypes = BindingLookup.findAllAugTypes(types, augNode, currentAugMeta.targetType, module);
 
         for (Type augType : augTypes) {
 
             AbstractMap.SimpleEntry<SchemaPath, LinkedHashMap<String, String>> parentPathMeta =
-                    BindingLookup.constructParentTypePaths(currentAugMeta, context, types);
+                    BindingLookup.constructParentTypePaths(currentAugMetas, context, types);
 
             String varName = varCache.getAugmentationVariableName(currentAugMeta.originalTargetPath,
                     augType, module.getQNameModule());

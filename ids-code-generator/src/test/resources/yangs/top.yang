@@ -1,0 +1,21 @@
+module top {
+    namespace top;
+    prefix top;
+
+    revision 2017-06-01;
+
+    grouping g2 {
+        container c2 {
+
+        }
+    }
+
+    grouping g1 {
+        container c1 {
+            uses g2;
+        }
+    }
+
+    uses g1;
+
+}

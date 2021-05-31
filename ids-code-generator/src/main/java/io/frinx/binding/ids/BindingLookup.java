@@ -19,6 +19,7 @@ package io.frinx.binding.ids;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -182,7 +183,8 @@ final class BindingLookup {
                 StreamSupport.stream(fixedTargetPath.getPathFromRoot().spliterator(), false)
                         .anyMatch(qName -> qName.getLocalName().startsWith(VariableNameCache.AUG_PREFIX));
         if (containsAugmentations) {
-            currentPath = SchemaPath.create(StreamSupport.stream(fixedTargetPath.getPathFromRoot().spliterator(), false)
+            currentPath = SchemaPath.create(StreamSupport.stream(fixedTargetPath.getPathFromRoot().spliterator(),
+                    false)
                     .filter(qName -> !qName.getLocalName().startsWith(VariableNameCache.AUG_PREFIX))
                     .collect(Collectors.toList()), true);
             return findType(parentType, targetNode, currentPath, fqn, types);
@@ -218,9 +220,21 @@ final class BindingLookup {
      */
     static Type findAugType(List<Type> types,
                             AugmentationSchemaNode fqn,
-                            Type type,
+                            Type parentType,
+                            Type childType,
                             Module module) {
-        return findAllAugTypes(types, fqn, type, module).stream().findFirst().get();
+        List<Type> allAugTypes = findAllAugTypes(types, fqn, parentType, module);
+        for (Type allAugType : allAugTypes) {
+            Set<MethodSignature> methodSignatures = collectMethodsMeta((GeneratedType) allAugType);
+            for (MethodSignature methodSignature : methodSignatures) {
+                if (methodSignature.getReturnType().getFullyQualifiedName().equals(childType.getFullyQualifiedName())) {
+                    return allAugType;
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("Cannot find augmentation adding "
+                + childType.getFullyQualifiedName() + " from augmentations: " + allAugTypes);
     }
 
     static List<Type> findAllAugTypes(List<Type> types,
@@ -314,40 +328,45 @@ final class BindingLookup {
      * Construct type path for an augmentation.
      */
     static AbstractMap.SimpleEntry<SchemaPath, LinkedHashMap<String, String>> constructParentTypePaths(
-            AugmentationMeta currentAugMeta,
+            List<GeneratedTypeMeta> currentAugMeta,
             SchemaContext context,
             List<Type> types) {
 
-        SchemaPath currentPath = SchemaPath.ROOT;
-
         LinkedHashMap<String, String> parentClasses = new LinkedHashMap<>();
-        for (QName qname : currentAugMeta.targetPathWithGroupings.getPathFromRoot()) {
-            currentPath = currentPath.createChild(qname);
-            SchemaNode node = findNodeInSchemaCtx(currentPath, context);
+        GeneratedTypeMeta parentAugMeta = null;
+        for (GeneratedTypeMeta generatedTypeMeta : currentAugMeta) {
+
+            // This order is VERY important, first look up node by original path (no groupings)
+            // and only then with groupings. Otherwise, augmentation would not be found.
+            SchemaNode node = findNodeInSchemaCtx(generatedTypeMeta.originalTargetPath, context);
+            if (node == null) {
+                node = findNodeInSchemaCtx(generatedTypeMeta.targetPathWithGroupings, context);
+            }
 
             // Add augment classes to the path
-            if (Iterables.size(currentPath.getPathFromRoot()) > 1) {
-                QName parentQName = currentPath.getParent().getLastComponent();
+            if (parentAugMeta != null) {
+                if (!parentAugMeta.targetPathWithGroupings.equals(SchemaPath.ROOT)) {
 
-                // Resolve groupings in the schema path
-                SchemaPath parentSchemaPath = getPathWithResolvedGroupings(currentAugMeta, parentQName);
-
-                if (!parentSchemaPath.equals(SchemaPath.ROOT)) {
-
-                    SchemaNode parent = findNodeInSchemaCtx(parentSchemaPath, context);
+                    // This order is VERY important, first look up parent node by original path (no groupings)
+                    // and only then with groupings. Otherwise, augmentation would not be found.
+                    SchemaNode parent = findNodeInSchemaCtx(parentAugMeta.originalTargetPath, context);
+                    if (parent == null) {
+                        parent = findNodeInSchemaCtx(parentAugMeta.targetPathWithGroupings, context);
+                    }
 
                     if (parent != null) {
                         DataNodeContainer realParent = switchToAugmentNode(node, (DataNodeContainer) parent);
                         if (realParent instanceof AugmentationSchemaNode) {
                             AugmentationSchemaNode intermediateAugNode = (AugmentationSchemaNode) realParent;
-                            AugmentationMeta intermediateAugMeta = extractAugMeta(intermediateAugNode, context, types);
+                            GeneratedTypeMeta intermediateAugMeta =
+                                    Iterables.getLast(extractAugMeta(intermediateAugNode, context, types));
 
-                            DataSchemaNode anyChildOfIntermediateAug = intermediateAugNode.getChildNodes().iterator()
-                                    .next();
+                            DataSchemaNode anyChildOfIntermediateAug =
+                                    intermediateAugNode.getChildNodes().iterator().next();
                             Module intermediateModule = findModuleByQname(anyChildOfIntermediateAug.getQName(),
                                     context);
-                            Type augPathType = findAugType(types, intermediateAugNode,
-                                    intermediateAugMeta.targetType, intermediateModule);
+                            Type augPathType = findAugType(types, intermediateAugNode, intermediateAugMeta.targetType,
+                                    generatedTypeMeta.targetType, intermediateModule);
                             parentClasses.put(augPathType.getFullyQualifiedName(),
                                     IdsClassTemplate.IID_AUGMENTATION_METHOD);
                         }
@@ -355,20 +374,20 @@ final class BindingLookup {
                 }
             }
 
+            parentAugMeta = generatedTypeMeta;
+
             // Skip grouping nodes, they are not part of IID
             if (node instanceof GroupingDefinition) {
                 continue;
             }
 
-            String fqn = getFqn((DataSchemaNode) node, currentPath);
-            Optional<Type> targetType = findType(Optional.empty(), (DataSchemaNode) node, currentPath, fqn, types);
-            parentClasses.put(targetType.get().getFullyQualifiedName(), IdsClassTemplate.IID_CHILD_METHOD);
+            parentClasses.put(generatedTypeMeta.targetType.getFullyQualifiedName(), IdsClassTemplate.IID_CHILD_METHOD);
         }
 
-        return new AbstractMap.SimpleEntry<>(currentPath, parentClasses);
+        return new AbstractMap.SimpleEntry<>(Iterables.getLast(currentAugMeta).targetPathWithGroupings, parentClasses);
     }
 
-    private static SchemaPath getPathWithResolvedGroupings(AugmentationMeta currentAugMeta, QName parentQName) {
+    private static SchemaPath getPathWithResolvedGroupings(GeneratedTypeMeta currentAugMeta, QName parentQName) {
         int parentIndex = Iterables.indexOf(currentAugMeta.originalTargetPath.getPathFromRoot(),
             q -> q.equals(parentQName));
         Iterable<QName> parentPath = Iterables.limit(currentAugMeta.originalTargetPath.getPathFromRoot(),
@@ -376,17 +395,35 @@ final class BindingLookup {
         return SchemaPath.create(parentPath, true);
     }
 
-    static AugmentationMeta extractAugMeta(AugmentationSchemaNode augNode, SchemaContext context, List<Type> types) {
+    static List<GeneratedTypeMeta> extractAugMeta(AugmentationSchemaNode augNode,
+                                                  SchemaContext context,
+                                                  List<Type> types) {
         SchemaPath targetPath = augNode.getTargetPath();
-        DataSchemaNode targetNode = (DataSchemaNode) SchemaContextUtil.findNodeInSchemaContext(context,
-                targetPath.getPathFromRoot());
+        List<QName> current = new ArrayList<>();
+        List<GeneratedTypeMeta> toBeReturned = Lists.newArrayList();
 
-        List<QName> fixedPath = getAugmentationTargetTypePath(targetPath, context);
-        SchemaPath fixedTargetPath = SchemaPath.create(fixedPath, true);
-        String fqn = getFqn(targetNode, fixedTargetPath);
-        Type targetType = findType(Optional.empty(), targetNode, fixedTargetPath, fqn, types).get();
+        for (QName qname : targetPath.getPathFromRoot()) {
+            current.add(qname);
 
-        return new AugmentationMeta(fixedTargetPath, targetPath, fqn, targetType);
+            DataSchemaNode targetNode = (DataSchemaNode) SchemaContextUtil.findNodeInSchemaContext(context, current);
+
+            SchemaPath currentTargetPath = SchemaPath.create(current, true);
+            List<QName> fixedPath = getAugmentationTargetTypePath(currentTargetPath, context);
+            SchemaPath fixedCurrentTargetPath = SchemaPath.create(fixedPath, true);
+            String fqn = getFqn(targetNode, fixedCurrentTargetPath);
+
+            Optional<Type> targetType = findType(Optional.empty(), targetNode, fixedCurrentTargetPath, fqn, types);
+            // Fallback
+            // When augmenting node from grouping with an explicitly defined node, path without groupings has to be used
+            // to find proper type
+            if (!targetType.isPresent()) {
+                targetType = findType(Optional.empty(), targetNode, currentTargetPath, fqn, types);
+            }
+
+            toBeReturned.add(new GeneratedTypeMeta(fixedCurrentTargetPath, currentTargetPath, targetType.get()));
+        }
+
+        return toBeReturned;
     }
 
     private static List<QName> getAugmentationTargetTypePath(SchemaPath targetPath, SchemaContext context) {
@@ -486,15 +523,14 @@ final class BindingLookup {
         }
     }
 
-    static class AugmentationMeta {
+    static class GeneratedTypeMeta {
         final SchemaPath targetPathWithGroupings;
         final SchemaPath originalTargetPath;
         final Type targetType;
 
-        AugmentationMeta(SchemaPath targetPathWithGroupings,
-                         SchemaPath originalTargetPath,
-                         String fqn,
-                         Type targetType) {
+        GeneratedTypeMeta(SchemaPath targetPathWithGroupings,
+                          SchemaPath originalTargetPath,
+                          Type targetType) {
             this.targetPathWithGroupings = targetPathWithGroupings;
             this.originalTargetPath = originalTargetPath;
             this.targetType = targetType;

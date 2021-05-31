@@ -36,6 +36,7 @@
 
     <profiles>
         <profile>
+            <id>yang</id>
             <activation>
                 <file>
                     <exists>src/main/yang</exists>
