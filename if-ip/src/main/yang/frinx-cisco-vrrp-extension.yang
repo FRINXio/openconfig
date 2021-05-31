@@ -59,6 +59,38 @@ module frinx-cisco-vrrp-extension {
         description "Set the value to subtract from priority when
           the tracked interface goes down";
       }
+
+      leaf shutdown {
+        type boolean;
+        description "Group shutdown";
+      }
+    }
+  }
+
+  grouping ipv6-vrrp-group-config {
+
+    leaf-list addresses {
+      type inet:ipv6-prefix;
+      description "Configure IPV6 addresses for the VRRP group";
+    }
+
+    list tracked-objects {
+      key "tracked-object-id";
+      description
+        "List of tracked objects";
+
+      leaf tracked-object-id {
+        type uint16 {
+          range 1..1000;
+        }
+        description
+          "Tracked object for event tracking";
+      }
+
+      leaf shutdown {
+        type boolean;
+        description "Group shutdown";
+      }
     }
   }
 
@@ -76,6 +108,20 @@ module frinx-cisco-vrrp-extension {
     }
   }
 
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+    "oc-if:subinterface/oc-ip:ipv6/oc-ip:addresses/oc-ip:address" {
+    ext:augment-identifier "if-ipv6-vrrp-aug";
+    description
+      "Additional Cisco IP addr family configuration for
+      interfaces";
+
+    uses oc-ip:ip-vrrp-top {
+      augment "vrrp/vrrp-group/config" {
+        uses ipv6-vrrp-group-config;
+      }
+    }
+  }
+
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
     "oc-if:subinterface/oc-ip:ipv4/oc-ip:addresses/oc-ip:address" {
     ext:augment-identifier "uni-if-ipv4-vrrp-aug";
@@ -86,6 +132,20 @@ module frinx-cisco-vrrp-extension {
       uses oc-ip:ip-vrrp-top {
         augment "vrrp/vrrp-group/config" {
           uses ipv4-vrrp-group-config;
+        }
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+    "oc-if:subinterface/oc-ip:ipv6/oc-ip:addresses/oc-ip:address" {
+    ext:augment-identifier "uni-if-ipv6-vrrp-aug";
+    description
+      "Additional Cisco IP addr family configuration for
+      interfaces";
+
+      uses oc-ip:ip-vrrp-top {
+        augment "vrrp/vrrp-group/config" {
+          uses ipv6-vrrp-group-config;
         }
     }
   }
