@@ -102,11 +102,6 @@ module frinx-bgp-extension {
       type boolean;
       description "Parameter to enable/disable logging message generation of BGP neighbor changes.";
     }
-
-    leaf default-information-originate {
-      type boolean;
-      description "Parameter to enable/disable control distribution of default information";
-    }
   }
 
   grouping global-afi-safi-config-extension {
@@ -123,6 +118,16 @@ module frinx-bgp-extension {
     leaf redistribute-static {
       type boolean;
       description "Redistribute static";
+    }
+
+    leaf default-information-originate {
+      type boolean;
+      description "Parameter to enable/disable control distribution of default information";
+    }
+
+    leaf synchronization {
+      type boolean;
+      description "Parameter to enable/disable IGP synchronization";
     }
   }
 
