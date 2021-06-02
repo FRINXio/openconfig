@@ -1,0 +1,18 @@
+module aug1 {
+    namespace aug1;
+    prefix aug1;
+
+    revision 2017-06-01;
+
+
+    import top {
+        prefix top;
+    }
+
+
+    augment "/top:c1/top:c2" {
+        container ca1 {
+
+        }
+    }
+}
