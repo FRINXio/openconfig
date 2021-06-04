@@ -129,6 +129,11 @@ module frinx-bgp-extension {
       type boolean;
       description "Parameter to enable/disable IGP synchronization";
     }
+
+    leaf table-map {
+      type string;
+      description "Map external entry attributes into routing table";
+    }
   }
 
   // network-instances augmentations
