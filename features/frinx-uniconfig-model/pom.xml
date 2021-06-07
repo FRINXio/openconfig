@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.opendaylight.odlparent</groupId>
         <artifactId>single-feature-parent</artifactId>
-        <version>3.1.1-Oxygen-SR2.4_2_7_rc15-frinxodl-SNAPSHOT</version>
+        <version>3.1.1-Oxygen-SR2.4_2_7_rc15-frinxodl</version>
         <relativePath/>
     </parent>
 
@@ -31,7 +31,7 @@
     <name>Frinx :: Uniconfig :: Model</name>
 
     <properties>
-        <mdsal.model.version>0.12.2-Oxygen-SR2.4_2_7_rc15-frinxodl-SNAPSHOT</mdsal.model.version>
+        <mdsal.model.version>0.12.2-Oxygen-SR2.4_2_7_rc15-frinxodl</mdsal.model.version>
     </properties>
 
     <dependencyManagement>
