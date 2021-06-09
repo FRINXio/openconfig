@@ -1,6 +1,7 @@
 package org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.policy.rev170730;
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.policy.rev170730.SetCommunityInlineConfig.Communities;
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.BgpStdCommunityType;
+import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.BgpStdCommunityTypeString;
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.NOADVERTISE;
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.NOEXPORT;
 
@@ -17,7 +18,9 @@ public class SetCommunityInlineConfigCommunitiesBuilder {
 
     public static Communities getDefaultInstance(java.lang.String defaultValue) {
         if (defaultValue.matches("[\\d:]+")) {
-            return new SetCommunityInlineConfig.Communities(new BgpStdCommunityType(defaultValue));
+            // FIXME distinguish between a number and number:number format for community
+            // currently using string representation even for numbers
+            return new SetCommunityInlineConfig.Communities(new BgpStdCommunityType(new BgpStdCommunityTypeString(defaultValue)));
         } else if (defaultValue.equals("no-export")) {
             return new SetCommunityInlineConfig.Communities(NOEXPORT.class);
         } else if (defaultValue.equals("no-advertise")) {
