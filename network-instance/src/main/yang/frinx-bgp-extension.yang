@@ -129,14 +129,30 @@ module frinx-bgp-extension {
       description "Parameter to enable/disable automatic network number summarization.";
     }
 
-    leaf redistribute-connected {
-      type boolean;
-      description "Redistribute connected";
+    container redistribute-connected {
+      description "Redistribute connection data";
+      leaf enabled {
+        type boolean;
+        description "Redistributed connection enabled or not";
+      }
+
+      leaf route-map {
+        type string;
+        description "Route map reference";
+      }
     }
 
-    leaf redistribute-static {
-      type boolean;
-      description "Redistribute static";
+    container redistribute-static {
+      description "Redistribute static data";
+      leaf enabled {
+        type boolean;
+        description "Redistributed static enabled or not";
+      }
+
+      leaf route-map {
+        type string;
+        description "Route map reference";
+      }
     }
 
     leaf default-information-originate {
