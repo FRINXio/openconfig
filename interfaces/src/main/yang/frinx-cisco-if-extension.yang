@@ -219,6 +219,12 @@ module frinx-cisco-if-extension {
         "FHRP reload delay timer";
     }
 
+    leaf vrf-forwarding {
+      type string;
+      description
+        "Configure forwarding table";
+    }
+
     uses service-policy;
     uses storm-control;
   }

@@ -83,6 +83,25 @@ module frinx-bgp-extension {
         }
       }
     }
+
+    container local-as-group {
+      uses local-as-group;
+    }
+  }
+
+  grouping local-as-group {
+
+    leaf no-prepend {
+      type boolean;
+      description
+        "Do not prepend local-as to updates from ebgp peers";
+    }
+
+    leaf replace-as {
+      type boolean;
+      description
+        "Replace real AS with local AS in the EBGP updates";
+    }
   }
 
   grouping local-aggregates-policy {
