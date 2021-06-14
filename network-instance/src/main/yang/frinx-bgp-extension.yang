@@ -64,6 +64,25 @@ module frinx-bgp-extension {
       type boolean;
       description "Override matching AS-number while sending update";
     }
+
+    leaf transport {
+      description
+        "Transport options for bgp neighbor";
+      type enumeration {
+        enum connection-mode {
+          description "Specify passive or active connection";
+        }
+        enum path-mtu-discovery {
+          description "Use transport path MTU discovery";
+        }
+        enum single-session {
+          description "[DEPRECATED]Use only a single session for transport";
+        }
+        enum multi-session {
+          description "Use Multi-session for transport";
+        }
+      }
+    }
   }
 
   grouping local-aggregates-policy {
