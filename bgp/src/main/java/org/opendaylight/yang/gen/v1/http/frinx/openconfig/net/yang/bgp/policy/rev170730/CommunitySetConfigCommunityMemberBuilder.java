@@ -1,6 +1,7 @@
 package org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.policy.rev170730;
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.policy.rev170730.CommunitySetConfig.CommunityMember;
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.BgpStdCommunityType;
+import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.BgpStdCommunityTypeString;
 
 /**
  * The purpose of generated class in src/main/java for Union types is to create new instances of unions from a string representation.
@@ -14,7 +15,9 @@ import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev
 public class CommunitySetConfigCommunityMemberBuilder {
 
     public static CommunityMember getDefaultInstance(java.lang.String defaultValue) {
-        return new CommunityMember(new BgpStdCommunityType(defaultValue));
+        // FIXME distinguish between a number and number:number format for community
+        // currently using string representation even for numbers
+        return new CommunityMember(new BgpStdCommunityType(new BgpStdCommunityTypeString(defaultValue)));
     }
 
 }
