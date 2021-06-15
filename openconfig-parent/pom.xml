@@ -20,7 +20,7 @@
     <parent>
         <groupId>io.frinx.translate.unit.commons</groupId>
         <artifactId>checkstyle-parent</artifactId>
-        <version>4.2.7.rc16-frinx</version>
+        <version>4.2.7.rc17-frinx-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
@@ -30,7 +30,7 @@
 
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>openconfig-parent</artifactId>
-    <version>4.2.7.rc16-frinx</version>
+    <version>4.2.7.rc17-frinx-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
 
@@ -76,7 +76,7 @@
                                 <dependency>
                                     <groupId>io.frinx.openconfig</groupId>
                                     <artifactId>ids-code-generator</artifactId>
-                                    <version>4.2.7.rc16-frinx</version>
+                                    <version>4.2.7.rc17-frinx-SNAPSHOT</version>
                                     <scope>compile</scope>
                                 </dependency>
                             </dependencies>
