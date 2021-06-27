@@ -24,12 +24,12 @@
     <parent>
         <groupId>io.frinx.openconfig</groupId>
         <artifactId>openconfig-parent</artifactId>
-        <version>4.2.7.rc18-frinx</version>
+        <version>4.2.7.rc19-frinx-SNAPSHOT</version>
         <relativePath>../openconfig-parent</relativePath>
     </parent>
 
     <artifactId>openconfig-oam</artifactId>
-    <version>4.2.7.rc18-frinx</version>
+    <version>4.2.7.rc19-frinx-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <dependencies>
