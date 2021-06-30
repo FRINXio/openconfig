@@ -27,7 +27,7 @@
     <groupId>io.frinx.openconfig</groupId>
     <artifactId>frinx-openconfig-acl</artifactId>
     <packaging>feature</packaging>
-    <version>4.2.7.rc19-frinx</version>
+    <version>4.2.7.rc20-frinx-SNAPSHOT</version>
     <name>Frinx :: Openconfig :: ACL</name>
 
     <dependencyManagement>
