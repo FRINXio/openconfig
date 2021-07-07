@@ -329,6 +329,13 @@ module frinx-cisco-if-extension {
 
           uses service-instance-bridge-domain;
         }
+
+        container rewrite {
+          description
+            "Configure ethernet rewrite criteria";
+
+          uses service-instance-rewrite;
+        }
       }
     }
   }
@@ -419,6 +426,41 @@ module frinx-cisco-if-extension {
         enum stp {
           description
             "Spanning Tree Protocol";
+        }
+      }
+    }
+  }
+
+  grouping service-instance-rewrite {
+
+    leaf type {
+      description "Defines type of rewrite";
+      type enumeration {
+        enum ingress {
+          description
+            "Ingress Rewrite";
+        }
+        enum egress {
+          description
+            "Egress Rewrite";
+        }
+      }
+    }
+
+    leaf operation {
+      description "Defines operation type";
+      type enumeration {
+        enum pop {
+          description
+            "Pop the tag";
+        }
+        enum push {
+          description
+            "Rewrite Operation of push";
+        }
+        enum translate {
+          description
+            "Translate Tag";
         }
       }
     }
