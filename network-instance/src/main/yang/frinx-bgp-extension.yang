@@ -56,13 +56,29 @@ module frinx-bgp-extension {
     }
 
     leaf fall-over-mode {
-        type boolean;
-        description "Fall-over bfd mode relating to the BGP neighbor";
+      type boolean;
+      description "Fall-over bfd mode relating to the BGP neighbor";
     }
 
     leaf as-override {
       type boolean;
       description "Override matching AS-number while sending update";
+    }
+
+    container timer-configuration {
+      description "Container for timer data";
+      leaf timer-mode {
+        type string;
+        description "Mode for timer data for Huawei device";
+      }
+      leaf time-before {
+        type uint8;
+        description "Previous timer value";
+      }
+      leaf time-after {
+        type uint8;
+        description "Next timer value";
+      }
     }
 
     leaf transport {
@@ -80,6 +96,9 @@ module frinx-bgp-extension {
         }
         enum multi-session {
           description "Use Multi-session for transport";
+        }
+        enum auto-discovery {
+          description "Use transport path MTU auto-discovery relating to the Huawei BGP neighbor";
         }
       }
     }
@@ -139,6 +158,11 @@ module frinx-bgp-extension {
     leaf log-neighbor-changes {
       type boolean;
       description "Parameter to enable/disable logging message generation of BGP neighbor changes.";
+    }
+
+    leaf-list import-route{
+      type string;
+      description "Import route direct and static configuration";
     }
   }
 
