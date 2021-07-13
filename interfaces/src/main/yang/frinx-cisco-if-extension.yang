@@ -376,9 +376,7 @@ module frinx-cisco-if-extension {
     }
 
     leaf-list dot1q {
-      type uint16 {
-        range "1 .. 4094";
-      }
+      type string;
       description
         "Dot1q encapsulation VLAN IDs";
     }
