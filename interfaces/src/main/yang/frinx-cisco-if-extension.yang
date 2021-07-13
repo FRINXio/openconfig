@@ -316,11 +316,11 @@ module frinx-cisco-if-extension {
           uses service-instance-encapsulation;
         }
 
-        container l2protocol {
+        container l2protocols {
           description
             "L2 protocol data for service instance";
 
-          uses service-instance-l2protocol;
+          uses service-instance-l2protocols;
         }
 
         container bridge-domain {
@@ -378,7 +378,32 @@ module frinx-cisco-if-extension {
     }
   }
 
-  grouping service-instance-l2protocol {
+  grouping service-instance-l2protocols {
+    container service-instance-l2protocol {
+      list l2protocol {
+        key "name";
+        description
+          "List of l2protocols";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+        }
+        container config {
+          description "";
+          uses l2protocol-config;
+        }
+      }
+    }
+  }
+
+  grouping l2protocol-config {
+    leaf name {
+      type string;
+      description
+        "L2 procol config";
+    }
     leaf protocol-type {
       description "Defines a protocol type of l2protocol";
       type enumeration {
@@ -409,7 +434,7 @@ module frinx-cisco-if-extension {
         }
         enum lacp {
           description
-            "LACP Protocol";
+           "LACP Protocol";
         }
         enum lldp {
           description
@@ -426,6 +451,22 @@ module frinx-cisco-if-extension {
         enum stp {
           description
             "Spanning Tree Protocol";
+        }
+        enum RB {
+          description
+            "Reserved Protocol using DA Mac 0180.C200.000B";
+        }
+        enum RC {
+          description
+            "Reserved Protocol using DA Mac 0180.C200.000C";
+        }
+        enum RD {
+          description
+            "Reserved Protocol using DA Mac 0180.C200.000D";
+        }
+        enum RF {
+          description
+            "Reserved Protocol using DA Mac 0180.C200.000F";
         }
       }
     }
