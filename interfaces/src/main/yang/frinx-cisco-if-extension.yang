@@ -195,6 +195,12 @@ module frinx-cisco-if-extension {
         "Enable LLDP reception on interface";
     }
 
+    leaf negotiation-auto {
+      type boolean;
+      description
+        "Select autonegotiation mode";
+    }
+
     leaf cdp-enable {
       type boolean;
       description
