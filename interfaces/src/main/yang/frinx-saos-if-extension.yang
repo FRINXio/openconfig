@@ -9,6 +9,7 @@ module frinx-saos-if-extension {
 
   // import some basic types
   import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-inet-types { prefix oc-inet; revision-date 2017-04-03; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
@@ -110,6 +111,16 @@ module frinx-saos-if-extension {
       type uint16;
       description
         "The maximum number of allowed dynamic MAC address";
+    }
+
+    leaf ipv4-prefix {
+      type oc-inet:ipv4-prefix;
+      description "Ipv4 address and mask for logical interfaces";
+    }
+
+    leaf ipv6-prefix {
+      type oc-inet:ipv6-prefix;
+      description "Ipv6 address and mask for logical interfaces";
     }
   }
 
