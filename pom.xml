@@ -72,7 +72,6 @@
     <module>l2-cft</module>
     <module>privilege</module>
     <module>ring</module>
-    <module>features</module>
     <module>evc</module>
     <module>fhrp</module>
   </modules>
