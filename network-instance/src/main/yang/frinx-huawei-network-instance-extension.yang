@@ -1,0 +1,59 @@
+module frinx-huawei-network-instance-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/network-instance/huawei";
+
+  prefix "huawei-ni-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig network instance,
+    containing huawei specific features.";
+
+  revision "2021-07-26" {
+    description
+      "Initial release";
+    reference "4.2.8";
+  }
+
+  grouping huawei-ni-extension-config {
+
+    leaf prefix-limit-from {
+      type uint8;
+      description "Set prefix limit number from this value";
+    }
+
+    leaf prefix-limit-to {
+      type uint8;
+      description "Set prefix limit number to this value";
+    }
+  }
+
+  // augment statements
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:config" {
+    description "Adds Huawei specific configuration to network-instance/config model";
+    ext:augment-identifier "huawei-ni-aug";
+    uses huawei-ni-extension-config;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance" +
+    "/oc-ni:config" {
+    description "Adds Huawei specific configuration to network-instance/config model";
+    uses huawei-ni-extension-config;
+  }
+}
