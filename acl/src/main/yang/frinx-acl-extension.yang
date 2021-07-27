@@ -176,6 +176,21 @@ module frinx-acl-extension {
     }
   }
 
+  grouping acl-set-extension-config-vrp {
+    leaf type2 {
+      type string;
+      description "Enable/disable an ACL profile.";
+    }
+    leaf description {
+      type string;
+      description "Specify ACL description.";
+    }
+    leaf step {
+      type string;
+      description "Specify step of ACL sub rule ID.";
+    }
+  }
+
   identity ACL_IPV4_STANDARD {
     base oc-acl:ACL_TYPE;
     description
@@ -235,6 +250,12 @@ module frinx-acl-extension {
     uses acl-set-extension-config;
   }
 
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:config" {
+    description "Adds HUAWEI specific configuration to acl model";
+    ext:augment-identifier "vrp-acl-set-aug";
+    uses acl-set-extension-config-vrp;
+  }
+
   // uniconfig augmentations
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:transport/oc-acl:config" {
     uses src-dst-port-named;
@@ -273,5 +294,10 @@ module frinx-acl-extension {
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:config" {
     description "Adds SAOS specific configuration to acl model";
     uses acl-set-extension-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:config" {
+    description "Adds HUAWEI specific configuration to acl model";
+    uses acl-set-extension-config-vrp;
   }
 }
