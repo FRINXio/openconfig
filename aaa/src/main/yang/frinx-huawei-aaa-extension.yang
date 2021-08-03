@@ -1,0 +1,190 @@
+module frinx-huawei-aaa-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/aaa/huawei-extension";
+
+  prefix "huawei-aaa-ext";
+
+  // import some basic types
+  import frinx-openconfig-aaa { prefix oc-aaa; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig aaa models,
+    containing HUAWEI specific features.";
+
+  revision "2021-08-03" {
+    description
+      "Initial release";
+    reference "4.2.8";
+  }
+
+  grouping huawei-aaa-extension {
+    container authentication-schemes {
+      description "Container objects of authentication scheme";
+
+      list authentication {
+        key "name";
+
+        description "List of authentication schemes";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+
+          description "The name of the authentication schemes";
+        }
+
+        container config {
+          description "Configured reference to authentication schemes";
+
+          leaf name {
+            type string;
+
+            description "The name of the authentication schemes";
+          }
+
+          uses oc-aaa:aaa-authentication-top;
+        }
+      }
+    }
+
+    container accounting-schemes {
+      description "Container objects of accounting scheme";
+
+      list account {
+        key "name";
+
+        description "List of accounting schemes";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+
+          description "The name of the accounting schemes";
+        }
+
+        container config {
+          description "Configured reference to accounting schemes";
+
+          leaf name {
+            type string;
+            description "The name of the accounting schemes";
+          }
+
+          leaf fail-policy {
+            type string;
+            description "The type of the fail policy";
+          }
+
+          leaf fail-policy-mode {
+            type string;
+            description "The type of the fail policy mode";
+          }
+
+          uses oc-aaa:aaa-accounting-top;
+        }
+      }
+    }
+
+    container domain-list {
+      description "Container objects of domain scheme";
+
+      list domain {
+        key "name";
+
+        description "List of domain schemes";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+
+          description "The name of the domain schemes";
+        }
+
+        container config {
+          description "Configured reference to domain schemes";
+
+          leaf name {
+            type string;
+            description "The name of the domain schemes";
+          }
+
+          leaf authentication-scheme {
+            type string;
+            description "The name of the authentication scheme related to domain";
+          }
+
+          leaf accounting-scheme {
+            type string;
+            description "The name of the accounting scheme related to domain";
+          }
+
+          leaf radius-server {
+            type string;
+            description "TThe name of the radius scheme related to domain";
+          }
+        }
+      }
+    }
+  }
+
+  grouping user-extension {
+
+    description "Extension for user";
+    leaf privilege-level {
+      type uint8;
+      description "Number of privilege level";
+    }
+
+    leaf-list service-type {
+      type string;
+      description "Service type for current user";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-aaa:aaa" {
+    description "List of authentication schemas";
+    ext:augment-identifier "aaa-huawei-schemas-aug";
+
+    uses huawei-aaa-extension;
+  }
+
+  augment "/oc-aaa:aaa/oc-aaa:authentication/oc-aaa:users/oc-aaa:user/oc-aaa:config" {
+      description "Configuration data for users";
+      ext:augment-identifier "aaa-huawei-user-aug";
+
+      uses user-extension;
+    }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-aaa:aaa" {
+    description "List of authentication schemas";
+
+    uses huawei-aaa-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-aaa:aaa" +
+    "/oc-aaa:authentication/oc-aaa:users/oc-aaa:user/oc-aaa:config" {
+    description "Configuration data for users";
+
+    uses user-extension;
+  }
+}

@@ -163,3 +163,8 @@
 ./privilege/src/main/yang/frinx-privilege.yang
 
 ./evc/src/main/yang/frinx-openconfig-evc.yang
+
+./aaa/src/main/yang/frinx-openconfig-aaa-types.yang
+./aaa/src/main/yang/frinx-openconfig-aaa.yang
+./aaa/src/main/yang/frinx-openconfig-radius.yang
+./aaa/src/main/yang/frinx-openconfig-tacacs.yang
