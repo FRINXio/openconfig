@@ -7,12 +7,12 @@
     <parent>
         <groupId>io.frinx.openconfig</groupId>
         <artifactId>openconfig-parent</artifactId>
-        <version>4.2.8.rc3-frinx</version>
+        <version>4.2.8.rc4-frinx-SNAPSHOT</version>
         <relativePath>../openconfig-parent</relativePath>
     </parent>
 
     <artifactId>openconfig-stp</artifactId>
-    <version>4.2.8.rc3-frinx</version>
+    <version>4.2.8.rc4-frinx-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <dependencies>
