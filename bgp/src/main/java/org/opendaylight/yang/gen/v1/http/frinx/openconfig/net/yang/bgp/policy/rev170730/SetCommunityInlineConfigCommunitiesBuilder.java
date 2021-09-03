@@ -2,6 +2,7 @@ package org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.policy.r
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.policy.rev170730.SetCommunityInlineConfig.Communities;
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.BgpStdCommunityType;
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.BgpStdCommunityTypeString;
+import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.BgpStdCommunityTypeUnit32;
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.NOADVERTISE;
 import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev170202.NOEXPORT;
 
@@ -17,11 +18,15 @@ import org.opendaylight.yang.gen.v1.http.frinx.openconfig.net.yang.bgp.types.rev
 public class SetCommunityInlineConfigCommunitiesBuilder {
 
     public static Communities getDefaultInstance(java.lang.String defaultValue) {
-        if (defaultValue.matches("[\\d:]+")) {
-            // FIXME distinguish between a number and number:number format for community
-            // currently using string representation even for numbers
-            return new SetCommunityInlineConfig.Communities(new BgpStdCommunityType(new BgpStdCommunityTypeString(defaultValue)));
-        } else if (defaultValue.equals("no-export")) {
+        if (defaultValue.matches("\\d+:\\d+")) {
+            return new SetCommunityInlineConfig.Communities(new BgpStdCommunityType(
+                    new BgpStdCommunityTypeString(defaultValue)));
+        }
+        else if (defaultValue.matches("\\d+")) {
+            return new SetCommunityInlineConfig.Communities(new BgpStdCommunityType(
+                    new BgpStdCommunityTypeUnit32(Long.valueOf(defaultValue))));
+        }
+        else if (defaultValue.equals("no-export")) {
             return new SetCommunityInlineConfig.Communities(NOEXPORT.class);
         } else if (defaultValue.equals("no-advertise")) {
             return new SetCommunityInlineConfig.Communities(NOADVERTISE.class);
