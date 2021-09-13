@@ -100,6 +100,11 @@ module frinx-acl-extension {
     container destination-address-wildcarded {
       uses ipv4-address-wildcarded;
     }
+    leaf established {
+      type boolean;
+      description
+        "Allows TCP traffic to pass if the packet is a reply to an outbound initiated session.";
+    }
   }
 
   grouping ipv6-address-wildcarded {
