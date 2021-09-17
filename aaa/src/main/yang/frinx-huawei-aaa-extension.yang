@@ -9,6 +9,7 @@ module frinx-huawei-aaa-extension {
 
   // import some basic types
   import frinx-openconfig-aaa { prefix oc-aaa; }
+  import frinx-openconfig-inet-types { prefix oc-inet; }
   // uniconfig imports
   import network-topology { prefix nt; revision-date "2013-10-21"; }
   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
@@ -143,6 +144,50 @@ module frinx-huawei-aaa-extension {
     }
   }
 
+  grouping radius-extension {
+    container radius {
+      description "Container objects of radius templates";
+
+      list template {
+        key "name";
+        description "List of radius templates";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+
+          description "The name of the radius template";
+        }
+
+        container config {
+          description "Configured reference to radius template";
+
+          leaf name {
+            type string;
+            description "The name of the radius template";
+          }
+
+          list authentication-data {
+            key "source-address";
+
+            leaf source-address {
+              type oc-inet:ip-address;
+              description
+                "Source IP address to use in messages to the RADIUS server";
+            }
+            leaf vrf-name {
+              type string;
+              description "The name of the vrf instance";
+            }
+          }
+          uses oc-aaa:aaa-radius-server-config;
+          uses oc-aaa:aaa-radius-server-state;
+        }
+      }
+    }
+  }
+
   grouping user-extension {
 
     description "Extension for user";
@@ -164,6 +209,7 @@ module frinx-huawei-aaa-extension {
     ext:augment-identifier "aaa-huawei-schemas-aug";
 
     uses huawei-aaa-extension;
+    uses radius-extension;
   }
 
   augment "/oc-aaa:aaa/oc-aaa:authentication/oc-aaa:users/oc-aaa:user/oc-aaa:config" {
@@ -171,7 +217,7 @@ module frinx-huawei-aaa-extension {
       ext:augment-identifier "aaa-huawei-user-aug";
 
       uses user-extension;
-    }
+  }
 
   // uniconfig augmentations
 
@@ -179,6 +225,7 @@ module frinx-huawei-aaa-extension {
     description "List of authentication schemas";
 
     uses huawei-aaa-extension;
+    uses radius-extension;
   }
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-aaa:aaa" +
