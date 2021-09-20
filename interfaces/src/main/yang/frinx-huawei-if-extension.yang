@@ -87,6 +87,11 @@ module frinx-huawei-if-extension {
         description "DSCP trust parameters";
       }
 
+      leaf ipv6 {
+        type boolean;
+        description "Is ipv6 config or not";
+      }
+
       uses traffic-direction;
     }
   }
@@ -127,6 +132,11 @@ module frinx-huawei-if-extension {
       leaf acl-name {
         type string;
         description "DSCP trust parameters";
+      }
+
+      leaf ipv6 {
+        type boolean;
+        description "Is ipv6 config or not";
       }
 
       uses traffic-direction;
