@@ -145,6 +145,149 @@ module frinx-qos-extension {
     }
   }
 
+  grouping qos-classifier-config {
+    leaf operation {
+      type enumeration {
+        enum or {
+          description "Rule of matching one of the statements";
+          }
+        enum and {
+          description "Rule of matching all of the statements";
+        }
+      }
+    }
+  }
+
+  grouping qos-scheduler-input-config {
+    leaf statistic {
+      type string;
+      description "Enable or disable traffic statistic";
+    }
+  }
+
+  grouping qos-scheduler-color-config {
+    leaf color-mode {
+      type enumeration {
+        enum color-blind {
+          description "Color aware";
+          }
+        enum color-aware {
+          description "Color blind";
+        }
+      }
+    }
+    leaf drop-method {
+      type string;
+      description "Traffic behavior configuration information";
+    }
+  }
+  
+  grouping qos-scheduler-two-color-config {
+    leaf traffic-action {
+      type enumeration {
+        enum gts {
+          description "General Traffic Shape";
+        }
+        enum af {
+          description "Assured Forwarding service";
+        }
+        enum ef {
+          description "Expedited Forwarding service";
+        }
+        enum llq {
+          description "Low-latency service";
+        }
+        enum wfq {
+          description "Flow-based WFQ for BE (Best-Effort) traffic";
+        }
+      }
+    }
+    leaf max-queue-depth-packets {
+      type uint32;
+      units bps;
+      description
+        "When the scheduler is specified to be a shaper - the
+        maximum depth of the queue in bits per second is the value
+        specified by this leaf.";
+    }
+  }
+
+  grouping huawei-qos-scheduler-config {
+    leaf vrp-precedence {
+      type string;
+      description
+        "Value of policy precedence";
+    }
+    leaf behavior {
+      type string;
+      description "Traffic behavior configuration information";
+    }
+  }
+
+  grouping yellow-action-aug {
+    container yellow-action {
+      description
+        "Action to be applied to packets that are scheduled within the
+        CIR of the one-rate, two-colour scheduler. Packets that receive
+        a token from the in-CIR bucket are said to be conforming and
+        have all of the specified actions applied.";
+
+      container config {
+        description
+          "Configuration parameters relating to conforming packets for the
+          1r2c scheduler.";
+
+        uses qos-common-remark-actions-config;
+        uses qos-scheduler-actions;
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state parameters relating to conforming packets
+          for the 1r2c scheduler.";
+
+        uses qos-common-remark-actions-config;
+      }
+    }
+  }
+
+  grouping qos-common-remark-actions-config {
+    description
+      "Configuration data for QoS re-marking actions";
+
+    leaf set-dscp {
+      type uint8;
+      description
+        "Sets the 6-bit DSCP (differentiated services code point)
+        value in the IP packet header.";
+      reference
+        "RFC 2474 - Definition of the Differentiated Services Field
+        (DS Field) in the IPv4 and IPv6 Headers";
+    }
+
+    leaf set-dot1p {
+      type uint8;
+      description
+        "Sets the 3-bit class-of-service value in the
+        Ethernet packet header for 802.1Q VLAN-tagged packets,
+        also known as PCP (priority code point).";
+      reference
+        "IEEE 802.1Q-2014 - IEEE Standard for Local and metropolitan
+        area networks--Bridges and Bridged Networks";
+    }
+
+    leaf set-mpls-tc {
+      type uint8;
+      description
+        "Sets the 3-bit traffic class value (also referred to as EXP
+        or CoS) in MPLS packets.";
+      reference
+        "RFC 3270 - Multi-Protocol Label Switching (MPLS) Support of
+        Differentiated Services";
+    }
+  }
+
   // augment statements
   augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
     ext:augment-identifier "qos-condition-aug";
@@ -232,6 +375,12 @@ module frinx-qos-extension {
     }
   }
 
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:two-rate-three-color/oc-qos:config" {
+    ext:augment-identifier "qos-two-color-config";
+    description "Adds services to scheduler";
+    uses qos-scheduler-two-color-config;
+  }
+
   augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:inputs/oc-qos:input/oc-qos:config" {
     ext:augment-identifier "qos-cos-aug";
     description "Adds CoS (Class of Service)";
@@ -290,6 +439,38 @@ module frinx-qos-extension {
     description "Adds additional configuration to egress interface";
     uses qos-interface-config;
   }
+
+  augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:config" {
+    description "Adds HUAWEI specific configuration to acl model";
+    ext:augment-identifier "vrp-qos-classifier-aug";
+    uses qos-classifier-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:inputs/oc-qos:input/oc-qos:config" {
+    description "Adds HUAWEI specific configuration scheduler input";
+    ext:augment-identifier "vrp-qos-scheduler-input-aug";
+    uses qos-scheduler-input-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    description "Adds HUAWEI specific configuration to qos model";
+    ext:augment-identifier "vrp-qos-scheduler-color-aug";
+    uses qos-scheduler-color-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:config" {
+    description "Adds HUAWEI specific info about behavior";
+    ext:augment-identifier "vrp-qos-scheduler-conf-aug";
+    uses huawei-qos-scheduler-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color" {
+    description "Adds HUAWEI specific info for additional type of action";
+    ext:augment-identifier "vrp-yellow-action";
+    uses yellow-action-aug;
+  }
+
+
 
   // uniconfig augmentations
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
@@ -394,6 +575,12 @@ module frinx-qos-extension {
     uses qos-scheduler-actions;
   }
 
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color" {
+    description "Adds yellow actions to scheduler";
+
+    uses yellow-action-aug;
+  }
+
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
     description "Adds QoS maximum queue depth in bits per second";
 
@@ -424,4 +611,29 @@ module frinx-qos-extension {
     description "Adds additional configuration to egress interface";
     uses qos-interface-config;
   }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:config" {
+    description "Adds HUAWEI specific configuration to classifier config";
+    uses qos-classifier-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:inputs/oc-qos:input/oc-qos:config" {
+    description "Adds HUAWEI specific configuration scheduler input";
+    uses qos-scheduler-input-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    description "Adds HUAWEI specific configuration to qos model";
+    uses qos-scheduler-color-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:config" {
+    description "Adds HUAWEI specific info about behavior";
+    uses huawei-qos-scheduler-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:two-rate-three-color/oc-qos:config" {
+      description "Adds services to scheduler";
+      uses qos-scheduler-two-color-config;
+    }
 }
