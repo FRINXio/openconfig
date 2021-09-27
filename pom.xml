@@ -68,6 +68,7 @@
     <module>isis</module>
     <module>oam</module>
     <module>stp</module>
+    <module>system</module>
     <module>ipsec</module>
     <module>broadcast-containment</module>
     <module>l2-cft</module>

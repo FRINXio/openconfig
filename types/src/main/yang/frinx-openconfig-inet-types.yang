@@ -130,6 +130,54 @@ module frinx-openconfig-inet-types {
       "An IPv4 or IPv6 prefix.";
   }
 
+  typedef domain-name {
+    type string {
+      length "1..253";
+      pattern
+        '(((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*' +
+        '([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)'    +
+        '|\.)';
+      oc-ext:posix-pattern
+        '^(((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*' +
+        '([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)'    +
+        '|\.)$';
+    }
+    description
+      "The domain-name type represents a DNS domain name.
+      Fully quallified left to the models which utilize this type.
+      Internet domain names are only loosely specified.  Section
+      3.5 of RFC 1034 recommends a syntax (modified in Section
+      2.1 of RFC 1123).  The pattern above is intended to allow
+      for current practice in domain name use, and some possible
+      future expansion.  It is designed to hold various types of
+      domain names, including names used for A or AAAA records
+      (host names) and other records, such as SRV records.  Note
+      that Internet host names have a stricter syntax (described
+      in RFC 952) than the DNS recommendations in RFCs 1034 and
+      1123, and that systems that want to store host names in
+      schema nodes using the domain-name type are recommended to
+      adhere to this stricter standard to ensure interoperability.
+      The encoding of DNS names in the DNS protocol is limited
+      to 255 characters.  Since the encoding consists of labels
+      prefixed by a length bytes and there is a trailing NULL
+      byte, only 253 characters can appear in the textual dotted
+      notation.
+      Domain-name values use the US-ASCII encoding.  Their canonical
+      format uses lowercase US-ASCII characters.  Internationalized
+      domain names MUST be encoded in punycode as described in RFC
+      3492";
+  }
+
+  typedef host {
+    type union {
+      type ip-address;
+      type domain-name;
+    }
+    description
+      "The host type represents either an unzoned IP address or a DNS
+      domain name.";
+  }
+
   typedef as-number {
     type uint32;
     description

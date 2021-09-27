@@ -237,6 +237,11 @@
                 <artifactId>openconfig-aaa</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.frinx.openconfig</groupId>
+                <artifactId>openconfig-system</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!-- Features -->
             <dependency>

@@ -168,3 +168,8 @@
 ./aaa/src/main/yang/frinx-openconfig-aaa.yang
 ./aaa/src/main/yang/frinx-openconfig-radius.yang
 ./aaa/src/main/yang/frinx-openconfig-tacacs.yang
+./aaa/src/main/yang/frinx-huawei-aaa-extension.yang
+
+./system/src/main/yang/frinx-openconfig-system-terminal.yang
+./system/src/main/yang/frinx-openconfig-system.yang
+./system/src/main/yang/frinx-huawei-terminal-extension

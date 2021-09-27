@@ -1,0 +1,132 @@
+module frinx-openconfig-system {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/system";
+
+  prefix "oc-sys";
+
+  // import some basic types
+  import frinx-openconfig-inet-types { prefix oc-inet; }
+  import frinx-openconfig-yang-types { prefix oc-yang; }
+  import frinx-openconfig-types { prefix oc-types; }
+  import frinx-openconfig-extensions { prefix oc-ext; }
+  import frinx-openconfig-system-terminal { prefix oc-sys-term; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+      "support@frinx.io";
+
+  description
+    "Model for managing system-wide services and functions on
+    network devices.";
+
+  revision "2021-09-23" {
+    description
+      "Initial release";
+    reference "4.2.9";
+  }
+
+  // grouping statements
+
+  grouping system-global-config {
+    description "system-wide configuration parameters";
+
+    leaf hostname {
+      type oc-inet:domain-name;
+      description
+        "The hostname of the device -- should be a single domain
+        label, without the domain.";
+    }
+
+    leaf domain-name {
+      type oc-inet:domain-name;
+      description
+        "Specifies the domain name used to form fully qualified name
+        for unqualified hostnames.";
+    }
+
+    leaf login-banner {
+      type string;
+      description
+        "The console login message displayed before the login prompt,
+        i.e., before a user logs into the system.";
+    }
+
+    leaf motd-banner {
+      type string;
+      description
+        "The console message displayed after a user logs into the
+        system.  They system may append additional standard
+        information such as the current system date and time, uptime,
+        last login timestamp, etc.";
+    }
+  }
+
+  grouping system-global-state {
+    description
+      "Global operational state data for the system";
+
+    leaf current-datetime {
+        type oc-yang:date-and-time;
+        description
+          "The current system date and time.";
+    }
+
+    leaf boot-time {
+        type oc-types:timeticks64;
+        units "nanoseconds";
+        description
+          "This timestamp indicates the time that the system was last
+          restarted.  The value is the timestamp in nanoseconds relative
+          to the Unix Epoch (Jan 1, 1970 00:00:00 UTC).";
+    }
+  }
+
+  grouping system-top {
+    description
+      "Top level system data containers";
+
+    container system {
+      description
+        "Enclosing container for system-related configuration and
+        operational state data";
+
+      container config {
+        description "Global configuration data for the system";
+
+        uses system-global-config;
+
+      }
+
+      container state {
+        config false;
+        description "Global operational state data for the system";
+
+        uses system-global-config;
+        uses system-global-state;
+      }
+
+      uses oc-sys-term:system-ssh-server-top;
+      uses oc-sys-term:system-telnet-server-top;
+    }
+  }
+
+  // data definition statements
+
+  uses system-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    description "Added system to configuration";
+    uses system-top;
+  }
+}
