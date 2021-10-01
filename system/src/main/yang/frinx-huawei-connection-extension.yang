@@ -1,0 +1,70 @@
+module frinx-huawei-connection-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/system/huawei-connection-extension";
+
+  prefix "huawei-terminal-ext";
+
+  // import some basic types
+  import frinx-openconfig-system { prefix oc-sys; }
+  import frinx-openconfig-system-terminal { prefix oc-sys-term; }
+  import frinx-openconfig-inet-types { prefix oc-inet; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig connection models,
+    containing HUAWEI specific features.";
+
+  revision "2021-09-30" {
+    description
+      "Initial release";
+    reference "4.2.9";
+  }
+
+  grouping huawei-stelnet-top {
+    description "Top-level grouping for stelnet server ";
+
+    container stelnet-server {
+      description "Top-level container for stelnet terminal servers";
+
+      container config {
+        description "Configuration data for stelnet";
+        uses oc-sys-term:system-telnet-server-config;
+      }
+
+      container state {
+        config false;
+        description "Operational state data for stelnet";
+
+        uses oc-sys-term:system-telnet-server-config;
+        uses oc-sys-term:system-telnet-server-state;
+      }
+    }
+  }
+
+  augment "/oc-sys:system" {
+    description "Stelnet augmentation";
+    ext:augment-identifier "stelnet-huawei-aug";
+
+    uses huawei-stelnet-top;
+  }
+
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-sys:system" {
+    description "Stelnet augmentation";
+
+    uses huawei-stelnet-top;
+  }
+}
