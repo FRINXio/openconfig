@@ -5,7 +5,7 @@ module frinx-huawei-connection-extension {
   // namespace
   namespace "http://frinx.openconfig.net/yang/system/huawei-connection-extension";
 
-  prefix "huawei-terminal-ext";
+  prefix "huawei-connection-ext";
 
   // import some basic types
   import frinx-openconfig-system { prefix oc-sys; }
