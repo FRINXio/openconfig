@@ -40,19 +40,9 @@ module frinx-huawei-banner-extension {
       container config {
         description "Configuration data for banner";
 
-        leaf location {
+        leaf banner-text {
           type string;
-          description "Device location in banner information.";
-        }
-
-        leaf hostname {
-          type string;
-          description "Device hostname in banner information.";
-        }
-
-        leaf model {
-          type string;
-          description "Device model in banner information.";
+          description "Banner text for device.";
         }
       }
     }
