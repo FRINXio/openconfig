@@ -23,12 +23,12 @@
     <parent>
         <artifactId>openconfig-parent</artifactId>
         <groupId>io.frinx.openconfig</groupId>
-        <version>4.2.9.rc3-frinx</version>
+        <version>4.2.9.rc4-frinx-SNAPSHOT</version>
         <relativePath>../openconfig-parent</relativePath>
     </parent>
 
     <artifactId>openconfig-fhrp</artifactId>
-    <version>4.2.9.rc3-frinx</version>
+    <version>4.2.9.rc4-frinx-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <dependencies>
