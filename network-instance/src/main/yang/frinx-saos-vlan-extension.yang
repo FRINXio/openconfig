@@ -45,6 +45,11 @@ module frinx-saos-vlan-extension {
         "Optionally set the tag protocol identifier field (TPID) that
         is accepted on the VLAN";
     }
+    leaf description {
+      type string;
+      description
+        "Set value for description of the vlan";
+    }
   }
 
   grouping saos-vlan-logical-extension-config {
