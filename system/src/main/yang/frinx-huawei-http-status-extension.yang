@@ -1,0 +1,72 @@
+module frinx-huawei-http-status-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/system/huawei-http-status-extension";
+
+  prefix "huawei-http-status-ext";
+
+  // import some basic types
+  import frinx-openconfig-system { prefix oc-sys; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig http status models,
+    containing HUAWEI specific features.";
+
+  revision "2021-10-28" {
+    description
+      "Initial release";
+    reference "4.2.9";
+  }
+
+  grouping huawei-http-server {
+    description "Top-level grouping for http server status";
+
+    container http-server-status {
+      description "Top-level container for http server status";
+
+      container config {
+        description "Configuration data for http server config status";
+
+        leaf http-server-status-enabled {
+          type boolean;
+            description
+              "Enable/disable http server";
+        }
+
+        leaf http-secure-server-status-enabled {
+          type boolean;
+            description
+              "Enable/disable http secure server";
+        }
+      }
+    }
+  }
+
+  //augument statements
+  augment "/oc-sys:system" {
+    description "Http server status augmentation";
+    ext:augment-identifier "http-server-status-huawei-aug";
+
+    uses huawei-http-server;
+  }
+
+  //uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-sys:system" {
+    description "Http server status augmentation";
+
+    uses huawei-http-server;
+  }
+}
