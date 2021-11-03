@@ -1,11 +1,11 @@
-module frinx-huawei-banner-extension {
+module frinx-huawei-global-config-extension {
 
   yang-version "1";
 
   // namespace
-  namespace "http://frinx.openconfig.net/yang/system/huawei-banner-extension";
+  namespace "http://frinx.openconfig.net/yang/system/huawei-global-config-extension";
 
-  prefix "huawei-banner-ext";
+  prefix "huawei-global-config-ext";
 
   // import some basic types
   import frinx-openconfig-system { prefix oc-sys; }
@@ -22,7 +22,7 @@ module frinx-huawei-banner-extension {
     "support@frinx.io";
 
   description
-    "Set of augments needed to OpenConfig banner models,
+    "Set of augments needed to OpenConfig global-config models,
     containing HUAWEI specific features.";
 
   revision "2021-10-11" {
@@ -31,8 +31,8 @@ module frinx-huawei-banner-extension {
     reference "4.2.9";
   }
 
-  grouping huawei-banner-top {
-    description "Top-level grouping for banner";
+  grouping huawei-global-config-top {
+    description "Top-level grouping for global-config";
 
     container banner {
       description "Top-level container for banner configuration";
@@ -46,18 +46,35 @@ module frinx-huawei-banner-extension {
         }
       }
     }
+
+    container system-name {
+      description "Top-level container for system name configuration";
+
+      container config {
+        description "Configuration data for system name";
+
+        leaf system-name {
+          type string;
+          description "System name of the device";
+        }
+      }
+    }
   }
+
+  // augment statements
 
   augment "/oc-sys:system" {
-    description "Banner augmentation";
-    ext:augment-identifier "banner-huawei-aug";
+    description "Global configuration augmentation";
+    ext:augment-identifier "global-config-huawei-aug";
 
-    uses huawei-banner-top;
+    uses huawei-global-config-top;
   }
 
-  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-sys:system" {
-    description "Banner augmentation";
+  // uniconfig augmentations
 
-    uses huawei-banner-top;
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-sys:system" {
+    description "Global configuration augmentation";
+
+    uses huawei-global-config-top;
   }
 }
