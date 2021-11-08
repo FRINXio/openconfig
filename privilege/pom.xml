@@ -21,12 +21,12 @@
     <parent>
         <groupId>io.frinx.openconfig</groupId>
         <artifactId>openconfig-parent</artifactId>
-        <version>4.2.9.frinx</version>
+        <version>4.2.10.rc1-frinx-SNAPSHOT</version>
         <relativePath>../openconfig-parent</relativePath>
     </parent>
 
     <artifactId>openconfig-privilege</artifactId>
-    <version>4.2.9.frinx</version>
+    <version>4.2.10.rc1-frinx-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <dependencies>
