@@ -30,7 +30,6 @@
 
     <artifactId>openconfig-evpn</artifactId>
     <version>4.2.10.rc1-frinx-SNAPSHOT</version>
-    <packaging>bundle</packaging>
 
     <dependencies>
         <dependency>
