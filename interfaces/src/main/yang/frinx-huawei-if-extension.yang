@@ -53,6 +53,15 @@ module frinx-huawei-if-extension {
       description "Set flow statistics interval";
     }
 
+    leaf expire-timeout {
+      type uint32 {
+        range "30 .. 62640";
+      }
+      units seconds;
+      description
+        "The number of seconds to ARP expires";
+    }
+
     leaf trust-dscp {
       type boolean;
       description "DSCP trust parameters";
