@@ -54,6 +54,23 @@ module frinx-huawei-connection-extension {
     }
   }
 
+  grouping huawei-ntp-service-interface {
+    description "Top-level grouping for ntp service interface";
+
+    container ntp-interface {
+      description "Top-level container for net service interface";
+
+      container config {
+        description "Configuration data for ntp source interface";
+
+        leaf ntp-service-source-interface {
+          type string;
+            description "Ntp service source interface";
+        }
+      }
+    }
+  }
+
   augment "/oc-sys:system" {
     description "Stelnet augmentation";
     ext:augment-identifier "stelnet-huawei-aug";
@@ -61,10 +78,23 @@ module frinx-huawei-connection-extension {
     uses huawei-stelnet-top;
   }
 
+  augment "/oc-sys:system" {
+    description "Ntp interface augmentation";
+    ext:augment-identifier "ntp-int-huawei-aug";
+
+    uses huawei-ntp-service-interface;
+  }
+
 
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-sys:system" {
     description "Stelnet augmentation";
 
     uses huawei-stelnet-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-sys:system" {
+    description "NTP augmentation";
+
+    uses huawei-ntp-service-interface;
   }
 }

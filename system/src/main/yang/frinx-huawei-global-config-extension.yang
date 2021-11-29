@@ -31,6 +31,20 @@ module frinx-huawei-global-config-extension {
     reference "4.2.9";
   }
 
+  identity DAYLIGHT_SAVING_TIME_TYPE {
+    description "A base identity for daylight saving time repeat type.";
+  }
+
+  identity ONE_YEAR {
+    base DAYLIGHT_SAVING_TIME_TYPE;
+    description "An identity for one year daylight saving time.";
+  }
+
+  identity REPEATING {
+    base DAYLIGHT_SAVING_TIME_TYPE;
+    description "An identity for repeating daylight saving time.";
+  }
+
   grouping huawei-global-config-top {
     description "Top-level grouping for global-config";
 
@@ -58,6 +72,219 @@ module frinx-huawei-global-config-extension {
           description "System name of the device";
         }
       }
+    }
+
+    container system-clock {
+      description "Top-level container for system clock status";
+
+      container timezone {
+        description "Top-level container for system clock timezone setting";
+
+        container config {
+          description "Configuration data for system clock timezone";
+
+          leaf name {
+            type string;
+            description "Name of the timezone";
+          }
+
+          leaf modifier {
+            type enumeration {
+              enum add;
+              enum minus;
+            }
+            description "Type of timezone offset modifier";
+          }
+
+          leaf offset {
+            type string {
+              pattern '\d{2}:\d{2}:\d{2}';
+            }
+            description "Offset time of the timezone";
+          }
+        }
+      }
+
+      container daylight-saving-time {
+        description "Top-level container for system clock daylight saving time";
+
+        container config {
+          description "Configuration data for system clock daylight saving time";
+
+          leaf type {
+            type identityref {
+              base DAYLIGHT_SAVING_TIME_TYPE;
+            }
+            description "Type of daylight saving time";
+          }
+
+          leaf name {
+            type string;
+            description "Nameof daylight saving time";
+          }
+
+          leaf offset {
+            type string {
+              pattern '\d{2}:\d{2}';
+            }
+            description "Offset of daylight saving time";
+          }
+
+          leaf start-time {
+            type string {
+              pattern '\d{1,2}:\d{1,2}';
+            }
+            description "Start time of daylight saving time";
+          }
+
+          leaf end-time {
+            type string {
+              pattern '\d{1,2}:\d{1,2}';
+            }
+            description "End time of daylight saving time";
+          }
+
+          leaf start-date {
+            type string {
+              pattern '(\d{4}-)?\d{1,2}-\d{1,2}';
+            }
+            description "Start date of daylight saving time";
+          }
+
+          leaf end-date {
+            type string {
+              pattern '(\d{4}-)?\d{1,2}-\d{1,2}';
+            }
+            description "End date of daylight saving time";
+          }
+
+          leaf start-year {
+            type string {
+              pattern '\d{4}';
+            }
+            description "Start year of daylight saving time";
+          }
+
+          leaf end-year {
+            type string {
+              pattern '\d{4}';
+            }
+            description "End year of daylight saving time";
+          }
+
+          container start-day {
+            description "Top-level container for start day data";
+
+            uses dst-start-order;
+            uses dst-start-day;
+            uses dst-start-month;
+          }
+
+          container end-day {
+            description "Top-level container for end day data";
+
+            uses dst-end-order;
+            uses dst-end-day;
+            uses dst-end-month;
+          }
+        }
+      }
+    }
+  }
+
+  grouping dst-start-order {
+    leaf order {
+      type enumeration {
+        enum first;
+        enum second;
+        enum third;
+        enum fourth;
+        enum last;
+      }
+      description "Start day order in month";
+    }
+  }
+
+  grouping dst-start-day {
+    leaf day {
+      type enumeration {
+        enum Monday;
+        enum Tuesday;
+        enum Wednesday;
+        enum Thursday;
+        enum Friday;
+        enum Saturday;
+        enum Sunday;
+      }
+      description "Start day";
+    }
+  }
+
+  grouping dst-start-month {
+    leaf month {
+      type enumeration {
+        enum January;
+        enum February;
+        enum March;
+        enum April;
+        enum May;
+        enum June;
+        enum July;
+        enum August;
+        enum September;
+        enum October;
+        enum November;
+        enum December;
+      }
+      description "Month of the year";
+    }
+  }
+
+  grouping dst-end-order {
+    leaf order {
+      type enumeration {
+        enum first;
+        enum second;
+        enum third;
+        enum fourth;
+        enum last;
+      }
+      description "End day order in month";
+    }
+  }
+
+  grouping dst-end-day {
+    leaf day {
+      type enumeration {
+        enum Monday;
+        enum Tuesday;
+        enum Wednesday;
+        enum Thursday;
+        enum Friday;
+        enum Saturday;
+        enum Sunday;
+      }
+      description "End day";
+    }
+  }
+
+  grouping dst-end-month {
+    leaf month {
+      type enumeration {
+        enum January;
+        enum February;
+        enum March;
+        enum April;
+        enum May;
+        enum June;
+        enum July;
+        enum August;
+        enum September;
+        enum October;
+        enum November;
+        enum December;
+      }
+      description "Month of the year";
     }
   }
 
