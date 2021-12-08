@@ -456,6 +456,22 @@ module frinx-cisco-if-extension {
           description
             "Spanning Tree Protocol";
         }
+        enum elmi {
+          description
+            "ELMI Protocol";
+        }
+        enum pagp {
+          description
+            "Port Aggregation Protocol";
+        }
+        enum udld {
+          description
+            "UDLD Protocol";
+        }
+        enum ptppd {
+          description
+            "PTP Peer Delay Protocol";
+        }
         enum RB {
           description
             "Reserved Protocol using DA Mac 0180.C200.000B";
