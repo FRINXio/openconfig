@@ -288,22 +288,73 @@ module frinx-qos-extension {
     }
   }
 
+  grouping queue-map-config {
+    description "Configuration data for RCOS queue map.";
+    leaf rcos {
+      type uint8;
+      description "The RCOS value in map.";
+    }
+    leaf queue {
+      type uint8;
+      description "The queue that set for RCOS.";
+    }
+  }
+
+  grouping queue-maps-config {
+    description "Configuration data for RCOS queue maps.";
+    leaf name {
+      type string;
+      description "The name of RCOS queue map.";
+    }
+    list queue-map {
+      key "rcos";
+      description "A key for map of RCOS and queues.";
+      leaf rcos {
+        type leafref {
+          path "../config/rcos";
+        }
+        description "Reference to the unique index used to reference the value in RCOS queue map.";
+      }
+      container config {
+        description "Configuration parameters relating to the queue map.";
+        uses queue-map-config;
+      }
+    }
+  }
+
+  grouping qos-traffic-service-queue-maps {
+    container traffic-service-queue-maps {
+      description "Surrounding container for the list of RCOS queue maps.";
+      list queue-maps {
+        key "name";
+        description "List of RCOS queue maps.";
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description "Reference to the unique name used to reference the RCOS queue map.";
+        }
+        container config {
+          description "Configuration parameters relating to the queue maps.";
+          uses queue-maps-config;
+        }
+      }
+    }
+  }
+
   // augment statements
   augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
     ext:augment-identifier "qos-condition-aug";
     description "Adds QoS Group to conditions";
-
     leaf-list qos-group {
       ordered-by user;
       type qos-group;
     }
-
     leaf-list precedences {
       ordered-by user;
       type precedence;
       description "List of precedences valid for both ipv4 and ipv6";
     }
-
     uses qos-condition-cos-config;
   }
 
@@ -470,7 +521,12 @@ module frinx-qos-extension {
     uses yellow-action-aug;
   }
 
+  augment "/oc-qos:qos" {
+    ext:augment-identifier "qos-queue-maps-aug";
+    description "Adds queue-maps";
 
+    uses qos-traffic-service-queue-maps;
+  }
 
   // uniconfig augmentations
   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
@@ -636,4 +692,9 @@ module frinx-qos-extension {
       description "Adds services to scheduler";
       uses qos-scheduler-two-color-config;
     }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos" {
+    description "Adds queue-maps";
+    uses qos-traffic-service-queue-maps;
+  }
 }
