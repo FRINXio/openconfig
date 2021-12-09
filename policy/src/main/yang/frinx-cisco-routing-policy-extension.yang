@@ -88,16 +88,7 @@ module frinx-cisco-routing-policy-extension {
   grouping cisco-rpol-extension-config {
     description
       "Match values from routing table";
-    leaf-list ip-prefix-list {
-      type string;
-      description
-        "IP specific information.";
-    }
-    leaf ipv6-prefix-list {
-      type string;
-      description
-        "IPv6 specific information.";
-    }
+
     leaf set-operation {
       type identityref {
         base SET_OPERATION;
