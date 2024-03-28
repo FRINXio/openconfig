@@ -1,0 +1,59 @@
+module frinx-saos-vc-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/network-instance/virtual-circuit/saos-extension";
+
+  prefix "saos-vc-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig network-instance models,
+    containing SAOS specific extensions to virtual-circuits.";
+
+  revision "2020-12-04" {
+    description
+      "Initial release";
+    reference "4.2.5";
+  }
+
+  grouping saos-extension-config-stat {
+    leaf statistics {
+      type boolean;
+
+      description "Statistics flag for L2VSICP NI";
+    }
+  }
+
+  // augment statements
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:config" {
+     description "Adds saos specific configuration to vc config model";
+     ext:augment-identifier "ni-vc-saos-aug";
+     when "oc-netinst:type = 'saos-ni-type:L2VSICP'" {
+       description "Active when the network-instance is a L2VSICP";
+     }
+     uses saos-extension-config-stat;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:config" {
+    description "Adds saos specific configuration to vc config model";
+     when "oc-netinst:type = 'saos-ni-type:L2VSICP'" {
+       description "Active when the network-instance is a L2VSICP";
+     }
+     uses saos-extension-config-stat;
+  }
+}

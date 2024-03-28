@@ -1,0 +1,70 @@
+module frinx-mpls-ldp-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/ldp/extension";
+
+  prefix "mpls-ldp-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-netinst; }
+  import frinx-openconfig-network-instance-types { prefix oc-ni-types; }
+  import yang-ext { prefix ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig mpls models, containing
+    additional features.";
+
+  revision "2018-08-22" {
+    description
+      "Initial release";
+    reference "3.1.6";
+  }
+
+  // grouping statements
+
+  grouping mpls-ldp-global-config {
+    description
+      "Configuration parameters relating to enabling MPLS LDP.";
+
+    leaf enabled {
+      type boolean;
+      description
+        "When true is specified, MPLS LDP is enabled. If false or omitted,
+        the MPLS LDP is disabled.";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:config" {
+    when "oc-netinst:type = 'oc-ni-types:DEFAULT_INSTANCE'" {
+      description "Active when the network-instance is a DEFAULT_INSTANCE";
+    }
+    ext:augment-identifier "ni-mpls-ldp-global-aug";
+    description "Adds additional MPLS LDP settings to global on individual";
+
+    uses mpls-ldp-global-config;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-netinst:network-instances/oc-netinst:network-instance/oc-netinst:mpls/oc-netinst:signaling-protocols/oc-netinst:ldp/oc-netinst:global/oc-netinst:config" {
+    when "oc-netinst:type = 'oc-ni-types:DEFAULT_INSTANCE'" {
+      description "Active when the network-instance is a DEFAULT_INSTANCE";
+    }
+    description "Adds additional MPLS LDP settings to global on individual";
+
+    uses mpls-ldp-global-config;
+  }
+}

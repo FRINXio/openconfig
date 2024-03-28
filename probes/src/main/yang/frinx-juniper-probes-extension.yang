@@ -1,0 +1,72 @@
+module frinx-juniper-probes-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/probes/juniper";
+
+  prefix "juniper-oc-probes";
+
+  import frinx-openconfig-probes { prefix oc-probes; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing Juniper specific features.";
+
+  revision "2018-12-03" {
+    description
+      "Initial release";
+    reference "3.1.7";
+  }
+
+  // grouping statements
+
+  grouping probe-config-extension {
+    description
+      "Extended configuration parameters relating to a probe.";
+    leaf delegate-probes {
+      type boolean;
+      description
+        "Define the probe is delegate-probes or not";
+    }
+  }
+
+  grouping test-config-extension {
+    description
+      "Extended configuration parameters relating to a test of probe.";
+    leaf destination-interface {
+      type string;
+      description
+        "Define the interface that adds a timestamp to RPM probe messages.";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-probes:probes/oc-probes:probe/oc-probes:config" {
+    uses probe-config-extension;
+  }
+
+  augment "/oc-probes:probes/oc-probes:probe/oc-probes:tests/oc-probes:test/oc-probes:config" {
+    uses test-config-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-probes:probes/oc-probes:probe/oc-probes:config" {
+    uses probe-config-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-probes:probes/oc-probes:probe/oc-probes:tests/oc-probes:test/oc-probes:config" {
+    uses test-config-extension;
+  }
+}

@@ -1,0 +1,290 @@
+module frinx-cisco-license-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/system/cisco-license-extension";
+
+  prefix "cisco-license-ext";
+
+  // import some basic types
+  import frinx-openconfig-license { prefix oc-license; }
+  import frinx-openconfig-inet-types { prefix oc-inet; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig license models,
+    containing cisco specific features.";
+
+  revision "2022-12-02" {
+    description
+      "Initial release";
+    reference "5.0.20";
+  }
+
+  grouping cisco-license-extension {
+    description "Adds additional data to license";
+    leaf description {
+      type string;
+      description "Description";
+    }
+
+    leaf count {
+      type int16;
+      description "Count";
+    }
+
+    leaf version {
+      type string;
+      description "Version";
+    }
+
+    leaf status {
+      type string;
+      description "Status";
+    }
+
+    leaf export-status {
+      type string;
+      description "Export status";
+    }
+  }
+
+  grouping cisco-product-extension {
+    description "Adds additional data to product information";
+    container udi {
+      description "Udi information";
+      leaf pid {
+        type string;
+        description "PID";
+      }
+
+      leaf sn {
+        type string;
+        description "SN";
+      }
+    }
+
+    container active-udi {
+      description "Active udi information";
+      leaf pid {
+        type string;
+        description "PID";
+      }
+
+      leaf sn {
+        type string;
+        description "SN";
+      }
+    }
+
+    container standby-udi {
+      description "Standby udi information";
+      leaf pid {
+        type string;
+        description "PID";
+      }
+
+      leaf sn {
+        type string;
+        description "SN";
+      }
+    }
+  }
+
+  grouping cisco-reservation-extension {
+    description "Adds additional data to license reservation";
+    leaf reservation-status {
+      type string;
+      description "License reservation";
+    }
+  }
+
+  grouping cisco-smart-licensing-extension {
+    description "Adds additional data to smart licensing information";
+    leaf smart-licensing-status {
+      type string;
+      description "Smart licensing status";
+    }
+
+    container utility {
+      description "Utility related information";
+      leaf utility-status {
+        type string;
+        description "Status";
+      }
+    }
+
+    container data-privacy {
+      description "Data privacy related information";
+      leaf sending-hostname {
+        type string;
+        description "Sending hostname";
+        }
+
+      leaf callhome-hostname-privacy {
+        type string;
+        description "Callhome hostname privacy";
+      }
+
+      leaf smart-licensing-hostname-privacy {
+        type string;
+        description "Smart Licensing hostname privacy";
+      }
+
+      leaf version-privacy {
+        type string;
+        description "Version privacy";
+      }
+    }
+
+    container transport {
+      description "Transport related information";
+      leaf type {
+        type string;
+        description "Type";
+      }
+    }
+
+    container registration {
+      description "Registration related information";
+      leaf registration-status {
+        type string;
+        description "Status";
+      }
+
+      leaf smart-account {
+        type string;
+        description "Smart account";
+      }
+
+      leaf virtual-account {
+        type string;
+        description "Virtual account";
+      }
+
+      leaf export-controlled-functionality {
+        type string;
+        description "Export-Controlled Functionality";
+      }
+
+      leaf initial-registration {
+        type string;
+        description "Initial Registration";
+      }
+
+      leaf last-renewal-attempt {
+        type string;
+        description "Last Renewal Attempt";
+      }
+
+      leaf next-renewal-attempt {
+        type string;
+        description "Next Renewal Attempt";
+      }
+
+      leaf registration-expires {
+        type string;
+        description "Registration Expires";
+      }
+    }
+
+    container license-authorization {
+      description "License authorization related information";
+      leaf license-authorization-status {
+        type string;
+        description "Status";
+      }
+
+      leaf last-communication-attempt {
+        type string;
+        description "Last Communication Attempt";
+      }
+
+      leaf next-communication-attempt {
+        type string;
+        description "Next Communication Attempt";
+      }
+
+      leaf communication-deadline {
+        type string;
+        description "Communication Deadline";
+      }
+    }
+
+    container miscellaneous {
+      description "Miscellaneous related information";
+      leaf custom-id {
+        type string;
+        description "Custom id";
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-license:licenses/oc-license:license/oc-license:state" {
+    description "License augmentation for cisco";
+    ext:augment-identifier "cisco-license-extension-aug";
+
+    uses cisco-license-extension;
+  }
+
+  augment "/oc-license:licenses/oc-license:license/oc-license:state" {
+    description "License product augmentation for cisco";
+    ext:augment-identifier "cisco-product-extension-aug";
+
+    uses cisco-product-extension;
+  }
+
+  augment "/oc-license:licenses/oc-license:license/oc-license:state" {
+    description "License reservation augmentation for cisco";
+    ext:augment-identifier "cisco-reservation-extension-aug";
+
+    uses cisco-reservation-extension;
+  }
+
+  augment "/oc-license:licenses/oc-license:license/oc-license:state" {
+    description "Smart licensing augmentation for cisco";
+    ext:augment-identifier "cisco-smart-licensing-extension-aug";
+
+    uses cisco-smart-licensing-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-license:licenses/oc-license:license/oc-license:state" {
+    description "License augmentation for cisco";
+
+    uses cisco-license-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-license:licenses/oc-license:license/oc-license:state" {
+    description "License product augmentation for cisco";
+
+    uses cisco-product-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-license:licenses/oc-license:license/oc-license:state" {
+    description "License reservation augmentation for cisco";
+
+    uses cisco-reservation-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-license:licenses/oc-license:license/oc-license:state" {
+    description "Smart licensing augmentation for cisco";
+
+    uses cisco-smart-licensing-extension;
+  }
+
+}
