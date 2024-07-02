@@ -1,0 +1,71 @@
+module frinx-cisco-ipvsix-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/network-instance/ipvsix/cisco";
+
+  prefix "cisco-ipv6-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-netinst; }
+  import frinx-openconfig-network-instance-types { prefix oc-ni-types; }
+  import yang-ext { prefix ext; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig ipv6 models,
+    containing CISCO specific features.";
+
+  revision "2021-06-30" {
+    description
+      "Initial release";
+    reference "4.2.7";
+  }
+
+  grouping cisco-ipv6-global-config {
+    description "Global configuration data for ipv6";
+
+    container cisco-ipv6-config {
+      description "Container for ipv6 config data";
+      leaf cef-enabled {
+        description "Whether Cisco Express Forwarding is enabled";
+        type boolean;
+      }
+      leaf unicast-routing-enabled {
+        description "Whether unicast-routing is enabled";
+        type boolean;
+      }
+    }
+  }
+
+  augment "/oc-netinst:network-instances/oc-netinst:network-instance" {
+    when "oc-netinst:type = 'oc-ni-types:DEFAULT_INSTANCE'" {
+      description "Active when the network-instance is a DEFAULT_INSTANCE";
+    }
+    ext:augment-identifier "ipv6-cisco-aug";
+    description "Adds ipv6 global cisco augmentation";
+
+    uses cisco-ipv6-global-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-netinst:network-instances/" +
+    "oc-netinst:network-instance" {
+    when "oc-netinst:type = 'oc-ni-types:DEFAULT_INSTANCE'" {
+      description "Active when the network-instance is a DEFAULT_INSTANCE";
+    }
+    description "Adds ipv6 global cisco augmentation";
+
+    uses cisco-ipv6-global-config;
+  }
+
+}

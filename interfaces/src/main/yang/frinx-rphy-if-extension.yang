@@ -1,0 +1,209 @@
+module frinx-rphy-if-extension {
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/rphy-extension";
+
+  prefix "rphy-if-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to ios xe r-phy interfaces models";
+
+  revision "2022-02-14" {
+    description
+      "Initial release";
+    reference "5.0.1";
+  }
+
+  grouping downstream-top {
+    description "Top-level grouping for cable interface downstream subcomands";
+
+    container downstream {
+      container config {
+        description "Configuration data for cable interface downstream";
+        leaf name {
+          type string;
+          description "Downstream Cable Controller";
+        }
+        leaf rf-channels {
+          type string;
+          description "Downstream Cable Controller";
+        }
+      }
+    }
+  }
+
+  grouping upstream-top {
+    description "Top-level grouping for cable interface upstream subcomands";
+
+    container upstream {
+      list upstream-cables {
+        key "id";
+        description
+          "List of upstream cables";
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+        }
+        container config {
+          description "Configuration data for cable interface upstream";
+          uses upstream-cables-config;
+        }
+      }
+    }
+  }
+
+  grouping upstream-cables-config {
+    leaf id {
+      type string;
+      description "US channel index in MD";
+    }
+
+    leaf name {
+      type string;
+      description "Upstream Cable Controller";
+    }
+
+    leaf us-channel {
+      type string;
+      description "US channel index in the controller";
+    }
+  }
+
+  grouping cable-config {
+    leaf bundle {
+      type string;
+      description "Bundle number for bundling of cable interfaces";
+    }
+  }
+
+  grouping cable-top {
+    description "Top-level grouping for cable interface subcomands";
+
+    container cable {
+      description "Enclosing container for cable interface subcommands";
+
+      container config {
+        description
+          "Configuration data for cable interface";
+
+        uses cable-config;
+      }
+      container rf-channels {
+        description "rf-channels associated with this Wideband interface";
+
+        leaf channel-list {
+          type string;
+          description "Configure list of individual rf-channels and ranges of rf-channels";
+        }
+        leaf bandwidth-percent {
+          type string;
+          description "% bandwidth of rf-channel reserved for this Wideband interface";
+        }
+      }
+
+      container upstream {
+        description "Upstream configuration";
+
+        uses cable-upstream;
+      }
+    }
+  }
+
+  grouping cable-upstream {
+    container upstream-bonding-groups {
+      list bonding-group {
+        key "id";
+        description
+          "List of bonding grups";
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+        }
+        container config {
+          description "";
+          uses bonding-group-config;
+        }
+      }
+    }
+  }
+
+  grouping bonding-group-config {
+    leaf id {
+      type string;
+      description "bonding group id";
+    }
+
+    leaf upstream {
+      type string;
+      description "Add an upstream to this bonding group";
+    }
+
+    leaf attributes {
+      type string;
+      description "Configure attributes for this bonding group";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface" {
+    description "Adds R-PHY specific configuration to interfaces model";
+    ext:augment-identifier "if-cable-aug";
+
+    uses cable-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface" {
+    description "Adds R-PHY specific configuration to interfaces model";
+    ext:augment-identifier "if-upstream-aug";
+
+    uses upstream-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface" {
+    description "Adds R-PHY specific configuration to interfaces model";
+    ext:augment-identifier "if-downstream-aug";
+
+    uses downstream-top;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+  "oc-if:interface" {
+    description "Adds R-PHY specific configuration to interfaces model";
+
+    uses cable-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+  "oc-if:interface" {
+    description "Adds R-PHY specific configuration to interfaces model";
+
+    uses upstream-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+  "oc-if:interface" {
+    description "Adds R-PHY specific configuration to interfaces model";
+
+    uses downstream-top;
+  }
+
+}

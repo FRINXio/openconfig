@@ -1,0 +1,142 @@
+module frinx-openconfig-ring {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/ring";
+
+  prefix "ring";
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Model for managing rings";
+
+  revision "2020-06-22" {
+    description
+      "Initial release";
+    reference "4.2.5";
+  }
+
+  // grouping statements
+
+  grouping ring-top {
+    description "Top-level grouping for ring.";
+
+    container logical-rings {
+      description
+        "Container for the list of logical rings.";
+
+      list logical-ring {
+        key "name";
+
+        description "Logical ring.";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description "Name of logical ring.";
+        }
+
+        container config {
+          description "Config container of logical ring.";
+
+          leaf name {
+            type string;
+              description "Name of logical ring.";
+          }
+
+          leaf ring-id {
+            type string;
+              description "Ring id.";
+          }
+
+          leaf west-port {
+            type string;
+            description "West port id.";
+          }
+
+          leaf east-port {
+            type string;
+            description "East port id.";
+          }
+
+          leaf west-port-cfm-service {
+            type string;
+            description "West port cfm service.";
+          }
+
+          leaf east-port-cfm-service {
+            type string;
+            description "East port cfm service.";
+          }
+        }
+        uses virtual-ring-top;
+      }
+    }
+  }
+
+  grouping virtual-ring-top {
+    description
+      "Enclosing container for the list of virtual rings.";
+
+    container virtual-rings {
+      description
+        "Container for the list of virtual rings.";
+
+      list virtual-ring {
+        key "name";
+
+        description "Virtual ring.";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description
+            "Name of virtual ring.";
+        }
+
+        container config {
+          description "Config container of virtual ring.";
+
+          leaf name {
+            type string;
+              description "Name of virtual ring.";
+          }
+
+          leaf ring-type {
+            type enumeration {
+              enum Major-ring {
+                description "Type of virtual ring";
+              }
+              enum Sub-ring {
+                description "Type of virtual ring";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  uses ring-top;
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    description "Added logical ring to configuration";
+    uses ring-top;
+  }
+
+}

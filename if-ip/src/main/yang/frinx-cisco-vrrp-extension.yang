@@ -1,0 +1,152 @@
+module frinx-cisco-vrrp-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/ip-cisco-vrrp-ext";
+  prefix "oc-ip-cisco-vrrp-ext";
+
+  // import some basic types
+  import frinx-openconfig-if-ip { prefix oc-ip; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+  import ietf-inet-types { prefix inet; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig acl type,
+    containing cubro specific features.";
+
+  revision "2021-05-21" {
+    description
+      "Initial release";
+    reference "4.2.7";
+  }
+
+  grouping ipv4-vrrp-group-config {
+
+    leaf-list virtual-secondary-addresses {
+      type inet:ip-address;
+      description "Configure one or more secondary virtual addresses for the
+        VRRP group";
+    }
+
+    list tracked-objects {
+      key "tracked-object-id";
+      description
+        "List of tracked objects";
+
+      leaf tracked-object-id {
+        type uint16 {
+          range 1..1000;
+        }
+        description
+          "Tracked object for event tracking";
+      }
+
+      leaf priority-decrement {
+        type uint8 {
+          range 0..254;
+        }
+        description "Set the value to subtract from priority when
+          the tracked interface goes down";
+      }
+
+      leaf shutdown {
+        type boolean;
+        description "Group shutdown";
+      }
+    }
+  }
+
+  grouping ipv6-vrrp-group-config {
+
+    leaf-list addresses {
+      type inet:ipv6-prefix;
+      description "Configure IPV6 addresses for the VRRP group";
+    }
+
+    list tracked-objects {
+      key "tracked-object-id";
+      description
+        "List of tracked objects";
+
+      leaf tracked-object-id {
+        type uint16 {
+          range 1..1000;
+        }
+        description
+          "Tracked object for event tracking";
+      }
+
+      leaf shutdown {
+        type boolean;
+        description "Group shutdown";
+      }
+    }
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+    "oc-if:subinterface/oc-ip:ipv4/oc-ip:addresses/oc-ip:address" {
+    ext:augment-identifier "if-ipv4-vrrp-aug";
+    description
+      "Additional Cisco IP addr family configuration for
+      interfaces";
+
+    uses oc-ip:ip-vrrp-top {
+      augment "vrrp/vrrp-group/config" {
+        uses ipv4-vrrp-group-config;
+      }
+    }
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+    "oc-if:subinterface/oc-ip:ipv6/oc-ip:addresses/oc-ip:address" {
+    ext:augment-identifier "if-ipv6-vrrp-aug";
+    description
+      "Additional Cisco IP addr family configuration for
+      interfaces";
+
+    uses oc-ip:ip-vrrp-top {
+      augment "vrrp/vrrp-group/config" {
+        uses ipv6-vrrp-group-config;
+      }
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+    "oc-if:subinterface/oc-ip:ipv4/oc-ip:addresses/oc-ip:address" {
+    ext:augment-identifier "uni-if-ipv4-vrrp-aug";
+    description
+      "Additional Cisco IP addr family configuration for
+      interfaces";
+
+      uses oc-ip:ip-vrrp-top {
+        augment "vrrp/vrrp-group/config" {
+          uses ipv4-vrrp-group-config;
+        }
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+    "oc-if:subinterface/oc-ip:ipv6/oc-ip:addresses/oc-ip:address" {
+    ext:augment-identifier "uni-if-ipv6-vrrp-aug";
+    description
+      "Additional Cisco IP addr family configuration for
+      interfaces";
+
+      uses oc-ip:ip-vrrp-top {
+        augment "vrrp/vrrp-group/config" {
+          uses ipv6-vrrp-group-config;
+        }
+    }
+  }
+}

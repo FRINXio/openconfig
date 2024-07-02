@@ -1,0 +1,99 @@
+module frinx-cisco-ospf-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/ospf/cisco";
+
+  prefix "cisco-ospf-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+  import frinx-openconfig-ospf-types { prefix oc-ospf-types; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  revision "2017-11-24" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  identity MAX_METRIC_SUMMARY_LSA {
+    base "oc-ospf-types:MAX_METRIC_INCLUDE";
+    description
+      "Maps to 'summary-lsa'";
+  }
+
+  identity MAX_METRIC_ON_SWITCHOVER {
+    base "oc-ospf-types:MAX_METRIC_TRIGGER";
+    description
+      "Set the maximum metric on switchover. Maps to on-switchover";
+  }
+
+  identity MAX_METRIC_ALWAYS {
+    base "oc-ospf-types:MAX_METRIC_TRIGGER";
+    description
+      "Set the maximum metric on default. Maps to empty trigger option";
+  }
+
+  grouping max-metrics-fields {
+    container max-metric-timers {
+      list max-metric-timer {
+        key "trigger";
+        leaf trigger {
+          type leafref {
+            path "../config/trigger";
+          }
+        }
+        container config {
+          leaf trigger {
+            type identityref {
+              base "oc-ospf-types:MAX_METRIC_TRIGGER";
+            }
+          }
+          leaf timeout {
+            type uint64;
+            units "seconds";
+            description
+              "The delay, in seconds, after which the advertisement of
+              entities with the maximum metric should be cleared, and
+              the system reverts to the default, or configured, metrics.";
+          }
+          leaf-list include {
+            type identityref {
+              base "oc-ospf-types:MAX_METRIC_INCLUDE";
+            }
+            description
+             "By default, the maximum metric is advertised for all
+              non-stub interfaces of a device. When identities are
+              specified within this leaf-list, additional entities
+              are also advertised with the maximum metric according
+              to the values within the list.";
+          }
+        }
+      }
+    }
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:ospfv2/oc-ni:global/oc-ni:timers" {
+    description "Extends timers of the OSPFv2 protocol";
+
+    uses max-metrics-fields;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:ospfv2/" +
+          "oc-ni:global/oc-ni:timers" {
+    description "Extends BFD settings on the OSPFv2 area interface";
+
+    uses max-metrics-fields;
+  }
+}

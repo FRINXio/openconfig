@@ -1,0 +1,96 @@
+module frinx-cisco-lldp-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/lldp";
+
+  prefix "cisco-lldp-extension";
+
+  import frinx-openconfig-lldp { prefix oc-lldp; }
+  import ietf-yang-types { prefix yang; }
+  import frinx-openconfig-extensions { prefix oc-ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "This module defines configuration and operational state data
+    for the LLDP protocol.";
+
+  oc-ext:openconfig-version "0.1.0";
+
+  revision "2022-11-28" {
+    description
+      "Initial revision";
+    reference "5.0.20";
+  }
+
+  // grouping statements
+
+  grouping cisco-lldp-neighbor-extension {
+    description
+      "Operational state data for LLDP neighbors";
+
+    leaf time-remaining {
+      type uint64;
+      units "seconds";
+      description
+        "Age since discovery";
+    }
+
+    leaf auto-negotiation {
+      type string;
+      description "Auto negotiation";
+    }
+
+    leaf media-attachment-unit-type {
+      type string;
+      description "Media attachment unit type";
+    }
+
+    leaf vlan-id {
+      type string;
+      description "Vlan ID";
+    }
+
+    leaf peer-source-mac {
+      type string;
+      description "Peer source mac";
+    }
+
+    leaf system-capabilities {
+      type string;
+      description "System capabilities";
+    }
+
+    leaf enabled-capabilities {
+      type string;
+      description "Enabled capabilities";
+    }
+  }
+
+  // augmentations
+
+  augment "/oc-lldp:lldp/oc-lldp:interfaces/oc-lldp:interface/oc-lldp:neighbors/oc-lldp:neighbor/oc-lldp:state" {
+    description "Adds additional settings to a neighbor";
+    ext:augment-identifier "cisco-lldp-neighbor-ext-aug";
+
+    uses cisco-lldp-neighbor-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-lldp:lldp/oc-lldp:interfaces/oc-lldp:interface/oc-lldp:neighbors/oc-lldp:neighbor/oc-lldp:state" {
+    description "Adds additional settings to a neighbor";
+    uses cisco-lldp-neighbor-extension;
+  }
+}

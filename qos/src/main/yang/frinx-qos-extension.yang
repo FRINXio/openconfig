@@ -1,0 +1,952 @@
+module frinx-qos-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/qos/extension";
+
+  prefix "oc-qos-ext";
+
+  // import some basic types
+  import frinx-openconfig-qos { prefix oc-qos; }
+  import frinx-openconfig-inet-types { prefix oc-inet; }
+  import yang-ext { prefix ext; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig QoS models.";
+
+  revision "2018-03-04" {
+    description
+      "Initial release";
+    reference "3.1.3";
+  }
+
+  typedef precedence {
+    type union {
+      type uint8;
+      type string;
+    }
+    description "Precedence values.";
+  }
+
+  typedef qos-group-range {
+    type string {
+      // <number>..<number>
+      pattern '(\d+)\.\.(\d+)';
+    }
+  }
+
+  typedef qos-group {
+    type union {
+      type uint32;
+      type qos-group-range;
+    }
+  }
+
+  typedef dscp-enumeration {
+    type enumeration {
+      enum af11;
+      enum af12;
+      enum af13;
+      enum af21;
+      enum af22;
+      enum af23;
+      enum af31;
+      enum af32;
+      enum af33;
+      enum af41;
+      enum af42;
+      enum af43;
+      enum cs1;
+      enum cs2;
+      enum cs3;
+      enum cs4;
+      enum cs5;
+      enum cs6;
+      enum cs7;
+      enum default;
+      enum ef;
+    }
+  }
+
+  typedef dscp {
+    type union {
+      type dscp-enumeration;
+      type oc-inet:dscp;
+    }
+  }
+
+  typedef cos {
+    type uint8 {
+      range "0..7";
+    }
+  }
+
+  typedef dei {
+    type uint8 {
+      range "0..1";
+    }
+  }
+
+  grouping qos-scheduler-actions {
+    leaf cos-transmit {
+      type cos;
+      description "Rewrite packet cos and send it.";
+    }
+
+    leaf dei-transmit {
+      type dei;
+      description "Rewrite packet dei and send it.";
+    }
+
+    leaf dscp-transmit {
+      type dscp;
+      description "Set dscp and send it.";
+    }
+
+    leaf qos-transmit {
+      type qos-group;
+      description "Set qos-group and send it.";
+    }
+
+    leaf transmit {
+      type boolean;
+      description "Transmit packet if true.";
+    }
+  }
+
+  grouping qos-condition-access-group-config {
+    container access-group {
+      list acl-sets {
+        key "id";
+
+        description "The list of acl sets";
+
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+          description "ID of the acl set";
+        }
+
+        container config {
+          description "Configuration container for acl set";
+
+          leaf id {
+            type uint16;
+            description "INT value";
+          }
+
+          leaf name {
+            type string;
+            description "Access group name";
+          }
+        }
+      }
+    }
+  }
+
+  grouping qos-condition-multiple-cos-config {
+    container multiple-cos {
+      list cos-sets {
+        key "id";
+
+        description "The list of cos sets";
+
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+          description "ID of the cos set";
+        }
+
+        container config {
+          description "Configuration container for cos set";
+
+          leaf id {
+            type uint16;
+            description "INT value";
+          }
+        }
+
+        container elements {
+          leaf inner {
+            type boolean;
+            description "Innaer tag to match flag";
+          }
+
+          list element {
+            key "id";
+
+            description "The list of elements in cos set";
+
+            leaf id {
+              type leafref {
+                path "../config/id";
+              }
+              description "ID of cos set element";
+            }
+
+            container config {
+              description "Configuration ocntainer for cos set element";
+
+              leaf id {
+                type cos;
+                description "CoS (Class of Service) value";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  grouping qos-condition-cos-config {
+    container cos {
+      leaf inner {
+        type boolean;
+        description "Inner tag to match flag";
+      }
+
+      leaf cos {
+        type cos;
+        description "CoS (Class of Service) value";
+      }
+    }
+  }
+
+  grouping qos-ios-classifier-config {
+    leaf statements-matching {
+      type string;
+      description "Logical-AND or Logical-OR all matching statements under this classmap";
+    }
+  }
+
+  grouping qos-interface-config {
+    leaf service-policy {
+      type string;
+      description "Name of the policy map used to attach to an interface";
+    }
+  }
+
+  grouping qos-behavior-config {
+    description
+    "Configuration data for behavior";
+
+    leaf name {
+      type string;
+      description
+        "User-assigned name of the behavior";
+    }
+    leaf remark {
+      type string;
+      description
+        "Identificator of specified behavior";
+    }
+    leaf statistic {
+      type string;
+      description
+        "Statistic behavior setting";
+    }
+    leaf permit-occurence {
+      type string;
+      description
+        "Occurence of permit rule";
+    }
+    leaf deny {
+      type string;
+      description
+        "Deny setting";
+    }
+    leaf deny-parameters {
+      type string;
+      description
+        "Deny parameters";
+    }
+  }
+
+  grouping qos-behavior-committed-access-rate {
+    leaf cir {
+      type string;
+      description "Cir setting";
+    }
+    leaf cbs {
+      type string;
+      description "Cbs setting";
+    }
+    leaf pir {
+      type string;
+      description "Pir setting";
+    }
+    leaf pbs {
+      type string;
+      description "Pir setting";
+    }
+    leaf color-mode {
+      type string;
+      description "Color mode setting";
+    }
+    leaf green-action {
+      type string;
+      description "Green-action setting";
+    }
+    leaf yellow-action {
+      type string;
+      description "Yellow-action setting";
+      }
+    leaf red-action {
+      type string;
+      description "Red-action setting";
+    }
+  }
+
+  grouping qos-behavior-top {
+    description
+      "Top-level grouping for behavior data";
+
+    container behaviors {
+      description
+        "Enclosing container for QoS behavior types";
+
+      list behavior {
+        key "name";
+        description
+          "List of behavior elements";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description
+            "Reference to list key name";
+        }
+
+        container config {
+          description
+            "Configuration data for behaviors";
+
+            uses qos-behavior-config;
+            uses qos-behavior-committed-access-rate;
+        }
+      }
+    }
+  }
+
+  grouping qos-classifier-config {
+    leaf operation {
+      type enumeration {
+        enum OR {
+          description "Rule of matching one of the statements";
+          }
+        enum AND {
+          description "Rule of matching all of the statements";
+        }
+      }
+    }
+    leaf classifier-rule {
+      type string;
+        description "Classifier rule";
+    }
+    leaf rule-setting {
+      type string;
+         description "Setting of specified classifier rule";
+    }
+  }
+
+  grouping qos-scheduler-input-config {
+    leaf statistic {
+      type string;
+      description "Enable or disable traffic statistic";
+    }
+  }
+
+  grouping qos-scheduler-color-config {
+    leaf color-mode {
+      type enumeration {
+        enum color-blind {
+          description "Color aware";
+          }
+        enum color-aware {
+          description "Color blind";
+        }
+      }
+    }
+    leaf drop-method {
+      type string;
+      description "Traffic behavior configuration information";
+    }
+  }
+  
+  grouping qos-scheduler-two-color-config {
+    leaf traffic-action {
+      type enumeration {
+        enum gts {
+          description "General Traffic Shape";
+        }
+        enum af {
+          description "Assured Forwarding service";
+        }
+        enum ef {
+          description "Expedited Forwarding service";
+        }
+        enum llq {
+          description "Low-latency service";
+        }
+        enum wfq {
+          description "Flow-based WFQ for BE (Best-Effort) traffic";
+        }
+      }
+    }
+    leaf max-queue-depth-packets {
+      type uint32;
+      units bps;
+      description
+        "When the scheduler is specified to be a shaper - the
+        maximum depth of the queue in bits per second is the value
+        specified by this leaf.";
+    }
+  }
+
+  grouping huawei-qos-scheduler-config {
+    leaf vrp-precedence {
+      type string;
+      description
+        "Value of policy precedence";
+    }
+    leaf behavior {
+      type string;
+      description "Traffic behavior configuration information";
+    }
+  }
+
+  grouping qos-scheduler-policy-config {
+    leaf traffic-behavior {
+       type string;
+       description "Name of the traffic behavior defined in the policy";
+    }
+    leaf traffic-classifier {
+       type string;
+       description "Name of the traffic classifier defined in the policy";
+    }
+  }
+
+  grouping yellow-action-aug {
+    container yellow-action {
+      description
+        "Action to be applied to packets that are scheduled within the
+        CIR of the one-rate, two-colour scheduler. Packets that receive
+        a token from the in-CIR bucket are said to be conforming and
+        have all of the specified actions applied.";
+
+      container config {
+        description
+          "Configuration parameters relating to conforming packets for the
+          1r2c scheduler.";
+
+        uses qos-common-remark-actions-config;
+        uses qos-scheduler-actions;
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state parameters relating to conforming packets
+          for the 1r2c scheduler.";
+
+        uses qos-common-remark-actions-config;
+      }
+    }
+  }
+
+  grouping qos-common-remark-actions-config {
+    description
+      "Configuration data for QoS re-marking actions";
+
+    leaf set-dscp {
+      type uint8;
+      description
+        "Sets the 6-bit DSCP (differentiated services code point)
+        value in the IP packet header.";
+      reference
+        "RFC 2474 - Definition of the Differentiated Services Field
+        (DS Field) in the IPv4 and IPv6 Headers";
+    }
+
+    leaf set-dot1p {
+      type uint8;
+      description
+        "Sets the 3-bit class-of-service value in the
+        Ethernet packet header for 802.1Q VLAN-tagged packets,
+        also known as PCP (priority code point).";
+      reference
+        "IEEE 802.1Q-2014 - IEEE Standard for Local and metropolitan
+        area networks--Bridges and Bridged Networks";
+    }
+
+    leaf set-mpls-tc {
+      type uint8;
+      description
+        "Sets the 3-bit traffic class value (also referred to as EXP
+        or CoS) in MPLS packets.";
+      reference
+        "RFC 3270 - Multi-Protocol Label Switching (MPLS) Support of
+        Differentiated Services";
+    }
+  }
+
+  grouping queue-map-config {
+    description "Configuration data for RCOS queue map.";
+    leaf rcos {
+      type uint8;
+      description "The RCOS value in map.";
+    }
+    leaf queue {
+      type uint8;
+      description "The queue that set for RCOS.";
+    }
+  }
+
+  grouping queue-maps-config {
+    description "Configuration data for RCOS queue maps.";
+    leaf name {
+      type string;
+      description "The name of RCOS queue map.";
+    }
+    list queue-map {
+      key "rcos";
+      description "A key for map of RCOS and queues.";
+      leaf rcos {
+        type leafref {
+          path "../config/rcos";
+        }
+        description "Reference to the unique index used to reference the value in RCOS queue map.";
+      }
+      container config {
+        description "Configuration parameters relating to the queue map.";
+        uses queue-map-config;
+      }
+    }
+  }
+
+  grouping qos-traffic-service-queue-maps {
+    container traffic-service-queue-maps {
+      description "Surrounding container for the list of RCOS queue maps.";
+      list queue-maps {
+        key "name";
+        description "List of RCOS queue maps.";
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description "Reference to the unique name used to reference the RCOS queue map.";
+        }
+        container config {
+          description "Configuration parameters relating to the queue maps.";
+          uses queue-maps-config;
+        }
+      }
+    }
+  }
+
+  // augment statements
+  augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
+    ext:augment-identifier "qos-condition-aug";
+    description "Adds QoS Group to conditions";
+    leaf-list qos-group {
+      ordered-by user;
+      type qos-group;
+    }
+    leaf-list precedences {
+      ordered-by user;
+      type precedence;
+      description "List of precedences valid for both ipv4 and ipv6";
+    }
+    uses qos-condition-cos-config;
+    uses qos-condition-multiple-cos-config;
+    uses qos-condition-access-group-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions/oc-qos:ipv4/oc-qos:config" {
+    ext:augment-identifier "qos-ipv4-condition-aug";
+    description "Adds reference to ACL to Ipv4 conditions";
+
+    leaf acl-ref {
+      type string;
+    }
+
+    leaf-list precedences {
+      ordered-by user;
+      type precedence;
+      description "List of precedences valid for ipv4.";
+    }
+
+    leaf dscp-enum {
+      type dscp-enumeration;
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions/oc-qos:ipv6/oc-qos:config" {
+    ext:augment-identifier "qos-ipv6-condition-aug";
+    description "Adds QoS Group and reference to ACL to Ipv6 conditions";
+
+    leaf acl-ref {
+      type string;
+    }
+
+    leaf-list precedences {
+      ordered-by user;
+      type precedence;
+      description "List of precedences valid for ipv6.";
+    }
+
+    leaf dscp-enum {
+      type dscp-enumeration;
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:actions/oc-qos:remark/oc-qos:config" {
+    ext:augment-identifier "qos-remark-qos-group-aug";
+    description "Adds QoS Group to packet-match actions remarks";
+
+    leaf-list set-qos-group {
+      ordered-by user;
+      type qos-group;
+    }
+
+    leaf-list set-precedences {
+      ordered-by user;
+      type precedence;
+      description "List of precedences valid for both ipv4 and ipv6.";
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    ext:augment-identifier "qos-max-queue-depth-ms-aug";
+    description "Adds QoS maximum queue depth in miliseconds";
+
+    leaf max-queue-depth-ms {
+      type uint32;
+      units ms;
+      description
+        "When the scheduler is specified to be a shaper - the
+        maximum depth of the queue in miliseconds is the value
+        specified by this leaf.";
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:two-rate-three-color/oc-qos:config" {
+    ext:augment-identifier "qos-two-color-config";
+    description "Adds services to scheduler";
+    uses qos-scheduler-two-color-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:inputs/oc-qos:input/oc-qos:config" {
+    ext:augment-identifier "qos-cos-aug";
+    description "Adds CoS (Class of Service)";
+
+    leaf cos {
+      type cos;
+      description "CoS (Class of Service) value";
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:conform-action/oc-qos:config" {
+    ext:augment-identifier "qos-conform-action-aug";
+    description "Adds conform actions to scheduler";
+
+    uses qos-scheduler-actions;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:exceed-action/oc-qos:config" {
+    ext:augment-identifier "qos-exceed-action-aug";
+    description "Adds exceed actions to scheduler";
+
+    uses qos-scheduler-actions;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    ext:augment-identifier "qos-max-queue-depth-bps-aug";
+    description "Adds QoS maximum queue depth in bits per second";
+
+    leaf max-queue-depth-bps {
+      type uint32;
+      units bps;
+      description
+        "When the scheduler is specified to be a shaper - the
+        maximum depth of the queue in bits per second is the value
+        specified by this leaf.";
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:config" {
+    ext:augment-identifier "qos-service-policy-aug";
+    description "Adds service-policy to scheduler";
+
+    leaf service-policy {
+      type string;
+    }
+  }
+
+  augment "/oc-qos:qos/oc-qos:interfaces/oc-qos:interface/oc-qos:input/oc-qos:config" {
+    ext:augment-identifier "qos-ingress-interface-aug";
+    description "Adds additional configuration to ingress interface";
+    uses qos-interface-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:interfaces/oc-qos:interface/oc-qos:output/oc-qos:config" {
+    ext:augment-identifier "qos-egress-interface-aug";
+    description "Adds additional configuration to egress interface";
+    uses qos-interface-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:config" {
+    description "Adds HUAWEI specific configuration to acl model";
+    ext:augment-identifier "vrp-qos-classifier-aug";
+    uses qos-classifier-config;
+  }
+
+  augment "/oc-qos:qos" {
+    description "Adds Huawei behavior configuration";
+    ext:augment-identifier "vrp-qos-behavior-aug";
+    uses qos-behavior-top;
+  }
+
+  augment "/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:config" {
+    description "Adds ios specific configuration to acl model";
+    ext:augment-identifier "ios-qos-classifier-aug";
+    uses qos-ios-classifier-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:inputs/oc-qos:input/oc-qos:config" {
+    description "Adds HUAWEI specific configuration scheduler input";
+    ext:augment-identifier "vrp-qos-scheduler-input-aug";
+    uses qos-scheduler-input-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    description "Adds HUAWEI specific configuration to qos model";
+    ext:augment-identifier "vrp-qos-scheduler-color-aug";
+    uses qos-scheduler-color-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:config" {
+    description "Adds HUAWEI specific info about behavior";
+    ext:augment-identifier "vrp-qos-scheduler-conf-aug";
+    uses huawei-qos-scheduler-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy" {
+      description "Adds HUAWEI specific info about scheduler policy";
+      ext:augment-identifier "vrp-qos-scheduler-policy-conf-aug";
+      uses qos-scheduler-policy-config;
+  }
+
+  augment "/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color" {
+    description "Adds HUAWEI specific info for additional type of action";
+    ext:augment-identifier "vrp-yellow-action";
+    uses yellow-action-aug;
+  }
+
+  augment "/oc-qos:qos" {
+    ext:augment-identifier "qos-queue-maps-aug";
+    description "Adds queue-maps";
+
+    uses qos-traffic-service-queue-maps;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions" {
+    description "Adds QoS Group to conditions";
+
+    leaf-list qos-group {
+      ordered-by user;
+      type qos-group;
+    }
+
+    leaf-list precedences {
+      ordered-by user;
+      type precedence;
+      description "List of precedences valid for both ipv4 and ipv6.";
+    }
+
+    uses qos-condition-cos-config;
+    uses qos-condition-multiple-cos-config;
+    uses qos-condition-access-group-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions/oc-qos:ipv4/oc-qos:config" {
+    description "Adds reference to ACL to Ipv4 conditions";
+
+    leaf acl-ref {
+      type string;
+    }
+
+    leaf-list precedences {
+      ordered-by user;
+      type precedence;
+      description "List of precedences valid for ipv4.";
+    }
+
+    leaf dscp-enum {
+      type dscp-enumeration;
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:conditions/oc-qos:ipv6/oc-qos:config" {
+    description "Adds reference to ACL to Ipv6 conditions";
+
+    leaf acl-ref {
+      type string;
+    }
+
+    leaf-list precedences {
+      ordered-by user;
+      type precedence;
+      description "List of precedences valid for ipv6.";
+    }
+
+    leaf dscp-enum {
+      type dscp-enumeration;
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:terms/oc-qos:term/oc-qos:actions/oc-qos:remark/oc-qos:config" {
+    description "Adds QoS Group to packet-match actions remarks";
+
+    leaf-list set-qos-group {
+      ordered-by user;
+      type qos-group;
+    }
+
+    leaf-list set-precedences {
+      ordered-by user;
+      type precedence;
+      description "List of precedences valid for both ipv4 and ipv6.";
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    description "Adds QoS maximum queue depth in miliseconds";
+
+    leaf max-queue-depth-ms {
+      type uint32;
+      units ms;
+      description
+        "When the scheduler is specified to be a shaper - the
+        maximum depth of the queue in miliseconds is the value
+        specified by this leaf.";
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:inputs/oc-qos:input/oc-qos:config" {
+    description "Adds CoS (Class of Service)";
+
+    leaf cos {
+      type cos;
+      description "CoS (Class of Service) value";
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:conform-action/oc-qos:config" {
+    description "Adds conform actions to scheduler";
+
+    uses qos-scheduler-actions;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:exceed-action/oc-qos:config" {
+    description "Adds exceed actions to scheduler";
+
+    uses qos-scheduler-actions;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color" {
+    description "Adds yellow actions to scheduler";
+
+    uses yellow-action-aug;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    description "Adds QoS maximum queue depth in bits per second";
+
+    leaf max-queue-depth-bps {
+      type uint32;
+      units bps;
+      description
+        "When the scheduler is specified to be a shaper - the
+        maximum depth of the queue in bits per second is the value
+        specified by this leaf.";
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:config" {
+    description "Adds service-policy to scheduler";
+
+    leaf service-policy {
+      type string;
+    }
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:interfaces/oc-qos:interface/oc-qos:input/oc-qos:config" {
+    description "Adds additional configuration to ingress interface";
+    uses qos-interface-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:interfaces/oc-qos:interface/oc-qos:output/oc-qos:config" {
+    description "Adds additional configuration to egress interface";
+    uses qos-interface-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:config" {
+    description "Adds HUAWEI specific configuration to classifier config";
+    uses qos-classifier-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos" {
+    description "Adds HUAWEI specific configuration to behavior settings";
+    uses qos-behavior-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:classifiers/oc-qos:classifier/oc-qos:config" {
+      description "Adds ios specific configuration to any model";
+      uses qos-ios-classifier-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:inputs/oc-qos:input/oc-qos:config" {
+    description "Adds HUAWEI specific configuration scheduler input";
+    uses qos-scheduler-input-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:one-rate-two-color/oc-qos:config" {
+    description "Adds HUAWEI specific configuration to qos model";
+    uses qos-scheduler-color-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:config" {
+    description "Adds HUAWEI specific info about behavior";
+    uses huawei-qos-scheduler-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy" {
+    description "Adds HUAWEI specific info about scheduler policy";
+    uses qos-scheduler-policy-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos/oc-qos:scheduler-policies/oc-qos:scheduler-policy/oc-qos:schedulers/oc-qos:scheduler/oc-qos:two-rate-three-color/oc-qos:config" {
+      description "Adds services to scheduler";
+      uses qos-scheduler-two-color-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-qos:qos" {
+    description "Adds queue-maps";
+    uses qos-traffic-service-queue-maps;
+  }
+}
