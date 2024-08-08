@@ -1,0 +1,76 @@
+module frinx-local-routing-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/local-routing-ext";
+
+  prefix "static-extension";
+
+  import frinx-local-routing-types { prefix lr-types; }
+  import network-topology { prefix nt; revision-date 2013-10-21; }
+  import frinx-uniconfig-topology { prefix ut; revision-date 2017-11-21; }
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+  import frinx-openconfig-local-routing { prefix oc-lr; }
+  import yang-ext { prefix ext; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "This module is a extension of static route, to specify address-family contraint.";
+
+  revision "2019-06-10" {
+    description
+      "Address-family contraint for static route.";
+    reference "3.1.8";
+  }
+
+  grouping static-afi-safi {
+    description "Address family contraint for static route.";
+    leaf afi-safi-type {
+      type identityref {
+        base lr-types:AFI_SAFI_TYPE;
+      }
+      description "Address family contraint for static route.";
+    }
+  }
+
+  uses static-afi-safi;
+
+  //augmentation statements of address-famiy
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:static-routes/oc-ni:static/oc-ni:config" {
+    ext:augment-identifier "afi-safi-aug";
+    description "Extends static route to add address-family contraint";
+    uses static-afi-safi;
+  }
+
+  //uniconfig augmentations of address-famiy
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" +
+    "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols" +
+    "/oc-ni:protocol/oc-ni:static-routes/oc-ni:static/oc-ni:config" {
+    description "Extends static route defining to add address-family contraint";
+    uses static-afi-safi;
+  }
+
+  //augmentation statements of set-tag
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols" +
+    "/oc-ni:protocol/oc-ni:static-routes/oc-ni:static" +
+	"/oc-ni:next-hops/oc-ni:next-hop/oc-ni:config" {
+    ext:augment-identifier "set-tag-aug";
+    description "Extends static route to add address-family contraint";
+    uses oc-lr:local-generic-settings;
+  }
+
+  //uniconfig augmentations of set-tag
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" +
+    "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols" +
+    "/oc-ni:protocol/oc-ni:static-routes/oc-ni:static" +
+    "/oc-ni:next-hops/oc-ni:next-hop/oc-ni:config" {
+    description "Extends static route defining to add address-family contraint";
+    uses oc-lr:local-generic-settings;
+  }
+}

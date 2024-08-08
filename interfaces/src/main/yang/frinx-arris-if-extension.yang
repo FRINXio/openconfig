@@ -1,0 +1,61 @@
+ module frinx-arris-if-extension {
+
+   yang-version "1";
+
+   // namespace
+   namespace "http://frinx.openconfig.net/yang/interfaces/arris";
+
+   prefix "arris-if-ext";
+
+   // import some basic types
+   import frinx-openconfig-interfaces { prefix oc-if; }
+   import frinx-openconfig-if-ethernet { prefix oc-eth; }
+   // uniconfig imports
+   import network-topology { prefix nt; revision-date "2013-10-21"; }
+   import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+   import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+   // meta
+   organization "Frinx s.r.o";
+
+   contact
+     "support@frinx.io";
+
+   description
+     "Set of arguments needed to OpenConfig interfaces models,
+     containing ARRIS specific features.";
+
+   revision "2022-05-06" {
+     description
+       "Initial release";
+     reference "5.0.8";
+   }
+
+   // grouping statements
+
+   grouping arris-if-eth-config-extension {
+     description "Ethernet configuration specific features for Arris E6000";
+
+     leaf link-aggregate {
+       type uint8 {
+         range "0..7";
+       }
+       description "Link-aggregate for ethernet interface";
+     }
+   }
+
+   // augment statements
+
+   augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:config" {
+     ext:augment-identifier "if-arris-extension-aug";
+
+     uses arris-if-eth-config-extension;
+   }
+
+   // uniconfig augmentations
+
+   augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/oc-eth:config" {
+
+     uses arris-if-eth-config-extension;
+   }
+ }

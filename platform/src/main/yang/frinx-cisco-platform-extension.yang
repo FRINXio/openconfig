@@ -1,0 +1,203 @@
+module frinx-cisco-platform-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/platform/cisco";
+
+  prefix "cisco-platform-extension";
+
+  // import some basic types
+  import frinx-openconfig-platform { prefix oc-platform; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; }
+
+  // meta
+  organization "Frinx s.r.o.";
+
+  contact
+    "support@frinx.io";
+
+  revision "2022-06-20" {
+    description
+      "Initial release";
+    reference "5.0.10";
+  }
+
+  grouping cisco-platform-inventory-extension {
+    leaf pid {
+      type string;
+      description "PID value from device inventory";
+    }
+
+    leaf vid {
+      type string;
+      description "VID value from device inventory";
+    }
+
+    leaf sn {
+      type string;
+      description "Serial number value from device inventory";
+    }
+  }
+
+  grouping cisco-platform-transceiver-extension {
+      leaf vendor-name {
+        type string;
+        description "Vendor name";
+      }
+
+      leaf vendor-revision {
+        type string;
+        description "Vendor revision";
+      }
+
+      leaf serial-number {
+        type string;
+        description "Serial number";
+      }
+
+      leaf description {
+        type string;
+        description "Description";
+      }
+
+      leaf transceiver-type {
+        type string;
+        description "Transceiver type";
+      }
+
+      leaf product-identifier {
+        type string;
+        description "Product identifier";
+      }
+
+      leaf vendor-oui {
+        type string;
+        description "Vendor OUI";
+      }
+
+      leaf clei-code {
+        type string;
+        description "CLEI code";
+      }
+
+      leaf cisco-part-number {
+        type string;
+        description "Cisco part number";
+      }
+
+      leaf device-state {
+        type string;
+        description "Device state";
+      }
+
+      leaf date-code {
+        type string;
+        description "Date code (yy/mm/dd)";
+      }
+
+      leaf connector-type {
+        type string;
+        description "Connector type";
+      }
+
+      leaf encoding {
+        type string;
+        description "Encoding";
+      }
+
+      leaf nominal-bitrate {
+        type string;
+        description "Nominal bitrate";
+      }
+
+      leaf maximum-bitrate {
+        type string;
+        description "Maximum bitrate";
+      }
+
+      leaf minimum-bitrate {
+        type string;
+        description "Minimum bitrate";
+      }
+  }
+
+  grouping cisco-platform-slot-extension {
+    leaf type {
+      type string;
+      description "Type";
+    }
+
+    leaf state {
+      type string;
+      description "State";
+    }
+
+    leaf insert-time {
+      type string;
+      description "Insert time (ago)";
+    }
+
+    leaf cpld-version {
+      type string;
+      description "CPLS version";
+    }
+
+    leaf rommon-version {
+      type string;
+      description "Rommon version";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-platform:components/oc-platform:component/oc-platform:state" {
+    description
+      "Adding some data from inventory";
+    ext:augment-identifier "cisco-platform-aug";
+
+    uses cisco-platform-inventory-extension;
+  }
+
+  augment "/oc-platform:components/oc-platform:component/oc-platform:state" {
+    description
+      "Adding some data from transceiver";
+    ext:augment-identifier "cisco-transceiver-aug";
+
+    uses cisco-platform-transceiver-extension;
+  }
+
+  augment "/oc-platform:components/oc-platform:component/oc-platform:state" {
+    description
+      "Adding some data from slot";
+     ext:augment-identifier "cisco-platform-slot-aug";
+
+     uses cisco-platform-slot-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-platform:components/oc-platform:component/oc-platform:state" {
+    description
+      "Adding some data from inventory";
+
+    uses cisco-platform-inventory-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-platform:components/oc-platform:component/oc-platform:state" {
+    description
+      "Adding some data from transceiver";
+
+    uses cisco-platform-transceiver-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-platform:components/oc-platform:component/oc-platform:state" {
+    description
+      "Adding some data from slot";
+
+    uses cisco-platform-slot-extension;
+  }
+}

@@ -1,0 +1,171 @@
+module frinx-hsrp {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/hsrp";
+
+  prefix "oc-hsrp";
+
+  import network-topology { prefix nt; revision-date 2013-10-21; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import frinx-openconfig-types { prefix octypes; }
+
+  // meta
+  organization "OpenConfig working group";
+
+  contact
+    "OpenConfig working group www.openconfig.net";
+
+  description
+    "This module defines configuration and operational state data
+     for network Interface control HSRP";
+
+  revision "2018-08-14" {
+    description
+        "Created HSRP entries.";
+    reference "3.1.6";
+  }
+
+  grouping hsrp-groups {
+    list hsrp-group {
+      key "address-family virtual-router-id";
+      description
+        "List of HSRP groups, keyed by address-family, virtual router id";
+
+      leaf address-family {
+        type leafref {
+          path "../config/address-family";
+        }
+        description
+          "The prefix contained within the Extended Prefix LSA is an IPv4 unicast prefix";
+      }
+
+      leaf virtual-router-id {
+        type leafref {
+          path "../config/virtual-router-id";
+        }
+        description
+          "References the configured virtual router id for this HSRP group";
+      }
+
+      container config {
+        description
+          "Configuration data for the HSRP group";
+
+        uses hsrp-groups-config;
+      }
+    }
+  }
+
+  grouping hsrp-groups-config {
+    description
+        "Configuration data for HSRP on IP interfaces";
+
+    leaf address-family {
+      type identityref {
+        base octypes:ADDRESS_FAMILY;
+      }
+      description
+        "The address family of the prefix contained in the Extended Prefix LSA";
+    }
+
+    leaf virtual-router-id {
+      type uint32;
+      description
+        "Set the virtual router id for use by the HSRP group.
+         This usually also determines the virtual MAC address that is generated
+         for the HSRP group";
+    }
+
+    leaf version {
+      type uint8;
+      description "Version of HSRP";
+    }
+    leaf priority {
+      type uint8;
+      description
+        "Priority level";
+    }
+  }
+
+  grouping delay-config {
+    leaf minimum-delay {
+      type uint32;
+      description
+        "Minimum delay on every interface up event.";
+    }
+
+    leaf reload-delay {
+      type uint32;
+      description
+        "Reload delay for first interface up event.";
+    }
+  }
+
+  grouping interface-top {
+    description
+      "Interface list entries variables top level container";
+
+    container interfaces {
+      description
+        "Interface list entries variables enclosing container";
+
+      list interface {
+        key "interface-id";
+        description
+          "List of interfaces";
+
+        leaf interface-id {
+          type leafref {
+            path "../config/interface-id";
+          }
+          description
+            "reference to the interface-id data";
+        }
+
+        container config {
+          leaf interface-id {
+            type string;
+            description
+              "The interface-id of the interface-list set";
+          }
+
+          uses delay-config;
+        }
+
+        uses hsrp-groups;
+      }
+    }
+  }
+
+  grouping hsrp-config {
+    description
+      "Global configuration data for HSRPs";
+  }
+
+  grouping hsrp-top {
+    description
+      "Top level grouping for HSRP data and structure";
+
+    container hsrp {
+      description
+        "Top level enclosing container for HSRP model config and operational state data";
+
+      container config {
+        description
+          "Global config data for HSRPs";
+
+        uses hsrp-config;
+      }
+
+      uses interface-top;
+    }
+  }
+
+  uses hsrp-top;
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses hsrp-top;
+  }
+}

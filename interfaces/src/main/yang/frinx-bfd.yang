@@ -1,0 +1,162 @@
+module frinx-bfd {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/bfd";
+
+  prefix "bfd";
+
+  // import some basic types
+  import ietf-inet-types { prefix "inet"; }
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-if-aggregate { prefix oc-lag; }
+  import iana-if-type { prefix ift; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Bidirectional Forwarding Detection (BFD) implementation
+    based on OpenConfig interfaces";
+
+  revision "2017-10-24" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  // grouping statements
+
+  grouping bfd-config {
+    leaf local-address {
+      type inet:ipv4-address;
+      description
+        "Ipv4 source address for BFD sessions.
+        By default, IP address of interface with BFD session is used.";
+    }
+
+    leaf destination-address {
+      type inet:ipv4-address;
+      description
+        "Ipv4 destination address for BFD sessions";
+    }
+
+    leaf multiplier {
+      type uint32;
+      description
+       "Detection multiplier for BFD sessions";
+    }
+
+    leaf min-interval {
+      type uint32;
+      units "milliseconds";
+      description
+        "Interval for sending BFD packets (in milliseconds)";
+    }
+
+    leaf min-receive-interval {
+        type uint32;
+        units "milliseconds";
+        description
+          "Interval for receiving BFD packets (in milliseconds)";
+      }
+  }
+
+  grouping bfd-ipv6-config {
+    leaf destination-address {
+      type inet:ipv6-address;
+      description
+        "Ipv6 destination address for BFD sessions";
+    }
+
+    leaf multiplier {
+      type uint32;
+      description
+       "Detection multiplier for BFD sessions";
+    }
+
+    leaf min-interval {
+      type uint32;
+      units "milliseconds";
+      description
+        "Interval for sending BFD packets (in milliseconds)";
+    }
+  }
+
+  grouping bfd-state {
+    description
+      "BFD related operational state";
+
+    //TODO: placeholder for operational state related to BFD
+  }
+
+  grouping bfd-top {
+    description
+      "Top-level grouping for BFD data";
+
+    container bfd {
+      description
+        "Enclosing container for BFD interface-ipv4-specific
+        data.";
+
+      container config {
+          description "Configuration parameters for BFD ipv4";
+
+          uses bfd-config;
+      }
+
+      container state {
+
+        config false;
+        description "State variables for BFD";
+
+        uses bfd-config;
+        uses bfd-state;
+      }
+    }
+
+    container bfd-ipv6 {
+      description
+        "Enclosing container for BFD interface-ipv6-specific
+        data.";
+
+      container config {
+          description "Configuration parameters for BFD ipv6";
+
+          uses bfd-ipv6-config;
+      }
+    }
+
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-lag:aggregation" {
+    when "oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface is a LAG";
+    }
+    ext:augment-identifier "if-lag-bfd-aug";
+    description "Adds BFD settings to a LAG interface";
+
+    uses bfd-top;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-lag:aggregation" {
+    when "oc-if:type = 'ift:ieee8023adLag'" {
+      description "Active when the interface is a LAG";
+    }
+    description "Adds BFD settings to a LAG interface";
+
+    uses bfd-top;
+  }
+}

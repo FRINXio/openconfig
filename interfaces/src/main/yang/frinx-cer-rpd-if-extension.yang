@@ -1,0 +1,401 @@
+module frinx-cer-rpd-if-extension {
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/cer-rpd-extension";
+
+  prefix "cer-rpd-if-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to CER rpd interfaces models";
+
+  revision "2023-01-23" {
+    description
+      "Initial release";
+    reference "5.0.23";
+  }
+
+  grouping rpd-top {
+    description "Top-level grouping for rpd interface";
+
+    container rpd {
+      container config {
+        description "Configuration data for rpd interface";
+        uses rpd-config;
+      }
+    }
+  }
+
+  grouping rpd-state-top {
+    description "Top-level grouping for rpd operational state data";
+
+    container rpd {
+      container state {
+        description "Operational data for rpd interaface";
+        uses rpd-config;
+        uses rpd-state;
+        uses ptp-state-top;
+      }
+    }
+  }
+
+  grouping ptp-state-top {
+    description "Top-level grouping for rpd ptp";
+
+    container ptp {
+      description "Operational data of rpd interface precision time protocol";
+      uses rpd-state-ptp;
+    }
+  }
+
+  grouping rpd-ptp-port-top {
+    description "Top-level grouping for rpd interface";
+
+    container rpd-ptp-port {
+      container config {
+        description "Configuration data for rpd interface";
+        uses rpd-ptp-port-config;
+      }
+    }
+  }
+
+  grouping rpd-us-conn-top {
+    description "Top-level grouping for rpd interface";
+
+    container rpd-us-conn {
+      container config {
+        description "Configuration data for rpd interface";
+        uses rpd-us-conn-config;
+      }
+    }
+  }
+
+  grouping rpd-ds-conn-top {
+    description "Top-level grouping for rpd interface";
+
+    container rpd-ds-conn {
+      container config {
+        description "Configuration data for rpd interface";
+        uses rpd-ds-conn-config;
+      }
+    }
+  }
+
+  grouping rpd-config {
+    leaf enable {
+      type boolean;
+      description "Enable/disable RPD";
+    }
+    leaf rpd-index {
+      type uint16;
+      description "Remote PHY Device identifier";
+    }
+    leaf ucam {
+      type uint16;
+      description "UCAM-2 slot";
+    }
+    leaf dcam {
+      type uint16;
+      description "DCAM-2 slot";
+    }
+    leaf mac-address {
+      type string;
+      description "RPD MAC address";
+    }
+    leaf adp-enable {
+      type boolean;
+      description "Enable/disable Arris Discovery Protocol (ADP)";
+    }
+    leaf ssd-enable {
+      type boolean;
+      description "Enable/disable automatic RPD secure software download (SSD)";
+    }
+  }
+
+  grouping rpd-channels-state-common {
+    leaf id {
+      type string;
+      description "Identifier";
+    }
+
+    leaf rpd-name {
+      type string;
+      description "Name of RPD interface";
+    }
+
+    leaf rpd-dir {
+      type string;
+      description "Type of RPD dir";
+    }
+
+    leaf rpd-interfaces {
+      type string;
+      description "RPD interfaces";
+    }
+  }
+
+  grouping rpd-state {
+
+    list rpd-channel {
+      description "List of rpd channels";
+
+      key id;
+
+      uses rpd-channels-state-common;
+    }
+
+    list rpd-channel-status {
+      description "List of rpd channel statuses";
+
+      key id;
+
+      uses rpd-channels-state-common;
+
+      leaf channel-state {
+        type string;
+        description "RPD channel state";
+      }
+
+      leaf channel-selection {
+        type string;
+        description "RPD channel selection";
+      }
+
+      leaf depi-channel-id {
+        type string;
+        description "DEPI RPD channel identification";
+      }
+
+      leaf core-pw-id {
+        type string;
+        description "Core PW ID";
+      }
+    }
+
+    leaf clock-state {
+      type string;
+      description "Core clock state status.";
+    }
+    leaf cable-mac {
+      type uint16;
+      description "Mac cable";
+    }
+    leaf ds-us-type {
+      type string;
+      description "DS of US type";
+    }
+    leaf admin-state {
+      type enumeration {
+        enum UP {
+          description "Admin state turned on.";
+        }
+        enum DOWN {
+          description "Admin state turned off.";
+        }
+      }
+    }
+    leaf oper-state {
+      type enumeration {
+        enum OOS {
+          description "Out of service state.";
+        }
+        enum IS {
+          description "In service state.";
+        }
+      }
+    }
+    leaf ipv6-address {
+      type string;
+      description "Ipv6 address setting.";
+    }
+  }
+
+  grouping rpd-state-ptp {
+    leaf dscp {
+      type uint16;
+      description "Dscp setting";
+    }
+    leaf clock-state {
+      type string;
+      description "Core clock state setting";
+    }
+    leaf domain {
+      type uint16;
+      description "Domain number";
+    }
+    leaf profile {
+      type string;
+      description "Profile name";
+    }
+    leaf version {
+      type string;
+      description "Profile version";
+    }
+    leaf state {
+      type string;
+      description "State setting";
+    }
+    leaf last-state-change {
+      type string;
+      description "Last noted state change";
+    }
+    leaf phase-offset {
+      type string;
+      description "Last computed phase offset";
+    }
+    leaf frequency-offset {
+      type string;
+      description "Estimated frequency offset";
+    }
+  }
+
+  grouping rpd-ptp-port-config {
+    list ptp-port {
+      key "id";
+      description "ptp port";
+
+      leaf id {
+        type uint16;
+        description "Port identifier";
+      }
+      leaf role {
+        type string;
+        description "Role type";
+      }
+      leaf local-priority {
+        type uint16;
+        description "Local priority of a RPD clock port";
+      }
+      leaf master-clock-address {
+        type string;
+        description "Master clock destination IP address";
+      }
+      leaf enable {
+        type boolean;
+        description "Enable/disable PTP Port";
+      }
+    }
+  }
+
+  grouping rpd-ds-conn-config {
+    list ds-conn {
+      key "id";
+      description "ds-conn";
+
+      leaf id {
+        type uint16;
+        description "Downstream RF port number";
+      }
+      leaf power-level {
+        type uint16;
+        description "Power level (tenths of dBmV)";
+      }
+      leaf-list ds-group {
+        type string;
+        description "RPD video group name";
+      }
+    }
+  }
+
+  grouping rpd-us-conn-config {
+    list us-conn {
+      key "id";
+      description "us-conn";
+
+      leaf id {
+        type uint16;
+        description "Upstream connector number";
+      }
+      leaf base-target-power {
+        type int16;
+        description "RPD us-conn base target power (tenth dBmV/1.6 MHz)";
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description "Adds RPD specific configuration to interfaces model";
+    ext:augment-identifier "if-rpd-aug";
+
+    uses rpd-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:state" {
+    description "Adds RPD specific operational state to interfaces model";
+    ext:augment-identifier "if-rpd-state-aug";
+
+    uses rpd-state-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description "";
+    ext:augment-identifier "if-rpd-ptp-port-aug";
+
+    uses rpd-ptp-port-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description "";
+    ext:augment-identifier "if-rpd-us-conn-aug";
+
+    uses rpd-us-conn-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description "";
+    ext:augment-identifier "if-rpd-ds-conn-aug";
+
+    uses rpd-ds-conn-top;
+  }
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+  "oc-if:interface/oc-if:config" {
+    description "Adds RPD specific configuration to interfaces model";
+
+    uses rpd-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+  "oc-if:interface/oc-if:state" {
+    description "Adds RPD specific operational state to interfaces model";
+
+    uses rpd-state-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+  "oc-if:interface/oc-if:config" {
+    description "";
+
+    uses rpd-ptp-port-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+  "oc-if:interface/oc-if:config" {
+    description "";
+
+    uses rpd-us-conn-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+  "oc-if:interface/oc-if:config" {
+    description "";
+
+    uses rpd-ds-conn-top;
+  }
+}

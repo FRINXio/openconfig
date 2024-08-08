@@ -1,0 +1,56 @@
+module frinx-openconfig-fhrp {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/fhrp";
+
+  prefix "fhrp";
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Model for managing fhrp";
+
+  revision "2021-05-12" {
+    description
+      "Initial release";
+    reference "4.2.7";
+  }
+
+  grouping fhrp-top {
+    container fhrp {
+      description
+        "Configure First Hop Redundancy Protocols";
+      container version {
+        description
+          "Configure which FHRP version is allowed to run";
+        leaf vrrp {
+          description
+            "Configure Virtual Router Rendundancy Protocol";
+          type enumeration {
+            enum "v2";
+            enum "v3";
+          }
+        }
+      }
+    }
+  }
+
+  uses fhrp-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses fhrp-top;
+  }
+
+}

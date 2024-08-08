@@ -1,0 +1,54 @@
+module frinx-local-routing-types {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/static-types";
+
+  prefix "local-routing-types";
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "This module contains general type definitions for using in local-routing YANG
+    model.";
+
+  revision "2019-06-10" {
+    description
+      "Add type definings for local-routing.";
+    reference "3.1.8";
+  }
+
+  identity AFI_SAFI_TYPE {
+    description
+      "Base identify type for AFI/SAFI";
+  }
+
+  identity IPV6_UNICAST {
+    base AFI_SAFI_TYPE;
+    description
+      "Base identify type for IPv6 unicast address family";
+  }
+
+  identity IPV4_UNICAST {
+    base AFI_SAFI_TYPE;
+    description
+      "Base identify type for IPv4 Unicast address family";
+  }
+
+  identity IPV6_MULTICAST {
+    base AFI_SAFI_TYPE;
+    description
+      "Base identify type for IPv6 multicast address family";
+  }
+
+  identity IPV4_MULTICAST {
+    base AFI_SAFI_TYPE;
+    description
+      "Base identify type for IPv4 multicast address family";
+  }
+}

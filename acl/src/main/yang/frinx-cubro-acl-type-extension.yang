@@ -1,0 +1,107 @@
+module frinx-cubro-acl-type-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/acl/cubro";
+  prefix "cubro-acltype-ext";
+
+  // import some basic types
+  import frinx-openconfig-acl { prefix "oc-acl"; }
+  import frinx-openconfig-packet-match-types { prefix oc-pkt-match-types; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig acl type,
+    containing cubro specific features.";
+
+  revision "2020-03-20" {
+    description
+      "Initial release";
+    reference "4.2.4";
+  }
+
+  identity ACL_IP {
+    base oc-acl:ACL_TYPE;
+    description
+      "IP-layer ACLs with IP addresses";
+  }
+
+  grouping egress {
+    description
+      "Egress type";
+
+    leaf egress-type {
+      type identityref {
+        base EGRESS_TYPE;
+      }
+      description
+        "Type of egress";
+    }
+
+    leaf egress-value {
+      type uint32;
+      description
+        "egress value";
+    }
+
+    leaf operation {
+      type identityref {
+        base OPERATION_TYPE;
+      }
+      description
+        "Type of operation for ACL entry";
+    }
+  }
+
+  identity EGRESS_TYPE {
+    description
+      "Egress type for cubro ACL entry";
+  }
+
+  identity ELAG {
+    base EGRESS_TYPE;
+    description
+      "Egress type is elag";
+  }
+
+  identity OPERATION_TYPE {
+    description
+      "Operation type for cubro ACL entry";
+  }
+
+  identity COUNT {
+    base OPERATION_TYPE;
+    description
+      "Count packets matching this entry";
+  }
+
+  identity IP_ANY  {
+    base oc-pkt-match-types:IP_PROTOCOL;
+    description
+      "Any internet protocol";
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config" {
+      description "Add elog into acl-entry";
+
+      uses egress;
+    }
+
+  augment "/oc-acl:acl/oc-acl:acl-sets/oc-acl:acl-set/oc-acl:acl-entries/oc-acl:acl-entry/oc-acl:actions/oc-acl:config" {
+    description "Add elog into acl-entry";
+    ext:augment-identifier "acl-cubro-aug";
+
+    uses egress;
+  }
+}
