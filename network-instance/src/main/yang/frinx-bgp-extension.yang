@@ -1,0 +1,324 @@
+module frinx-bgp-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/bgp/extension";
+
+  prefix "bgp-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+  import frinx-openconfig-routing-policy { prefix oc-rpol; revision-date 2017-07-14; }
+  import yang-ext { prefix ext; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  revision "2018-03-23" {
+    description
+      "Initial release";
+  }
+
+  identity BGP_VERSION {
+    description
+      "BGP version number";
+  }
+
+  identity VERSION_4 {
+    base BGP_VERSION;
+    description
+      "BGP version 4";
+  }
+
+  identity VERSION_UNKNOWN {
+    base BGP_VERSION;
+    description
+      "Older and/or unsupported BGP version";
+  }
+
+  grouping bgp-neighbor-config-extension {
+    description "CISCO specific BGP configuration";
+
+    leaf neighbor-version {
+      type identityref {
+        base BGP_VERSION;
+      }
+      description
+        "Version of neighbors BGP";
+    }
+
+    leaf fall-over-mode {
+      type boolean;
+      description "Fall-over bfd mode relating to the BGP neighbor";
+    }
+
+    leaf as-override {
+      type boolean;
+      description "Override matching AS-number while sending update";
+    }
+
+    container timer-configuration {
+      description "Container for timer data";
+      leaf timer-mode {
+        type string;
+        description "Mode for timer data for Huawei device";
+      }
+      leaf time-before {
+        type uint8;
+        description "Previous timer value";
+      }
+      leaf time-after {
+        type uint8;
+        description "Next timer value";
+      }
+    }
+
+    leaf transport {
+      description
+        "Transport options for bgp neighbor";
+      type enumeration {
+        enum connection-mode {
+          description "Specify passive or active connection";
+        }
+        enum path-mtu-discovery {
+          description "Use transport path MTU discovery";
+        }
+        enum single-session {
+          description "[DEPRECATED]Use only a single session for transport";
+        }
+        enum multi-session {
+          description "Use Multi-session for transport";
+        }
+        enum auto-discovery {
+          description "Use transport path MTU auto-discovery relating to the Huawei BGP neighbor";
+        }
+      }
+    }
+
+    container local-as-group {
+      uses local-as-group;
+    }
+  }
+
+  grouping local-as-group {
+
+    leaf no-prepend {
+      type boolean;
+      description
+        "Do not prepend local-as to updates from ebgp peers";
+    }
+
+    leaf replace-as {
+      type boolean;
+      description
+        "Replace real AS with local AS in the EBGP updates";
+    }
+  }
+
+  grouping local-aggregates-policy {
+    leaf-list apply-policy {
+      type leafref {
+        path "/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
+          "oc-rpol:policy-definition/oc-rpol:name";
+      }
+      description
+        "Name of policy which needs to be applied.";
+    }
+    leaf summary-only {
+      type boolean;
+    }
+  }
+
+  grouping soft-reconfiguration-group {
+    container soft-reconfiguration {
+      leaf always {
+        type boolean;
+      }
+    }
+  }
+
+  grouping default-originate-group {
+    leaf send-default-route-route-policy {
+      type leafref {
+        path "/oc-rpol:routing-policy/oc-rpol:policy-definitions/" +
+          "oc-rpol:policy-definition/oc-rpol:name";
+      }
+    }
+  }
+
+  grouping bgp-global-config-extension {
+    leaf log-neighbor-changes {
+      type boolean;
+      description "Parameter to enable/disable logging message generation of BGP neighbor changes.";
+    }
+
+    leaf-list import-route{
+      type string;
+      description "Import route direct and static configuration";
+    }
+  }
+
+  grouping global-afi-safi-config-extension {
+    leaf auto-summary {
+      type boolean;
+      description "Parameter to enable/disable automatic network number summarization.";
+    }
+
+    container redistribute-connected {
+      description "Redistribute connection data";
+      leaf enabled {
+        type boolean;
+        description "Redistributed connection enabled or not";
+      }
+
+      leaf route-map {
+        type string;
+        description "Route map reference";
+      }
+    }
+
+    container redistribute-static {
+      description "Redistribute static data";
+      leaf enabled {
+        type boolean;
+        description "Redistributed static enabled or not";
+      }
+
+      leaf route-map {
+        type string;
+        description "Route map reference";
+      }
+    }
+
+    leaf default-information-originate {
+      type boolean;
+      description "Parameter to enable/disable control distribution of default information";
+    }
+
+    leaf synchronization {
+      type boolean;
+      description "Parameter to enable/disable IGP synchronization";
+    }
+
+    leaf table-map {
+      type string;
+      description "Map external entry attributes into routing table";
+    }
+  }
+
+  // network-instances augmentations
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/" +
+          "oc-ni:neighbors/oc-ni:neighbor/oc-ni:config" {
+    description "Extends BGP neighbor configuration";
+    ext:augment-identifier "bgp-neighbor-config-aug";
+
+    uses bgp-neighbor-config-extension;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:local-aggregates/oc-ni:aggregate/oc-ni:config" {
+    ext:augment-identifier "ni-prot-agg-aug";
+    description "Extends local-aggregates/aggregate/config with apply-policy";
+
+    uses local-aggregates-policy;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/" +
+    "oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:config" {
+    ext:augment-identifier "bgp-ne-af-aug";
+    description "Extends bgp neighbor afi-safi config with soft-reconfiguration field";
+
+    uses soft-reconfiguration-group;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/" +
+    "oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:ipv4-unicast/oc-ni:config" {
+    ext:augment-identifier "bgp-ne-af-ipv4-unicast-aug";
+    description "Extends bgp neighbor afi-safi ipv4-unicast config";
+
+    uses default-originate-group;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/" +
+    "oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:ipv6-unicast/oc-ni:config" {
+    ext:augment-identifier "bgp-ne-af-ipv6-unicast-aug";
+    description "Extends bgp neighbor afi-safi ipv6-unicast config";
+
+    uses default-originate-group;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/" +
+          "oc-ni:global/oc-ni:config" {
+    description "Adds CISCO specific configuration to bgp global model.";
+    ext:augment-identifier "bgp-global-config-aug";
+
+    uses bgp-global-config-extension;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/" +
+          "oc-ni:global/oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:config" {
+    description "Adds CISCO specific configuration to bgp global model.";
+    ext:augment-identifier "global-afi-safi-config-aug";
+
+    uses global-afi-safi-config-extension;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/" +
+          "oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/oc-ni:config" {
+    description "Extends bgp neighbor configuration for uniconfig topology";
+
+    uses bgp-neighbor-config-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/" +
+    "oc-ni:local-aggregates/oc-ni:aggregate/oc-ni:config" {
+    description "Extends local-aggregates/aggregate/config with apply-policy for uniconfig topology";
+
+    uses local-aggregates-policy;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/" +
+    "oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:config" {
+    description "Extends bgp neighbor afi-safi config with soft-reconfiguration field for uniconfig topology";
+
+    uses soft-reconfiguration-group;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+    "oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/" +
+    "oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:ipv4-unicast/oc-ni:config" {
+    description "Extends bgp neighbor afi-safi ipv4-unicast config";
+
+    uses default-originate-group;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/" +
+    "oc-ni:network-instances/oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:neighbors/oc-ni:neighbor/" +
+    "oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:ipv6-unicast/oc-ni:config" {
+    description "Extends bgp neighbor afi-safi ipv6-unicast config";
+
+    uses default-originate-group;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/" +
+          "oc-ni:network-instance/oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:global/oc-ni:config" {
+    description "Adds CISCO specific configuration to bgp global model.";
+
+    uses bgp-global-config-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance/" +
+          " oc-ni:protocols/oc-ni:protocol/oc-ni:bgp/oc-ni:global/oc-ni:afi-safis/oc-ni:afi-safi/oc-ni:config" {
+    description "Adds CISCO specific configuration to bgp global model.";
+
+    uses global-afi-safi-config-extension;
+  }
+}

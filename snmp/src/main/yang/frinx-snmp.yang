@@ -1,0 +1,298 @@
+module frinx-snmp {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/snmp";
+
+  prefix "snmp";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-event-types { prefix event-types; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "SNMP interfaces implementation based on OpenConfig interfaces";
+
+  revision "2017-10-24" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  // grouping statements
+
+  grouping snmp-interfaces-structural {
+    description
+      "Structural grouping for interface to SNMP bindings.";
+
+    container interfaces {
+      description
+        "Configuration and operational state relating SNMP
+        on interfaces.";
+
+      list interface {
+        key "interface-id";
+
+        description
+          "Configuration and operationals state relating to the
+          relationship between interfaces and SNMP.";
+
+        leaf interface-id {
+          type leafref {
+            path "../config/interface-id";
+          }
+          description
+            "A reference to the unique identifier for the interface
+            being referenced by the SNMP.";
+        }
+
+        container config {
+          description
+            "Configuration parameters relating to an interface to
+            SNMP binding.";
+
+          uses snmp-interface-config;
+        }
+
+        container state {
+          config false;
+          description
+            "Operational state parameters relating to an interface to
+            SNMP binding.";
+
+          uses snmp-interface-config;
+          uses snmp-interface-state;
+        }
+      }
+    }
+  }
+
+  grouping snmp-interface-config {
+    leaf interface-id {
+      type oc-if:interface-id;
+      description
+        "A unique identifier for the interface.";
+    }
+
+    list enabled-trap-for-event {
+      description
+        "Event which triggers SNMP trap.";
+      key event-name;
+      leaf event-name {
+        type identityref {
+          base event-types:EVENT_TYPE;
+        }
+      }
+
+      leaf enabled {
+        type boolean;
+      }
+    }
+  }
+
+  grouping snmp-interface-state {
+    description
+      "SNMP related operational state";
+
+    //TODO: placeholder for operational state related to snmp
+  }
+
+  grouping snmp-view-top {
+    description
+      "Top-level grouping for view data";
+
+    container views {
+      description
+        "Enclosing container for SNMP views";
+
+      list view {
+        key "name";
+        description
+          "List of view elements";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description
+            "Reference to list key name";
+        }
+
+        container config {
+          description
+            "Configuration data for views";
+
+          uses snmp-view-config;
+        }
+
+        container state {
+          config false;
+          description
+            "Operational state data for views";
+
+          uses snmp-view-config;
+          uses snmp-view-state;
+        }
+      }
+    }
+  }
+
+  grouping snmp-view-config {
+    description
+      "Configuration data for views";
+
+    leaf name {
+      type string;
+      description
+        "Name of the view";
+    }
+
+    list mib {
+      key "name";
+
+      leaf name {
+        type string;
+        mandatory true;
+        description
+          "MIB view family name.";
+      }
+
+      leaf inclusion {
+        type enumeration {
+          enum included {
+            description
+              "MIB family is included in the view";
+          }
+          enum excluded {
+            description
+              "MIB family is excluded from the view";
+          }
+        }
+        mandatory true;
+      }
+    }
+  }
+
+  grouping snmp-view-state {
+    description
+      "Operational state data for views";
+  }
+
+  grouping snmp-community-top {
+    description
+      "Top-level grouping for community data";
+
+    container communities {
+      description
+        "Enclosing container for SNMP communities";
+
+      list community {
+        key "name";
+        description
+          "List of community elements";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description
+            "Reference to list key name";
+        }
+
+        container config {
+          description
+            "Configuration data for communities";
+
+          uses snmp-community-config;
+        }
+
+        container state {
+          config false;
+          description
+            "Operational state data for communities";
+
+          uses snmp-community-config;
+          uses snmp-community-state;
+        }
+      }
+    }
+  }
+
+  grouping snmp-community-config {
+    description
+      "Configuration data for communities";
+
+    leaf name {
+      type string;
+      description
+        "Name of the community";
+    }
+
+    leaf view {
+      type string;
+      description
+        "Name of the view";
+    }
+
+    leaf access-list {
+      type string;
+      description
+        "Name of the IPv4 access list allowing access";
+    }
+
+    leaf access {
+      type enumeration {
+        enum ro {
+          description
+            "Read-only access";
+        }
+        enum rw {
+          description
+            "Read-write access";
+        }
+      }
+      mandatory true;
+    }
+  }
+
+  grouping snmp-community-state {
+    description
+      "Operational state data for communities";
+  }
+
+  grouping snmp-top {
+    description
+      "Top-level grouping for snmp data";
+
+    container snmp {
+      description
+        "Enclosing container for snmp interface-specific
+        data.";
+
+      uses snmp-interfaces-structural;
+      uses snmp-view-top;
+      uses snmp-community-top;
+    }
+  }
+
+  // data definition statements
+
+  uses snmp-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses snmp-top;
+  }
+  
+}

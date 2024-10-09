@@ -1,0 +1,1243 @@
+module frinx-ciena-platform-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/platform/ciena";
+
+  prefix "ciena-platform-extension";
+
+  // import some basic types
+  import frinx-openconfig-platform { prefix oc-platform; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; }
+
+  // meta
+  organization "Frinx s.r.o.";
+
+  contact
+    "support@frinx.io";
+
+  revision "2022-06-20" {
+    description
+      "Initial release";
+    reference "5.0.10";
+  }
+
+  grouping ciena-platform-extension {
+    leaf device-type {
+      type string;
+      description "Device type";
+    }
+
+    leaf device-part-number {
+      type string;
+      description "Device part number";
+    }
+
+    leaf device-revision {
+      type string;
+      description "Device revision";
+    }
+
+    leaf device-manufactured-date {
+      type string;
+      description "Manufactured date";
+    }
+
+    leaf device-clei-code {
+      type string;
+      description "CLEI Code";
+    }
+
+    leaf location {
+      type string;
+      description "Location of manufacture";
+    }
+
+    leaf mac-address {
+      type string;
+      description "Chassis MAC address";
+    }
+
+    leaf device-sn {
+      type string;
+      description "Device serial number";
+    }
+
+    leaf device-param-version {
+      type string;
+      description "Device param version";
+    }
+
+    leaf software-running-package {
+      type string;
+      description "Device software running package";
+    }
+
+    leaf platform-name {
+      type string;
+      description "Device platform name";
+    }
+
+    leaf platform-description {
+      type string;
+      description "Platform description";
+    }
+
+    leaf identifier {
+      type string;
+      description "Identifier";
+    }
+
+    leaf ext-identifier {
+      type string;
+      description "Ext. Identifier";
+    }
+
+    leaf connector {
+      type string;
+      description "Connector";
+    }
+
+    leaf transceiver-codes {
+      type string;
+      description "Transceiver codes";
+    }
+
+    leaf transceiver-codes-10-gbe-compliance {
+      type string;
+      description "10 GbE compliance";
+    }
+
+    leaf transceiver-codes-sonet-compliance {
+      type string;
+      description "SONET compliance";
+    }
+
+    leaf transceiver-codes-ethernet-compliance {
+      type string;
+      description "Ethernet compliance";
+    }
+
+    leaf transceiver-codes-link-length {
+      type string;
+      description "Link length";
+    }
+
+    leaf transceiver-codes-transmitter-technology {
+      type string;
+      description "Transmitter technology";
+    }
+
+    leaf transceiver-codes-transmission-media {
+      type string;
+      description "Transmission media";
+    }
+
+    leaf transceiver-codes-channel-speed {
+      type string;
+      description "Channel speed";
+    }
+
+    leaf encoding {
+      type string;
+      description "Encoding";
+    }
+
+    leaf br-nominal {
+      type string;
+      description "BR, Nominal";
+    }
+
+    leaf length-fiber-1-km {
+      type string;
+      description "Length(9um fiber) 1km";
+    }
+
+    leaf length-fiber-100-m {
+      type string;
+      description "Length(9um fiber) 100m";
+    }
+
+    leaf length-50um-10-m {
+      type string;
+      description "Length(50um) 10m";
+    }
+
+    leaf length-625um-10-m {
+      type string;
+      description "Length(62.5um) 10m";
+    }
+
+    leaf length-copper-1-m {
+      type string;
+      description "Length(copper) 1m";
+    }
+
+    leaf vendor-name {
+      type string;
+      description "Vendor name";
+    }
+
+    leaf vendor-oui {
+      type string;
+      description "Vendor OUI";
+    }
+
+    leaf vendor-port-number {
+      type string;
+      description "Port number";
+    }
+
+    leaf vendor-revision {
+      type string;
+      description "Vendor port revision";
+    }
+
+    leaf vendor-sn {
+      type string;
+      description "Vendor serial number";
+    }
+
+    leaf vendor-pid-part-number {
+      type string;
+      description "Vendor pid and part number";
+    }
+
+    leaf vendor-clei-code {
+      type string;
+      description "Vendor CLEI code";
+    }
+
+    leaf ciena-port-number {
+      type string;
+      description "Ciena port number";
+    }
+
+    leaf ciena-revision {
+      type string;
+      description "Ciena revision";
+    }
+
+    leaf wavelength {
+      type string;
+      description "Wavelength";
+    }
+
+    leaf options {
+      type string;
+      description "Options";
+    }
+
+    leaf options-tunable {
+      type string;
+      description "Tunable";
+    }
+
+    leaf options-rate-select {
+      type string;
+      description "RATE_SELECT";
+    }
+
+    leaf options-tx-disable {
+      type string;
+      description "TX_DISABLE";
+    }
+
+    leaf options-tx-fault {
+      type string;
+      description "TX_FAULT";
+    }
+
+    leaf options-loss-of-signal-invert {
+      type string;
+      description "Loss of signal invert";
+    }
+
+    leaf options-loss-of-signal {
+      type string;
+      description "Loss of signal";
+    }
+
+    leaf br-max {
+      type string;
+      description "BR, max";
+    }
+
+    leaf br-min {
+      type string;
+      description "BR, min";
+    }
+
+    leaf date {
+      type string;
+      description "Date (mm/dd/yy)";
+    }
+
+    leaf diag-monitor-type {
+      type string;
+      description "Diag monitor type";
+    }
+
+    leaf diag-monitor-type-legacy-diagnostics {
+      type string;
+      description "Legacy diagnostics";
+    }
+
+    leaf diag-monitor-type-diagnostics-monitoring {
+      type string;
+      description "Diagnostics monitoring";
+    }
+
+    leaf diag-monitor-type-internally-calibrated {
+      type string;
+      description "Internally calibrated";
+    }
+
+    leaf diag-monitor-type-externally-calibrated {
+      type string;
+      description "Externally calibrated";
+    }
+
+    leaf diag-monitor-type-rw-power-measurement {
+      type string;
+      description "Rw power measurement";
+    }
+
+    leaf enhanced-options {
+      type string;
+      description "Enhanced options";
+    }
+
+    leaf enhanced-options-alarm-warning-flags {
+      type string;
+      description "Alarm/warning flags";
+    }
+
+    leaf enhanced-options-soft-tx-disable {
+      type string;
+      description "Soft TX_DISABLE";
+    }
+
+    leaf enhanced-options-soft-tx-fault {
+      type string;
+      description "Soft TX_FAULT";
+    }
+
+    leaf enhanced-options-soft-rx-los {
+      type string;
+      description "Soft RX_LOS";
+    }
+
+    leaf enhanced-options-soft-rate-select {
+      type string;
+      description "Soft RATE_SELECT";
+    }
+
+    leaf sff-8472-compliance {
+      type string;
+      description "SFF-8472 compliance";
+    }
+
+    leaf power-part-number {
+      type string;
+      description "Power supply part number";
+    }
+
+    leaf power-sn {
+      type string;
+      description "Power supply serial number";
+    }
+
+    leaf power-revision {
+      type string;
+      description "Power supply revision";
+    }
+  }
+
+  grouping ciena-saos8-platform-extension {
+    leaf ethernet-base-address {
+      type string;
+      description "Ethernet base address";
+    }
+
+    leaf ethernet-address-block-size {
+      type string;
+      description "Ethernet address block size";
+    }
+
+    leaf module-sn {
+      type string;
+      description "Module serial number";
+    }
+
+    leaf model-part-number {
+      type string;
+      description "Model part number";
+    }
+
+    leaf model-revision {
+      type string;
+      description "Model revision";
+    }
+
+    leaf product-id {
+      type string;
+      description "Product ID";
+    }
+
+    leaf manufactured-date {
+      type string;
+      description "Manufactured date";
+    }
+
+    leaf clei-code {
+      type string;
+      description "CLEI code";
+    }
+
+    leaf bar-code {
+      type string;
+      description "Bar code";
+    }
+
+    leaf backplane-assy-sn {
+      type string;
+      description "Backplane assy serial number";
+    }
+
+    leaf backplane-assy-pn {
+      type string;
+      description "Backplane assy part number";
+    }
+
+    leaf backplane-assy-rev {
+      type string;
+      description "Backplane assy revision";
+    }
+
+    leaf backplane-sn {
+      type string;
+      description "Backplane serial number";
+    }
+
+    leaf backplane-pn {
+      type string;
+      description "Backplane part number";
+    }
+
+    leaf backplane-rev {
+      type string;
+      description "Backplane revision";
+    }
+
+    leaf software-compatibility {
+      type string;
+      description "Software compatibility";
+    }
+
+    leaf functional-test-count {
+      type string;
+      description "Functional test count";
+    }
+
+    leaf board-sn {
+      type string;
+      description "Board serial number";
+    }
+
+    leaf board-pn {
+      type string;
+      description "Board part number";
+    }
+
+    leaf board-rev {
+      type string;
+      description "Board revision";
+    }
+
+    leaf fault-card {
+      type string;
+      description "Fault card";
+    }
+
+    leaf vendor-part-number {
+      type string;
+      description "Port vendor name and part number";
+    }
+
+    leaf ethernet-type {
+      type string;
+      description "Ethernet medium an d connector type";
+    }
+
+    leaf diagnostic-data {
+      type boolean;
+      description "Diagnostic data";
+    }
+
+    leaf empty {
+      type boolean;
+      description "Indicates if port is empty";
+    }
+
+    leaf ciena-module-identifier {
+      type string;
+      description "Module identifier";
+    }
+
+    leaf ciena-module-item-number {
+      type string;
+      description "Module item number";
+    }
+
+    leaf ciena-module-rev-number {
+      type string;
+      description "Module revision number";
+    }
+
+    leaf ciena-vendor-serial-number {
+      type string;
+      description "Vendor serial number";
+    }
+
+    leaf date-code {
+      type string;
+      description "Date code";
+    }
+
+    leaf lot-code {
+      type string;
+      description "Lot code";
+    }
+
+    container ex-identifier {
+      description "External identifier properties";
+
+      leaf ext-identifier {
+        type string;
+        description "External identifier";
+      }
+
+      leaf module-power-level {
+        type string;
+        description "Module power level";
+      }
+
+      leaf lane-ratio-type {
+        type string;
+        description "Lane ration type";
+      }
+
+      leaf wdm-type {
+        type string;
+        description "WDM type";
+      }
+
+      leaf clei-code-present {
+        type boolean;
+        description "CLEI code present";
+      }
+    }
+
+    container transceiver-codes-props {
+      description "Transceiver codes properties";
+
+      leaf transceiver-codes {
+        type string;
+        description "Transceiver codes";
+      }
+
+      leaf ethernet-compliance {
+        type string;
+        description "Ethernet compliance";
+      }
+
+      leaf fiber-compliance {
+        type string;
+        description "Fiber compliance";
+      }
+
+      leaf copper-compliance {
+        type string;
+        description "Copper compliance";
+      }
+
+      leaf sonet-compliance {
+        type string;
+        description "SONET compliance";
+      }
+
+      leaf otn-compliance {
+        type string;
+        description "OTN compliance";
+      }
+    }
+
+    container rates-supported {
+      description "Add'l rates supported properties";
+
+      leaf rates-supported {
+        type string;
+        description "Add'l rates supported";
+      }
+
+      leaf rate-111-8 {
+        type boolean;
+        description "Rate 111.8 Gb/s";
+      }
+
+      leaf rate-103-125 {
+        type boolean;
+        description "Rate 103.125 Gb/s";
+      }
+
+      leaf rate-41-25 {
+        type boolean;
+        description "Rate 41.25 Gb/s";
+      }
+
+      leaf rate-43 {
+        type boolean;
+        description "Rate 43 Gb/s";
+      }
+
+      leaf rate-39-8 {
+        type boolean;
+        description "Rate 39.8 Gb/s";
+      }
+    }
+
+    container num-lanes-supported {
+      description "Number of lanes supported properties";
+
+      leaf num-lanes-supported {
+        type string;
+        description "Number of lanes supported";
+      }
+
+      leaf num-network-lanes {
+        type uint16;
+        description "Number of network lanes";
+      }
+
+      leaf num-host-lanes {
+        type uint16;
+        description "Number of host lanes";
+      }
+    }
+
+    container media-properties {
+      description "Media properties container";
+
+      leaf media-properties {
+        type string;
+        description "Media properties";
+      }
+
+      leaf media-type {
+        type string;
+        description "Media type";
+      }
+
+      leaf directionality {
+        type string;
+        description "Directionality";
+      }
+
+      leaf optical-mux-demux {
+        type boolean;
+        description "Optical mux/demux support";
+      }
+
+      leaf active-fiber-per-con {
+        type string;
+        description "Active fiber per connection";
+      }
+    }
+
+    leaf max-network-lane-br {
+      type string;
+      description "Maximal network lane br";
+    }
+
+    leaf max-host-lane-br {
+      type string;
+      description "Maximal host lane br";
+    }
+
+    leaf max-sm-fiber-length {
+      type string;
+      description "Maximal sm fiber length";
+    }
+
+    leaf max-mm-fiber-length {
+      type string;
+      description "Maximal mm fiber length";
+    }
+
+    leaf max-cu-cable-length {
+      type string;
+      description "Maximal cu cable length";
+    }
+
+    leaf min-wavelength-per-fiber {
+      type string;
+      description "Minimal wavelength per fiber";
+    }
+
+    leaf max-wavelength-per-fiber {
+      type string;
+      description "Maximal wavelength per fiber";
+    }
+
+    leaf max-per-lane-opt-width {
+      type string;
+      description "Maximal per lane optical width";
+    }
+
+    container device-technology {
+      description "Device technology properties";
+
+      leaf device-technology-1 {
+        type string;
+        description "Device technology 1 value";
+      }
+
+      leaf device-technology-2 {
+        type string;
+        description "Device technology 2 value";
+      }
+
+      leaf laser-source-tech {
+        type string;
+        description "Laser source technology";
+      }
+
+      leaf tx-modulation-tech {
+        type string;
+        description "TX modulation technology";
+      }
+
+      leaf wavelength-control {
+        type boolean;
+        description "Wavelength control";
+      }
+
+      leaf cooled-transmitter {
+        type boolean;
+        description "Cooled transmitter";
+      }
+
+      leaf tunability {
+        type boolean;
+        description "Tunability";
+      }
+
+      leaf voa-implemented {
+        type boolean;
+        description "VOA implemented";
+      }
+
+      leaf detector-type {
+        type string;
+        description "Detector type";
+      }
+
+      leaf cdr-with-edc {
+        type boolean;
+        description "CDR with EDC";
+      }
+    }
+
+    container signal-code {
+      description "Signal code properties";
+
+      leaf signal-code {
+        type string;
+        description "Signal conde";
+      }
+
+      leaf modulation {
+        type string;
+        description "Modulation type";
+      }
+
+      leaf signal-coding {
+        type string;
+        description "Signal coding type";
+      }
+    }
+
+    leaf max-output-pwr-per-con {
+      type string;
+      description "Maximal output power per connection";
+    }
+
+    leaf max-input-pwr-per-lane {
+      type string;
+      description "Maximal input power per lane";
+    }
+
+    leaf max-pwr-consumption {
+      type string;
+      description "Maximal power consumption";
+    }
+
+    leaf max-pwr-in-low-pwr-mode {
+      type string;
+      description "Maximal power in low power mode";
+    }
+
+    leaf max-oper-case-temp {
+      type string;
+      description "Maximal operational case temperature";
+    }
+
+    leaf min-oper-case-temp {
+      type string;
+      description "Minimal operational case temperature";
+    }
+
+    leaf max-high-power-up-time {
+      type string;
+      description "Maximal high-power-up time";
+    }
+
+    leaf max-high-power-down-time {
+      type string;
+      description "Maximal high-power-down time";
+    }
+
+    leaf max-tx-turn-on-time {
+      type string;
+      description "Maximal TX turn on time";
+    }
+
+    leaf max-tx-turn-off-time {
+      type string;
+      description "Maximal TX turn off time";
+    }
+
+    leaf heat-sink-type {
+      type string;
+      description "Heat sink type";
+    }
+
+    leaf host-ln-signal-spec {
+      type string;
+      description "Host ln signal specification";
+    }
+
+    leaf cfp-msa-hw-spec-rev {
+      type string;
+      description "CFP MSA HW specification revision";
+    }
+
+    leaf cfp-msa-mgmt-if-spec-rev {
+      type string;
+      description "CFP MSA Management interface specification revision";
+    }
+
+    leaf module-hw-version {
+      type string;
+      description "Module hardware version";
+    }
+
+    leaf module-fw-version {
+      type string;
+      description "Module firmware version";
+    }
+
+    container diagnostic-monitor-type {
+      description "Diagnostic monitor type";
+
+      leaf diag-monitor-type {
+        type string;
+        description "Diagnostic monitor type";
+      }
+
+      leaf rx-power-meas-type {
+        type string;
+        description "RX power measurement type";
+      }
+
+      leaf tx-power-meas-type {
+        type string;
+        description "TX power measurement type";
+      }
+    }
+
+    container diag-monitor-caps {
+      description "Diagnostic monitor caps";
+
+      leaf diag-monitor-caps-1 {
+        type string;
+        description "Diagnostic monitor caps 1";
+      }
+
+      leaf diag-monitor-caps-2 {
+        type string;
+        description "Diagnostic monitor caps 2";
+      }
+
+      leaf tx-aux-monitor-1 {
+        type boolean;
+        description "TX aux monitor 1";
+      }
+
+      leaf tx-aux-monitor-2 {
+        type boolean;
+        description "TX aut monitor 2";
+      }
+
+      leaf tx-soa-bias-current {
+        type boolean;
+        description "TX SOA bias current";
+      }
+
+      leaf tx-pwr-supply-voltage {
+        type boolean;
+        description "TX power supply voltage";
+      }
+
+      leaf tx-temperature {
+        type boolean;
+        description "TX Temperature";
+      }
+
+      leaf network-ln-rx-pwr {
+        type boolean;
+        description "Network ln rx power";
+      }
+
+      leaf network-ln-output-pwr {
+        type boolean;
+        description "Network ln output power";
+      }
+
+      leaf network-ln-bias-current {
+        type boolean;
+        description "Network ln bias current";
+      }
+
+      leaf network-ln-temperature {
+        type boolean;
+        description "Network ln temperature";
+      }
+    }
+
+    container enhanced-opt {
+      description "Enhanced options container";
+
+      leaf enhanced-options-1 {
+        type string;
+        description "Enhanced options 1";
+      }
+
+      leaf enhanced-options-2 {
+        type string;
+        description "Enhanced options 2";
+      }
+
+      leaf host-ln-loopback {
+        type boolean;
+        description "Host ln loopback";
+      }
+
+      leaf host-ln-prbs {
+        type boolean;
+        description "Host ln prbs";
+      }
+
+      leaf host-ln-emphasis-ctrl {
+        type boolean;
+        description "Host ln emphasis control";
+      }
+
+      leaf network-ln-loopback {
+        type boolean;
+        description "Network ln loopback";
+      }
+
+      leaf network-ln-prbs {
+        type boolean;
+        description "Network ln PRBS";
+      }
+
+      leaf amplitude-adjustment {
+        type boolean;
+        description "Amplitude adjustment";
+      }
+
+      leaf phase-adjustment {
+        type boolean;
+        description "Phase adjustment";
+      }
+
+      leaf unidirectional-tx-rx {
+        type boolean;
+        description "Unidirectional TX/RX";
+      }
+
+      leaf active-volt-phase-func {
+        type boolean;
+        description "Active volt/phase function";
+      }
+
+      leaf rx-fifo-reset {
+        type boolean;
+        description "RX FIFO reset";
+      }
+
+      leaf rx-fifo-auto-reset {
+        type boolean;
+        description "RX FIFO auto reset";
+      }
+
+      leaf tx-fifo-reset {
+        type boolean;
+        description "TX FIFO reset";
+      }
+
+      leaf tx-fifo-auto-reset {
+        type boolean;
+        description "TX FIFO auto reset";
+      }
+    }
+
+    container tx-monitor-clock-options {
+      description "TX monitor clock options";
+
+      leaf tx-monitor-clock-options {
+        type string;
+        description "TX monitor clock options";
+      }
+
+      leaf host-ln-rate-1-16 {
+        type boolean;
+        description "1/16 of host ln rate";
+      }
+
+      leaf network-ln-rate-1-16 {
+        type boolean;
+        description "1/16 of network ln rate";
+      }
+
+      leaf host-ln-rate-1-64 {
+        type boolean;
+        description "1/64 of host ln rate";
+      }
+
+      leaf network-ln-rate-1-64 {
+        type boolean;
+        description "1/64 of network ln rate";
+      }
+
+      leaf network-ln-rate-1-8 {
+        type boolean;
+        description "1/8 of network ln rate";
+      }
+
+      leaf monitor-clock-option {
+        type boolean;
+        description "Monitor clock option";
+      }
+    }
+
+    container rx-monitor-clock-options {
+      description "RX monitor clock options";
+
+      leaf rx-monitor-clock-options {
+        type string;
+        description "RX monitor clock options";
+      }
+
+      leaf host-ln-rate-1-16 {
+        type boolean;
+        description "1/16 of host ln rate";
+      }
+
+      leaf network-ln-rate-1-16 {
+        type boolean;
+        description "1/16 of network ln rate";
+      }
+
+      leaf host-ln-rate-1-64 {
+        type boolean;
+        description "1/64 of host ln rate";
+      }
+
+      leaf network-ln-rate-1-64 {
+        type boolean;
+        description "1/64 of network ln rate";
+      }
+
+      leaf network-ln-rate-1-8 {
+        type boolean;
+        description "1/8 of network ln rate";
+      }
+
+      leaf monitor-clock-option {
+        type boolean;
+        description "Monitor clock option";
+      }
+    }
+
+    container cpu-board {
+      description "CPU board state elements";
+
+      leaf ethernet-base-address {
+        type string;
+        description "Ethernet base address";
+      }
+
+      leaf ethernet-address-block-size {
+        type string;
+        description "Ethernet address block size";
+      }
+
+      leaf module-sn {
+        type string;
+        description "Module serial number";
+      }
+
+      leaf model-part-number {
+        type string;
+        description "Model part number";
+      }
+
+      leaf model-revision {
+        type string;
+        description "Model revision";
+      }
+
+      leaf product-id {
+        type string;
+        description "Product ID";
+      }
+
+      leaf manufactured-date {
+        type string;
+        description "Manufactured date";
+      }
+
+      leaf clei-code {
+        type string;
+        description "CLEI code";
+      }
+
+      leaf bar-code {
+        type string;
+        description "Bar code";
+      }
+
+      leaf board-sn {
+        type string;
+        description "Board serial number";
+      }
+
+      leaf board-pn {
+        type string;
+        description "Board part number";
+      }
+
+      leaf board-rev {
+        type string;
+        description "Board revision";
+      }
+
+      leaf software-compatibility {
+        type string;
+        description "Software compatibility";
+      }
+
+      leaf functional-test-count {
+        type string;
+        description "Functional test count";
+      }
+
+      leaf fault-card {
+        type string;
+        description "Fault card";
+      }
+    }
+
+    container main-board {
+      description "Main board state elements";
+
+      leaf module-sn {
+        type string;
+        description "Module serial number";
+      }
+
+      leaf model-part-number {
+        type string;
+        description "Model part number";
+      }
+
+      leaf model-revision {
+        type string;
+        description "Model revision";
+      }
+
+      leaf manufactured-date {
+        type string;
+        description "Manufactured date";
+      }
+
+      leaf board-sn {
+        type string;
+        description "Board serial number";
+      }
+
+      leaf board-pn {
+        type string;
+        description "Board part number";
+      }
+
+      leaf board-rev {
+        type string;
+        description "Board revision";
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-platform:components/oc-platform:component/oc-platform:state" {
+    description
+      "Adding some data from inventory";
+    ext:augment-identifier "ciena-platform-aug";
+
+    uses ciena-platform-extension;
+  }
+
+  augment "/oc-platform:components/oc-platform:component/oc-platform:state" {
+    description
+      "Adding some data from inventory";
+    ext:augment-identifier "ciena-saos8-platform-aug";
+
+    uses ciena-saos8-platform-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-platform:components/oc-platform:component/oc-platform:state" {
+    description
+      "Adding some data from inventory";
+
+    uses ciena-platform-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-platform:components/oc-platform:component/oc-platform:state" {
+    description
+      "Adding some data from inventory";
+
+    uses ciena-saos8-platform-extension;
+  }
+
+}

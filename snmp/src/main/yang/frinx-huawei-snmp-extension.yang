@@ -1,0 +1,81 @@
+module frinx-huawei-snmp-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/snmp/huawei-snmp-extension";
+
+  prefix "huawei-snmp-ext";
+
+  // import some basic types
+  import frinx-snmp { prefix snmp; }
+  import frinx-openconfig-inet-types { prefix oc-inet; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+  import frinx-openconfig-types { prefix oc-types; revision-date 2017-01-13; }
+  import frinx-openconfig-extensions { prefix oc-ext; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig snmp models,
+    containing HUAWEI specific features.";
+
+  revision "2021-11-29" {
+    description
+      "Initial release";
+    reference "4.2.10";
+  }
+
+  grouping huawei-snmp-top {
+    description "Top-level grouping for snmp";
+
+    container config {
+      description "Configuration data for snmp";
+
+      leaf local-engineid {
+        type string;
+        description "The engineID of local SNMP entity";
+      }
+
+      leaf read-community-password {
+        type oc-types:encrypted-password;
+        description "The ENCRYPTED password string for read community";
+      }
+
+      leaf write-community-password {
+        type oc-types:encrypted-password;
+        description "The ENCRYPTED password string for write community";
+      }
+
+      leaf community-location {
+        type string;
+        description "Community location";
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/snmp:snmp" {
+    description "SNMP augmentation";
+    ext:augment-identifier "snmp-huawei-aug";
+
+    uses huawei-snmp-top;
+  }
+
+ // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/snmp:snmp" {
+    description "SNMP augmentation";
+
+    uses huawei-snmp-top;
+  }
+}

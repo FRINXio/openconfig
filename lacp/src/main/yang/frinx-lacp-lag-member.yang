@@ -1,0 +1,98 @@
+module frinx-lacp-lag-member {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/lacp-lag-member";
+
+  prefix "lacp-lag-mem";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-lacp { prefix oc-lacp; }
+  import yang-ext { prefix ext; }
+  import frinx-openconfig-if-ethernet { prefix oc-eth; }
+  import iana-if-type { prefix ift; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "LACP LAG member implementation
+    based on OpenConfig lacp and interfaces";
+
+  revision "2017-11-09" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  // grouping statements
+  grouping ethernet-if-lacp-config {
+    description
+      "Configuration data for each LACP-enabled ethernet interface";
+
+    leaf interval {
+      type oc-lacp:lacp-period-type;
+      // default SLOW;
+      description
+        "Set the period between LACP messages -- uses
+        the lacp-period-type enumeration.";
+    }
+
+    leaf lacp-mode {
+      type oc-lacp:lacp-activity-type;
+      // default ACTIVE;
+      description
+        "ACTIVE is to initiate the transmission of LACP packets.
+         PASSIVE is to wait for peer to initiate the transmission of
+         LACP packets.";
+    }
+  }
+
+  grouping ethernet-if-lacp-state {
+    description
+      "Operational state data for each LACP-enabled ethernet
+      interface";
+
+    //TODO: placeholder for operational state related to BFD
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/" +
+    "oc-eth:config" {
+    ext:augment-identifier "lacp-eth-config-aug";
+    when "oc-if:type = 'ift:ethernetCsmacd'" {
+      description "active when the interface is Ethernet";
+    }
+
+    description "Adds LACP LAG settings to individual Ethernet
+      interfaces";
+
+    uses ethernet-if-lacp-config;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-eth:ethernet/" +
+    "oc-eth:config" {
+    when "oc-if:type = 'ift:ethernetCsmacd'" {
+      description "active when the interface is Ethernet";
+    }
+
+    description "Adds LACP LAG settings to individual Ethernet
+      interfaces";
+
+    uses ethernet-if-lacp-config;
+  }
+
+  //TODO Add also augmentations for state containers
+
+}
