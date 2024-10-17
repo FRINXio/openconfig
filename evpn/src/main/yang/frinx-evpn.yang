@@ -1,0 +1,182 @@
+module frinx-evpn {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/evpn";
+
+  prefix "frinx-evpn";
+
+  import ietf-yang-types { prefix yang; }
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-evpn-types { prefix evpn-types; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "This module defines configuration and operational state data
+     for network Interface control EVPN";
+
+  revision "2018-11-12" {
+    description
+        "Created EVPN entries.";
+    reference "3.1.7";
+  }
+
+  grouping evpn-interface-config {
+    description
+      "Configuration data for evpn interfaces and core-interfaces";
+    leaf name {
+      type oc-if:base-interface-ref;
+      description
+        "Reference to the EVPN interface";
+      }
+  }
+
+  grouping evpn-interface-part {
+    description
+      "Childs of evpn interface list";
+    leaf name {
+      type leafref {
+        path "../config/name";
+      }
+      description
+        "Reference to the list key";
+    }
+    container config {
+      description
+        "Configuration data for EVPN on each interface";
+      uses evpn-interface-config;
+    }
+  }
+
+  grouping evpn-groups {
+    description "Groups of EVPN";
+    container groups {
+      description "Groups of EVPN";
+      list group {
+        key "id";
+        description
+          "List of EVPN groups, keyed by group id";
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+          description
+            "References the configured group id for this EVPN group";
+        }
+        container config {
+          description
+            "Configuration data for the EVPN group";
+          leaf id {
+            type uint32;
+            description
+              "Id of EVPN group";
+          }
+        }
+        container core-interfaces {
+          description
+            "Core interfaces of EVPN group";
+          list interface {
+            key "name";
+            description
+              "List of interfaces";
+            uses evpn-interface-part;
+          }
+        }
+      }
+    }
+  }
+
+  grouping evpn-interfaces {
+    description "Interfaces of EVPN";
+    container interfaces {
+      description
+        "Interfaces of EVPN";
+      list interface {
+        key "name";
+        description
+          "List of interfaces";
+        uses evpn-interface-part;
+        container ethernet-segment {
+          description
+            "Ethernet segment of EVPN interfaces";
+          container config {
+            leaf identifier {
+              type evpn-types:ethernet-segment-identifier;
+              description
+                "Identifier of ethernet segment.";
+            }
+            leaf load-balancing-mode {
+              type identityref {
+                base "evpn-types:ES-LB-MODE";
+              }
+              description
+                "Load balance mode of ethernet segment";
+            }
+            leaf bgp-route-target {
+              type yang:mac-address;
+              description
+                "BGP route target of ethernet segment";
+            }
+          }
+        }
+        container core-isolation-group {
+          description
+            "Core isolation group of interface";
+          container config {
+            description
+              "Config data of core isolation group";
+            leaf id {
+              type uint32;
+              description
+                "BGP route target of ethernet segment";
+            }
+          }
+        }
+      }
+    }
+  }
+
+  grouping evpn-top {
+    description
+      "Top level configuration containers for EVPN data";
+    container evpn {
+      description
+        "Top level configuration containers for EVPN data";
+      container config {
+        description "Config container for evpn container";
+        leaf enabled {
+          type boolean;
+          description "Is EVPN enabled";
+        }
+        leaf cost-out {
+          type boolean;
+          description "Is cost-out set";
+        }
+        leaf startup-cost-in {
+          type uint32;
+          description "startup-cost-in value in seconds.";
+        }
+      }
+      uses evpn-groups;
+      uses evpn-interfaces;
+    }
+  }
+
+  // data definition statements
+  uses evpn-top;
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses evpn-top;
+  }
+}

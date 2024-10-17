@@ -1,0 +1,66 @@
+module frinx-huawei-factory-config-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/system/huawei-factory-config-extension";
+
+  prefix "huawei-factory-config-ext";
+
+  // import some basic types
+  import frinx-openconfig-system { prefix oc-sys; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of auguments needed to Openconfig factory config status models,
+    containing HUAWEI specific features.";
+
+  revision "2021-11-08" {
+    description
+      "Initial release";
+    reference "4.2.10";
+  }
+
+  grouping huawei-factory-configuration {
+    description "Top-level grouping for factory configuration status";
+
+    container factory-configuration-status {
+      description "Top-level container for factory configuration status";
+
+      container config {
+        description "Configuration data for factory config status";
+
+        leaf factory-configuration-prohibited {
+          type boolean;
+          description
+            "Prohibite/unprohibite factory config";
+        }
+      }
+    }
+  }
+
+  // augment statements
+  augment "/oc-sys:system" {
+    description "Factory configuration prohibition status augentation";
+    ext:augment-identifier "factory-configuration-status-huawei-aug";
+
+    uses huawei-factory-configuration;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-sys:system" {
+    description "Factory configuration prohibition status";
+
+    uses huawei-factory-configuration;
+  }
+}

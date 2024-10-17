@@ -1,0 +1,236 @@
+module frinx-openconfig-l2-cft {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/l2-cft";
+
+  prefix "l2-cft";
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Model for managing l2-cft";
+
+  revision "2020-04-16" {
+    description
+      "Initial release";
+    reference "4.2.4";
+  }
+
+  grouping l2-cft-config {
+    description "Configuration parameters for cfts.";
+
+    leaf mode {
+      type string;
+        description "Name of cft mode";
+    }
+  }
+
+  grouping l2-cft-profile-config {
+    description "Configuration parameters relating to a top-level l2-cft.";
+
+    leaf name {
+      type string;
+        description "Name of profile.";
+    }
+  }
+
+  grouping protocol-config {
+    description "Configuration parameters for ctrl-protocol.";
+
+    leaf name {
+      type enumeration {
+         enum 802.1x {
+          description
+            "802.1x";
+        }
+        enum all-bridges-block {
+          description
+            "all-bridges-block";
+        }
+        enum bridge-rsvd-0B0F {
+          description
+            "bridge-rsvd-0B0F";
+        }
+        enum bridge-rsvd-0C0D {
+          description
+            "bridge-rsvd-0C0D";
+        }
+        enum cisco-cdp {
+          description
+            "cisco-cdp";
+        }
+        enum cisco-dtp {
+          description
+            "cisco-dtp";
+        }
+        enum cisco-pagp {
+          description
+            "cisco-pagp";
+        }
+        enum cisco-pvst {
+          description
+            "cisco-pvst";
+        }
+        enum cisco-stp-uplink-fast {
+          description
+            "cisco-stp-uplink-fast";
+        }
+        enum cisco-udld {
+          description
+            "cisco-udld";
+        }
+        enum cisco-vtp {
+          description
+            "cisco-vtp";
+        }
+        enum elmi {
+          description
+            "elmi";
+        }
+        enum esmc {
+          description
+            "esmc";
+        }
+        enum garp-block {
+          description
+            "garp-block";
+        }
+        enum gmrp {
+          description
+            "gmrp";
+        }
+        enum gvrp {
+          description
+            "gvrp";
+        }
+        enum lacp {
+          description
+            "lacp";
+        }
+        enum lacp-marker {
+          description
+            "lacp-marker";
+        }
+        enum lldp {
+          description
+            "lldp";
+        }
+        enum mef-ce2-bridge-block {
+          description
+            "mef-ce2-bridge-block";
+        }
+        enum oam {
+          description
+            "oam";
+        }
+        enum ptp-peer-delay {
+          description
+            "ptp-peer-delay";
+        }
+        enum vlan-bridge {
+          description
+            "vlan-bridge";
+        }
+        enum xstp {
+          description
+            "xstp";
+        }
+        enum bridge-block {
+          description
+            "bridge-block";
+        }
+      }
+      description "Name of ctrl-protocol.";
+    }
+
+    leaf disposition {
+      type enumeration {
+        enum discard {
+          description "Discard disposition.";
+        }
+        enum forward {
+          description "Forward disposition.";
+        }
+      }
+      description "Disposition of ctrl-protocol.";
+    }
+  }
+
+  grouping l2-cft-top {
+    description "Top-level grouping for cft.";
+
+    container l2-cft {
+      description "Container for l2-cft.";
+
+      container config {
+        description "Configuration parameters for l2-cft.";
+
+        uses l2-cft-config;
+      }
+
+      container profiles {
+        description "Container for l2-cft profiles.";
+
+        list profile {
+          key "name";
+
+          description "List of l2-cft profiles.";
+
+          leaf name {
+            type leafref {
+              path "../config/name";
+            }
+            description "Name of l2-cft profile.";
+          }
+
+          container config {
+            description "Configuration parameters for l2-cft profile.";
+
+            uses l2-cft-profile-config;
+          }
+
+          container protocols {
+            description "Container for ctrl-protocols.";
+
+            list protocol {
+              key "name";
+
+              description "List of ctrl-protocols.";
+
+              leaf name {
+                type string;
+
+                description "Name of ctrl-protocol.";
+              }
+
+              container config {
+                description "Configuration parameters for ctrl-protocol.";
+
+                uses protocol-config;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  uses l2-cft-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    description "Added l2-cft to configuration";
+    uses l2-cft-top;
+  }
+}

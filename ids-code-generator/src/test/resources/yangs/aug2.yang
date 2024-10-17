@@ -1,0 +1,23 @@
+module aug2 {
+    namespace aug2;
+    prefix aug2;
+
+    revision 2017-06-01;
+
+
+    import top {
+        prefix top;
+    }
+
+    import aug1 {
+        prefix aug1;
+    }
+
+    augment "/top:c1/top:c2/aug1:ca1" {
+        container ca2 {
+            leaf a {
+                type string;
+            }
+        }
+    }
+}

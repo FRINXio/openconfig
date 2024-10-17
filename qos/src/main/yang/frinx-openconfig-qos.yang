@@ -1,0 +1,100 @@
+module frinx-openconfig-qos {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/qos";
+
+  prefix "oc-qos";
+
+  // import some basic types
+  import frinx-openconfig-extensions { prefix oc-ext; }
+
+  // FI-227 : remove once fixed
+  import frinx-openconfig-platform { prefix oc-platform; }
+
+  // include submodules
+  include frinx-openconfig-qos-interfaces;
+  include frinx-openconfig-qos-elements;
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "OpenConfig working group";
+
+  contact
+    "OpenConfig working group
+    www.openconfig.net";
+
+  description
+    "This module defines configuration and operational state data
+    related to network quality-of-service.";
+
+  oc-ext:openconfig-version "0.2.0";
+
+  revision "2016-12-16" {
+    description
+      "Fix incorrect interface-ref placement";
+    reference "0.2.0";
+  }
+
+  // grouping statements
+  grouping qos-config {
+    description
+      "Configuration data for global QoS";
+  }
+
+  grouping qos-state {
+    description
+      "Operational state data for global QoS";
+  }
+
+  grouping qos-top {
+    description
+      "Top-level grouping for QoS model";
+
+    container qos {
+      description
+        "Top-level container for QoS data";
+
+      container config {
+        description
+          "Configuration data for global QoS";
+
+        uses qos-config;
+      }
+
+      container state {
+        config false;
+        description
+          "Operational state data for global QoS";
+
+        uses qos-config;
+        uses qos-state;
+      }
+
+      uses qos-interfaces-top;
+      uses qos-classifier-top;
+      uses qos-forwarding-group-top;
+      uses qos-queue-top;
+      uses qos-scheduler-top;
+    }
+  }
+
+  // data definition statements
+
+  uses qos-top;
+
+  // augment statements
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses qos-top;
+  }
+
+  // rpc statements
+
+  // notification statements
+
+}

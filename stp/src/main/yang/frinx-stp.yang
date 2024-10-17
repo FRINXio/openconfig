@@ -1,0 +1,72 @@
+module frinx-stp {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/stp";
+
+  prefix "stp";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-lldp { prefix lldp; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "STP interfaces implementation based on OpenConfig interfaces";
+
+  revision "2019-07-19" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  // grouping statements
+
+  grouping stp-interface-config {
+    leaf interface-id {
+      type oc-if:interface-id;
+      description
+        "A unique identifier for the interface.";
+    }
+  }
+
+  grouping stp-interface-state {
+    description
+      "STP related operational state";
+
+    //TODO: placeholder for operational state related to stp
+  }
+
+  grouping stp-top {
+    description
+      "Top-level grouping for stp data";
+
+    container stp {
+      description
+        "Enclosing container for stp interface-specific
+        data.";
+
+      uses lldp:lldp-interface-top;
+    }
+  }
+
+  // data definition statements
+
+  uses stp-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses stp-top;
+  }
+
+}

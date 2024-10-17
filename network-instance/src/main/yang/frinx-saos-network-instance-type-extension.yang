@@ -1,0 +1,34 @@
+module frinx-saos-network-instance-type-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/network-instance-types/saos";
+  prefix "saos-nitype-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance-types { prefix "oc-ni-types"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig network instance type,
+    containing saos specific features.";
+
+  revision "2020-02-11" {
+    description
+      "Initial release";
+    reference "4.1.0";
+  }
+
+  identity L2VSICP {
+    base oc-ni-types:NETWORK_INSTANCE_TYPE;
+    description
+      "A private Layer 2 only switch instance which is formed of
+      one or more L2 forwarding tables";
+  }
+}
