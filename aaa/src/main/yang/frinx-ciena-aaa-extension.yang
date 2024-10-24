@@ -1,0 +1,72 @@
+module frinx-ciena-aaa-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/aaa/ciena-extension";
+
+  prefix "ciena-aaa-ext";
+
+  // import some basic types
+  import frinx-openconfig-aaa { prefix oc-aaa; }
+  import frinx-openconfig-inet-types { prefix oc-inet; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig aaa models,
+    containing CIENA specific features.";
+
+  revision "2022-11-23" {
+    description
+      "Initial release";
+    reference "5.0.19";
+  }
+
+  grouping user-extension {
+    description "Extension for user";
+    leaf access-level {
+      type enumeration {
+        enum LIMITED {
+          description "limited";
+        }
+        enum ADMIN {
+          description "admin";
+        }
+        enum SUPER {
+          description "super";
+        }
+        enum DIAG {
+          description "diag";
+        }
+      }
+      description "Access level";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-aaa:aaa/oc-aaa:authentication/oc-aaa:users/oc-aaa:user/oc-aaa:config" {
+    description "Configuration data for users";
+    ext:augment-identifier "aaa-ciena-user-aug";
+
+    uses user-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-aaa:aaa" +
+  "/oc-aaa:authentication/oc-aaa:users/oc-aaa:user/oc-aaa:config" {
+    description "Configuration data for users";
+
+    uses user-extension;
+  }
+}

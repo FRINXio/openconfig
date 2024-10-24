@@ -1,0 +1,145 @@
+module frinx-ciena-ntp-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/system/ciena-ntp-extension";
+
+  prefix "ciena-ntp-ext";
+
+  // import some basic types
+  import frinx-openconfig-system { prefix oc-sys; }
+  import frinx-openconfig-inet-types { prefix oc-inet; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig connection models,
+    containing ciena specific features.";
+
+  revision "2022-11-04" {
+    description
+      "Initial release";
+    reference "5.0.18";
+  }
+
+  grouping ciena-system-server-state-extension {
+    description "NTP server augmentation for ciena";
+
+    leaf index {
+      type int16;
+      description "Index";
+    }
+
+    leaf ip-address {
+      type oc-inet:host;
+      description "Ip address";
+    }
+
+    leaf host-name {
+      type oc-inet:host;
+      description "Host name";
+    }
+
+    leaf auth-key-id {
+      type string;
+      description "Auth key id";
+    }
+
+    leaf config-state {
+      type string;
+      description "Config state";
+    }
+
+    leaf admin-state {
+      type string;
+      description "Admin state";
+    }
+
+    leaf oper-state {
+      type string;
+      description "Oper state";
+    }
+
+    container server {
+      leaf server-state {
+        type string;
+        description "Server state";
+      }
+
+      leaf condition {
+        type string;
+        description "Server condition";
+      }
+
+      leaf auth-state {
+        type string;
+        description "Auth state";
+      }
+
+      leaf offset {
+        type decimal64 {
+          fraction-digits 3;
+        }
+        description "Offset (ms)";
+      }
+    }
+
+    leaf stratum {
+      type int16;
+      description "Stratum";
+    }
+  }
+
+  grouping ciena-system-authentication-extension {
+    description "NTP authentication augmentation for ciena";
+    leaf key-type {
+      type enumeration {
+        enum SHA1 {}
+        enum MD5 {}
+      }
+      description "Key type";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-sys:system/oc-sys:ntp/oc-sys:servers/oc-sys:server/oc-sys:state" {
+    description "NTP server augmentation for ciena";
+    ext:augment-identifier "ciena-server-state-aug";
+
+    uses ciena-system-server-state-extension;
+  }
+
+  augment "/oc-sys:system/oc-sys:ntp/oc-sys:ntp-keys/oc-sys:ntp-key/oc-sys:state" {
+    description "NTP authentication augmentation for ciena";
+    ext:augment-identifier "ciena-server-authentication-aug";
+
+    uses ciena-system-authentication-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-sys:system"
+  + "/oc-sys:ntp/oc-sys:servers/oc-sys:server/oc-sys:state" {
+    description "NTP server augmentation for ciena";
+
+    uses ciena-system-server-state-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration"
+  + "/oc-sys:system/oc-sys:ntp/oc-sys:ntp-keys/oc-sys:ntp-key/oc-sys:state" {
+    description "NTP authentication augmentation for ciena";
+
+    uses ciena-system-authentication-extension;
+  }
+}

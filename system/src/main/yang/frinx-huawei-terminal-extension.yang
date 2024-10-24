@@ -1,0 +1,169 @@
+module frinx-huawei-terminal-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/system/terminal/huawei-extension";
+
+  prefix "huawei-terminal-ext";
+
+  // import some basic types
+  import frinx-openconfig-system { prefix oc-sys; }
+  import frinx-openconfig-system-terminal { prefix oc-sys-term; }
+  import frinx-openconfig-inet-types { prefix oc-inet; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig terminal models,
+    containing HUAWEI specific features.";
+
+  revision "2021-09-23" {
+    description
+      "Initial release";
+    reference "4.2.9";
+  }
+
+  grouping huawei-terminal-extension {
+    container terminals {
+      description "Container configuration of terminals";
+
+      list terminal {
+        key "type";
+
+        description "List of terminals";
+
+        leaf type {
+          type leafref {
+            path "../config/type";
+          }
+
+          description "The type of the terminals";
+        }
+
+        container config {
+          description "Configured reference to terminals";
+
+          leaf type {
+            type string;
+            description "The type of the terminals";
+          }
+
+          leaf timeout-min {
+            type uint16 {
+              range 0..35791;
+            }
+            units minutes;
+            description
+              "Set the idle timeout in minutes on terminal connections to
+              the system for the protocol.";
+          }
+
+          leaf timeout-sec {
+            type uint8 {
+              range 0..59;
+            }
+            units seconds;
+            description
+              "Set the idle timeout in seconds on terminal connections to
+              the system for the protocol.";
+          }
+
+          leaf first-ui-number {
+            type uint8 {
+              range 0..4;
+            }
+            description
+              "Set the idle timeout in minutes on terminal connections to
+              the system for the protocol.";
+          }
+
+          leaf last-ui-number {
+            type uint8 {
+              range 0..4;
+            }
+            description
+              "Set the idle timeout in minutes on terminal connections to
+              the system for the protocol.";
+          }
+
+          leaf auth-name {
+            type string;
+            description
+              "Set the authentication name for terminal.";
+          }
+
+          leaf privilege-level {
+            type uint8;
+            description "Number of privilege level";
+          }
+
+          container acl {
+            description "Configured reference to acl";
+
+            leaf acl-id {
+              type uint16 {
+                range 2000..3999;
+              }
+              description "Basic or advanced ACL";
+            }
+
+            leaf direction {
+              type enumeration {
+                enum inbound {
+                  description
+                    "Apply policy to the inbound direction of the acl";
+                }
+                enum outbound {
+                  description
+                    "Apply policy to the outbound direction of the acl";
+                }
+              }
+            }
+          }
+
+          leaf protocol-inbound {
+            type enumeration {
+              enum all {
+                description "Apply all protocols";
+              }
+              enum ssh {
+                description "Apply ssh protocol";
+              }
+              enum telnet {
+                description "Apply telnet protocol";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-sys:system" {
+    description "List of huawei terminals";
+    ext:augment-identifier "terminal-huawei-schemas-aug";
+
+    uses huawei-terminal-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-sys:system" {
+    description "List of huawei terminals";
+
+    uses huawei-terminal-extension;
+  }
+}
+

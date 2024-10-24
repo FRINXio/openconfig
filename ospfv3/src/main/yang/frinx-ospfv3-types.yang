@@ -1,0 +1,47 @@
+module frinx-ospfv3-types {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/ospfv3-types";
+
+  prefix "frinx-ospfv3-types";
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Type definitions for OSPFv3";
+
+  revision "2018-08-17"{
+    description
+      "Initial public release of OSPFv3";
+    reference "3.1.7";
+  }
+
+  identity STUB_ROUTER_MODE {
+    description
+      "Active mode of stub-router";
+  }
+
+  identity STUB_ROUTER_MAX_METRIC {
+    base "STUB_ROUTER_MODE";
+    description
+      "Advertise LSAs with maximum metric";
+  }
+
+  identity STUB_ROUTER_R_BIT {
+    base "STUB_ROUTER_MODE";
+    description
+      "Advertise LSAs with R-bit cleared";
+  }
+
+  identity STUB_ROUTER_V6_BIT {
+    base "STUB_ROUTER_MODE";
+    description
+      "Advertise LSAs with V6-bit cleared";
+  }
+}

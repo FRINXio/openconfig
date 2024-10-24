@@ -1,0 +1,123 @@
+module frinx-privilege {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/privilege";
+
+  prefix "priv";
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Privilege implementation";
+
+  revision "2021-02-17" {
+    description
+      "Initial release";
+    reference "3.1.1";
+  }
+
+  typedef level-id {
+    type uint8 {
+      range "0..15";
+    }
+    description
+      "Integer indicating a privilege level";
+  }
+
+  // grouping statements
+
+  grouping privilege-level-top {
+    description
+      "Top-level grouping for level data";
+
+    container levels {
+      description
+        "Enclosing container for privilege levels";
+
+      list level {
+        key "id";
+        description
+          "List of level elements";
+
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+          description
+            "Reference to level ID";
+        }
+
+        container config {
+          description
+            "Configuration data for levels";
+
+          uses privilege-level-config;
+        }
+
+        container state {
+          config false;
+          description
+            "Operational state data for levels";
+
+          uses privilege-level-config;
+          uses privilege-level-state;
+        }
+      }
+    }
+  }
+
+  grouping privilege-level-config {
+    description
+      "Configuration data for levels";
+
+    leaf id {
+      type level-id;
+      description
+        "ID of the level";
+    }
+
+    leaf-list commands {
+        type string;
+        description
+          "Initial keywords of the commands";
+    }
+  }
+
+  grouping privilege-level-state {
+    description
+      "Operational state data for levels";
+  }
+
+  grouping privilege-top {
+    description
+      "Top-level grouping for privilege data";
+
+    container privilege {
+      description
+        "Enclosing container for privilege data";
+
+      uses privilege-level-top;
+    }
+  }
+
+  // data definition statements
+
+  uses privilege-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses privilege-top;
+  }
+
+}

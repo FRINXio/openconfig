@@ -1,0 +1,502 @@
+module frinx-openconfig-cable {
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/cable";
+
+  prefix "cable";
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Model for managing cable";
+
+  revision "2021-11-02" {
+    description
+      "Initial release";
+    reference "5.0.2";
+  }
+
+  grouping cable-config {
+    description
+      "Global configuration data for cables";
+  }
+
+  grouping cable-top {
+    description
+      "Top-level grouping for cable model";
+
+    container cable {
+      description
+        "Global cable configuration";
+
+      container config {
+        description
+          "Configuration data for global cable";
+
+        uses cable-config;
+      }
+      uses fiber-node-top;
+      uses rpd-top;
+      uses downstream-top;
+    }
+  }
+
+  grouping fiber-node-config {
+    description "Fiber node config";
+
+    leaf id {
+      type string;
+    }
+
+    leaf description {
+      type string;
+      description
+        "Description, or comment, for the cable fiber node";
+    }
+  }
+
+  grouping cable-channels-config {
+    description
+      "Configuration data for scheduler input sources";
+
+    leaf type {
+      type string;
+      description
+        "User-defined identifier for the cable channel input";
+    }
+
+    leaf name {
+      type string;
+      description "Upstream-Cable controller";
+    }
+  }
+
+  grouping rpd-config {
+    description "rpd config";
+
+    leaf id {
+      type string;
+      description "A unique identifier for the cable rpd";
+    }
+
+    leaf description {
+      type string;
+      description "Description, or comment, for the cable fiber node";
+    }
+
+    leaf identifier {
+      type string;
+      description "MAC address of RPD";
+    }
+
+    leaf rpd-type {
+      type string;
+      description "Type of RPD";
+    }
+
+    leaf r-dti {
+      type string;
+      description "R-DTI configuration ID";
+    }
+
+    leaf rpd-event-profile {
+      type string;
+      description "rpd-event profile ID";
+    }
+
+    leaf rpd-55d1-us-event-profile {
+      type string;
+      description "rpd-55d1-us-event profile ID";
+    }
+  }
+
+  grouping downstream-commands-config {
+    leaf id {
+      type string;
+      description "A unique identifier for the downstream commands";
+    }
+    leaf base-power {
+      type string;
+      description "set port base power level";
+    }
+    leaf downstream-pilot-tone-profile {
+      type string;
+      description "Downstream pilot tone profile";
+    }
+  }
+
+  grouping rpd-ds-top {
+    description "Top-level grouping for cable rpd ds subcomands";
+
+    container rpd-ds {
+      list downstream-commands {
+        key "id";
+        description "List of rpd downstream RF ports commnads";
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+        }
+        container config {
+          description "Configuration data for cable rpd downstream";
+          uses downstream-commands-config;
+        }
+      }
+    }
+  }
+
+  grouping ports-config {
+    leaf id {
+      type string;
+      description "A unique identifier for the ports";
+    }
+    leaf cable-controller {
+      type string;
+      description "Downstream-Cable controller";
+    }
+    leaf profile {
+      type string;
+    }
+  }
+
+  grouping if-rpd-ds-top {
+    description "Top-level grouping for cable rpd ds subcomands";
+
+    container if-rpd-ds {
+      list downstream-ports {
+        key "id";
+        description "List of RPD DS ports";
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+        }
+        container config {
+          description "Configuration data for cable rpd downstream port";
+          uses ports-config;
+        }
+      }
+    }
+  }
+
+  grouping if-rpd-us-top {
+    description "Top-level grouping for cable rpd ds subcomands";
+
+    container if-rpd-us {
+      list upstream-ports {
+        key "id";
+        description "List of RPD US ports";
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+        }
+        container config {
+          description "Configuration data for cable rpd upstream port";
+          uses ports-config;
+        }
+      }
+    }
+  }
+
+  grouping upstream-commands-config {
+    leaf id {
+      type string;
+      description "A unique identifier for the upstream commands";
+    }
+    leaf description {
+      type string;
+      description "Upstream commands description";
+    }
+  }
+
+  grouping rpd-us-top {
+    description "Top-level grouping for cable rpd ds subcomands";
+
+    container rpd-us {
+      list upstream-commands {
+        key "id";
+        description "List of rpd upstream RF ports commnads";
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+        }
+        container config {
+          description "Configuration data for cable rpd upstream";
+          uses upstream-commands-config;
+        }
+      }
+    }
+  }
+
+  grouping downstream-config {
+    leaf id {
+      type string;
+      description "A unique identifier for the cable downstream";
+    }
+    leaf max-carrier {
+      type string;
+      description "Max Carrier of a RF Port";
+    }
+    leaf max-ofdm-spectrum {
+      type string;
+      description "Maximum spectrum used by all OFDM channels on port";
+    }
+  }
+
+  grouping rf-chan-config {
+    leaf id {
+      type string;
+      description "A unique identifier for the rf-chan commands";
+    }
+    leaf docsis-channel-id {
+      type string;
+      description "Docsis Channel Id";
+    }
+    leaf qam-profile {
+      type string;
+      description "QAM Profile Number";
+    }
+    leaf frequency {
+      type string;
+      description "RF Channel Frequency";
+    }
+    leaf rf-output {
+      type enumeration {
+        enum alt {
+          description "ALT";
+        }
+        enum cw {
+          description "CW";
+        }
+        enum normal {
+          description "NORMAL";
+        }
+        enum prbs {
+          description "PRBS";
+        }
+      }
+    }
+  }
+
+  grouping ofdm-fields-config {
+    description "Configuration data of ofdm fields";
+
+    leaf channel-profile {
+      type string;
+      description "OFDM channel profile";
+    }
+    leaf start-frequency {
+      type string;
+      description "Frequency in Hz of the left edge of the spectrum allocated to the channel";
+    }
+    leaf width {
+      type string;
+      description "width in Hz of the spectrum allocated to the channel";
+    }
+    leaf plc {
+      type string;
+      description "Specifiy plc spectrum start frequency";
+    }
+  }
+
+  grouping ofdm-top {
+    description "Top-level grouping for ofdm subcomands";
+
+    container ofdm {
+      description "OFDM channel parameters";
+
+      container config {
+        description "Configuration data";
+        uses ofdm-fields-config;
+      }
+    }
+  }
+
+  grouping rf-chan-top {
+    description "Top-level grouping for cable ds rf-chan subcomands";
+
+    container rf-channels {
+      list rf-channel {
+        key "id";
+        description "List of ds RF channel commnads";
+
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+        }
+
+        container config {
+          description "Configuration data for cable rpd upstream";
+          uses rf-chan-config;
+        }
+
+        uses ofdm-top;
+
+        container rf-chan-type {
+          description "QAM Data Type";
+          container config {
+            leaf rf-type {
+              type enumeration {
+                enum docsis {
+                  description "DOCSIS";
+                }
+                enum video {
+                  description "VIDEO (Asynchronous Mode)";
+                }
+              }
+            }
+            leaf mode {
+              type enumeration {
+                enum async {
+                  description "Asynchronous Mode on R-PHY System for MPEG-TS Video";
+                }
+                enum sync {
+                  description "Synchronous Mode on R-PHY System for MPEG-TS Video";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  grouping downstream-top {
+    description "Create Cable Downstream";
+
+    container downstreams {
+      description "downstream entries variables enclosing container";
+
+      list downstream-cable-profile {
+        key "id";
+        description "List of downstreams";
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+        }
+
+        container config {
+          description "Configured reference to downstream";
+
+          uses downstream-config;
+        }
+        uses rf-chan-top;
+      }
+    }
+  }
+
+  grouping rpd-top {
+    description "Create Cable rpd";
+
+    container rpds {
+      description "rpds entries variables enclosing container";
+
+      list rpd {
+        key "id";
+        description "List of rpds";
+
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+        }
+
+        container config {
+          description "Configured reference to rpd";
+
+          uses rpd-config;
+        }
+
+        uses rpd-ds-top;
+
+        uses rpd-us-top;
+
+        container core-interface {
+          container config {
+            leaf name {
+              type string;
+            }
+            leaf principal {
+              type boolean;
+              description "Specify the principal core";
+            }
+            leaf network-delay {
+              type string;
+              description "CIN delay";
+            }
+          }
+
+          uses if-rpd-ds-top;
+          uses if-rpd-us-top;
+        }
+      }
+    }
+  }
+
+  grouping fiber-node-top {
+    description "Create Cable fiber-node";
+
+    container fiber-nodes {
+      description "Fiber nodes entries variables enclosing container";
+
+      list fiber-node {
+        key "id";
+        description "List of fiber nodes";
+
+        leaf id {
+          type leafref {
+            path "../config/id";
+          }
+        }
+        container config {
+          description "Configured reference to fiber-node";
+
+          uses fiber-node-config;
+        }
+
+        container cable-channels {
+          list cable-channel {
+            key "type";
+            description
+              "List of input sources for the cable channels.";
+
+            leaf type {
+              type leafref {
+                path "../config/type";
+              }
+              description
+                "Reference to list key";
+            }
+            container config {
+              description
+                "Configuration data for cable channel input sources";
+
+              uses cable-channels-config;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  uses cable-top;
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" {
+    uses cable-top;
+  }
+}

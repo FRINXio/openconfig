@@ -1,0 +1,76 @@
+module frinx-cer-if-aggregate-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/cer";
+
+  prefix "cer-if-agg-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  revision "2022-04-20" {
+    description
+      "Initial release";
+    reference "5.0.8";
+  }
+
+  grouping cer-if-aggregate-subif-extension {
+    description "Adds additional settings to a subinterface for CER type.";
+    leaf metric {
+      type uint32;
+      description "Set the metric of the IS-IS prefix.";
+    }
+
+    leaf level-type {
+      type enumeration {
+        enum LEVEL_1 {
+          description "This enum describes ISIS level 1.";
+        }
+        enum LEVEL_2 {
+          description "This enum describes ISIS level 2.";
+        }
+        enum LEVEL_1_2 {
+          description "This enum describes ISIS level 1-2.";
+        }
+      }
+      description "Set the level type of the IS-IS prefix.";
+    }
+
+    leaf cost {
+      type uint16 {
+        range "1..65535";
+      }
+      description "Interface cost.";
+    }
+  }
+
+  // augmentations
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-if:config" {
+    description "Adds additional settings to a subinterface for CER type.";
+    ext:augment-identifier "cer-if-agg-subif-aug";
+
+    uses cer-if-aggregate-subif-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/" +
+    "oc-if:subinterfaces/oc-if:subinterface/oc-if:config" {
+    description "Adds additional settings to a subinterface for CER type.";
+
+    uses cer-if-aggregate-subif-extension;
+  }
+}

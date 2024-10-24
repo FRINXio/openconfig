@@ -1,0 +1,499 @@
+module frinx-cer-rphy-if-extension {
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/cer-rphy-extension";
+
+  prefix "cer-rphy-if-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to CER r-phy interfaces models";
+
+  revision "2023-01-23" {
+    description
+      "Initial release";
+    reference "5.0.23";
+  }
+
+  grouping upstream-top {
+    description "Top-level grouping for cable interface upstream subcomands";
+
+    container upstream {
+      container config {
+        description "Configuration data for cable interface upstream";
+        uses upstream-cables-config;
+        uses upstream-ofdm-config;
+      }
+    }
+  }
+
+  grouping upstream-iuc-top {
+    description "Top-level grouping for cable-upstream interface";
+
+    container upstream-iuc {
+      container config {
+        description "Configuration data for cable-upstream interface";
+        uses upstream-ofdm-iuc-config;
+      }
+    }
+  }
+
+  grouping upstream-cables-config {
+    leaf cable-mac {
+      type string;
+      description "MAC identifier";
+    }
+    leaf ingress-cancellation-interval {
+      type uint16;
+      description "Milliseconds at which reserved burst intervals are scheduled for analysis";
+    }
+    leaf channel-width {
+      type string;
+      description "Upstream channel-width";
+    }
+    leaf cable-frequency {
+      type string;
+      description "Center frequency in Hz";
+    }
+    leaf mdd-channel-priority {
+      type uint16;
+      description "Cable channel priority in the MDD";
+    }
+    leaf supervision {
+      type string;
+      description "One or more associated DS channels (ranges allowed, example: 5/1/2-4,7)";
+    }
+    leaf channel-id {
+      type uint16;
+      description "Channel identifier";
+    }
+    leaf pre-eq-enable {
+      type boolean;
+      description "Use pre-equalization technique and send equalizer coefficients back to cable-modem";
+    }
+    leaf modulation-profile {
+      type uint16;
+      description "Modulation profile id";
+    }
+    leaf docsis-mode {
+      type enumeration {
+        enum tdma;
+        enum atdma;
+        enum tdma-atdma;
+      }
+      description "DOCSIS mode";
+    }
+    leaf spectrum-group {
+      type uint16;
+      description "State machine index";
+    }
+    leaf enable {
+      type boolean;
+      description "The administrative state of the upstream channel";
+    }
+  }
+
+  grouping upstream-ofdm-config {
+    container ofdm-frequency {
+      leaf low-act-edge {
+        type string;
+        description "The low edge of the lowest active subcarrier (Hz)";
+      }
+      leaf high-act-edge {
+        type string;
+        description "The high edge of the highest active subcarrier (Hz)";
+      }
+    }
+    leaf inc-burst-noise-immunity {
+      type boolean;
+      description "Increased burst noise mitigation";
+    }
+  }
+
+  grouping upstream-ofdm-iuc-config {
+    list iuc {
+      description "iuc";
+      key "id";
+
+      leaf id {
+        type uint16;
+        description "Identifier";
+      }
+      leaf code {
+        type uint16;
+        description "Interval usage code";
+      }
+      leaf low-freq-edge {
+        type string;
+        description "The low edge frequency of the minislot exception";
+      }
+      leaf high-freq-edge {
+        type string;
+        description "The high edge frequency of the minislot exception";
+      }
+      leaf modulation {
+        type enumeration {
+          enum zeroval;
+          enum qpsk;
+          enum 8qam;
+          enum 16qam;
+          enum 32qam;
+          enum 64qam;
+          enum 128qam;
+          enum 256qam;
+          enum 512qam;
+          enum 1024qam;
+        }
+        description "The modulation type for the exception";
+      }
+      leaf pilot-pattern {
+        type uint16;
+        description "Pilot pattern for the exception";
+      }
+    }
+  }
+
+  grouping cable-mac-state-top {
+    description "Cable mac operational data top grouping";
+
+    container cable-mac-state {
+      description "Cable mac operational data top container";
+
+      container state {
+        description "Cable mac operational data state container";
+
+        leaf ofdm {
+          type boolean;
+          description "OFDM is true or false";
+        }
+
+        list ofdm-ds-item {
+          description "Cable mac ofdm ds item list";
+          key id;
+
+          leaf id {
+            type string;
+            description "S/C/CH field from OFDM DS table";
+          }
+
+          leaf cable-mac {
+            type string;
+            description "Cable mac field from OFDM DS table";
+          }
+
+          leaf chan-id {
+            type string;
+            description "Channel ID field from OFDM DS table";
+          }
+
+          leaf prim-cap {
+            type string;
+            description "Primary capability field from OFDM DS table";
+          }
+
+          leaf oper-state {
+            type string;
+            description "Operational state field from OFDM DS table";
+          }
+
+          leaf freq-low-high {
+            type string;
+            description "Frequency low-high interval field from OFDM DS table";
+          }
+
+          leaf plc-band {
+            type string;
+            description "PLC band field from OFDM DS table";
+          }
+
+          leaf lic-bw {
+            type string;
+            description "Lic BW field from OFDM DS table";
+          }
+
+          leaf num-of-prof {
+            type string;
+            description "Number of prof from OFDM DS table";
+          }
+
+          leaf subcarrier-spacing {
+            type string;
+            description "Subcarrier spacing field from OFDM DS table";
+          }
+
+          leaf rolloff-period {
+            type string;
+            description "Rolloff period field from OFDM DS table";
+          }
+
+          leaf cyclic-prefix {
+            type string;
+            description "Cyclic prefix field from OFDM DS table";
+          }
+
+          leaf intrlv-depth {
+            type string;
+            description "Interleave depth field from OFDM DS table";
+          }
+        }
+
+        list ofdm-us-item {
+          description "Cable mac ofdm us item list";
+
+          key id;
+
+          leaf id {
+            type string;
+            description "S/CG/CH field from OFDM US table";
+          }
+
+          leaf cable-mac {
+            type string;
+            description "Cable mac field from OFDM US table";
+          }
+
+          leaf conn {
+            type string;
+            description "Connection field from OFDM US table";
+          }
+
+          leaf oper-state {
+            type string;
+            description "Operational state field from OFMD US table";
+          }
+
+          leaf freq-low-high {
+            type string;
+            description "Frequency low-high interval from OFDM US table";
+          }
+
+          leaf lic-bw {
+            type string;
+            description "Lic BW field from OFDM US table";
+          }
+
+          leaf minislots-per-frame {
+            type string;
+            description "Minislots per frame field from OFDM US table";
+          }
+
+          leaf mod-prof {
+            type string;
+            description "Mod prof field from OFDM US table";
+          }
+
+          leaf subcarrier-spacing {
+            type string;
+            description "Subcarrier spacing field from OFDM US table";
+          }
+
+          leaf rolloff-period {
+            type string;
+            description "Rolloff period field from OFDM US table";
+          }
+
+          leaf cyclic-prefix {
+            type string;
+            description "Cyclic prefix field from OFDM US table";
+          }
+
+          leaf sym-frame {
+            type string;
+            description "Symbol per frame field from OFDM US table";
+          }
+
+          leaf power {
+            type string;
+            description "Power field from OFDM US table";
+          }
+        }
+
+        list cable-ds-item {
+          description "Cable mac id item list";
+
+          key id;
+
+          leaf id {
+            type string;
+            description "S/C/CH field from cable mac DS table";
+          }
+
+          leaf cable-mac {
+            type string;
+            description "Cable mac field from DS table";
+          }
+
+          leaf chan-id {
+            type string;
+            description "Channel id field from cable-mac DS table";
+          }
+
+          leaf prim-cap {
+            type string;
+            description "Primary capability field from cable-mac DS table";
+          }
+
+          leaf oper-state {
+            type string;
+            description "Operational state field from cable-mac DS table";
+          }
+
+          leaf annex {
+            type string;
+            description "Annex field from cable-mac DS table";
+          }
+
+          leaf frequency {
+            type string;
+            description "Frequency field from cable-mac DS table";
+          }
+
+          leaf intrlv-depth {
+            type string;
+            description "Interleave depth field from cable-mac DS table";
+          }
+
+          leaf mod-type {
+            type string;
+            description "Modulation type field from cable-mac DS table";
+          }
+
+          leaf power {
+            type string;
+            description "Power field from cable-mac DS table";
+          }
+
+          leaf lbal-group {
+            type string;
+            description "LBal group field from cable-mac DS table";
+          }
+        }
+
+        list cable-us-item {
+          description "Cable mac us item list";
+
+          key id;
+
+          leaf id {
+            type string;
+            description "S/CG/CH field from cable-mac US table";
+          }
+
+          leaf cable-mac {
+            type string;
+            description "cable mac field from US table";
+          }
+
+          leaf conn {
+            type string;
+            description "Connection field from cable-mac US table";
+          }
+
+          leaf oper-state {
+            type string;
+            description "Operational state field from cable-mac US table";
+          }
+
+          leaf chan-type {
+            type string;
+            description "Channel type field from cable-mac US table";
+          }
+
+          leaf freq-low-high {
+            type string;
+            description "Frequency low-high interval field from cable-mac US table";
+          }
+
+          leaf center-freq {
+            type string;
+            description "Center frequency field from cable-mac US table";
+          }
+
+          leaf channel-width {
+            type string;
+            description "Channel width field from cable-mac US table";
+          }
+
+          leaf mini-slot {
+            type string;
+            description "Mini slot field from cable-mac US table";
+          }
+
+          leaf mod-prof {
+            type string;
+            description "Mod prof field from cable-mac US table";
+          }
+
+          leaf power {
+            type string;
+            description "Power field from cable-mac US table";
+          }
+
+          leaf lbal-group {
+            type string;
+            description "LBal group field from cable-mac US table";
+          }
+        }
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface" {
+    description "Adds R-PHY specific configuration to interfaces model";
+    ext:augment-identifier "if-upstream-aug";
+
+    uses upstream-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface" {
+    description "Adds R-PHY specific configuration to interfaces model";
+    ext:augment-identifier "if-upstream-iuc-aug";
+
+    uses upstream-iuc-top;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:state" {
+    description "Adds Cable-mac specific operational data to interfaces model";
+    ext:augment-identifier "if-cable-mac-aug";
+
+    uses cable-mac-state-top;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+  "oc-if:interface" {
+    description "Adds R-PHY specific configuration to interfaces model";
+
+    uses upstream-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+  "oc-if:interface" {
+    description "Adds R-PHY specific configuration to interfaces model";
+
+    uses upstream-iuc-top;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+  "oc-if:interface/oc-if:state" {
+    description "Adds Cable-mac specific operational data to interfaces model";
+
+    uses cable-mac-state-top;
+  }
+}

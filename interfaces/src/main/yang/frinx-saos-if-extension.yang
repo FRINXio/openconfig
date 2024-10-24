@@ -1,0 +1,375 @@
+module frinx-saos-if-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/saos-extension";
+
+  prefix "saos-if-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-inet-types { prefix oc-inet; revision-date 2017-04-03; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig interfaces models,
+    containing SAOS specific features.";
+
+  revision "2020-02-05" {
+    description
+      "Initial release";
+    reference "4.2.4";
+  }
+
+  grouping saos-if-extension-config {
+    leaf physical-type {
+      type enumeration {
+        enum default {
+          description
+            "type default";
+        }
+        enum rj45 {
+          description
+            "type rj45";
+        }
+        enum sfp {
+          description
+            "type sfp";
+        }
+      }
+    }
+
+    leaf acceptable-frame-type {
+      type enumeration {
+        enum all {
+          description
+            "type all";
+        }
+        enum tagged-only {
+          description
+            "tagged-only";
+        }
+        enum untagged-only {
+          description
+            "untagged-only";
+        }
+      }
+    }
+
+    leaf vs-ingress-filter {
+      type boolean;
+      description
+        "Set virtual switch ingress filter.";
+    }
+
+    leaf vlan-ethertype-policy {
+      type enumeration {
+        enum all {
+          description
+            "type all";
+        }
+        enum vlan-tpid {
+          description
+            "type vlan-tpid";
+        }
+      }
+    }
+
+    leaf ingress-to-egress-qmap {
+      type enumeration {
+        enum NNI-NNI {
+          description
+            "NNI-NNI";
+        }
+        enum Default-RCOS {
+          description
+            "Default-RCOS";
+        }
+      }
+    }
+
+    leaf forward-unlearned {
+      type boolean;
+      description
+        "The Forward-Unlearned option allows for the forwarding or dropping of frames
+         containing unknown, that is, unlearned, source MAC addresses when the
+         SAC limit has been reached on a port. The Forward-Unlearned option
+         is turned on by default for each port.";
+    }
+
+    leaf max-dynamic-macs {
+      type uint16;
+      description
+        "The maximum number of allowed dynamic MAC address";
+    }
+
+    leaf ipv4-prefix {
+      type oc-inet:ipv4-prefix;
+      description "Ipv4 address and mask for logical interfaces";
+    }
+
+    leaf ipv6-prefix {
+      type oc-inet:ipv6-prefix;
+      description "Ipv6 address and mask for logical interfaces";
+    }
+
+    leaf resolved-cos-remark-l2 {
+      type boolean;
+      description "Set resolved cos remark for L2 true/false";
+    }
+
+    leaf rstp-enabled {
+      type boolean;
+      description "Set rapid spanning tree protocol enable/disable";
+    }
+
+    leaf mstp-enabled {
+      type boolean;
+      description "Set multiple spanning tree protocol enable/disable";
+    }
+
+    leaf negotiation-auto {
+      type boolean;
+      description
+        "Select auto-neg mode";
+    }
+
+    leaf speed-type {
+      type enumeration {
+        enum auto {
+          description
+            "AUTO speed-type";
+        }
+        enum ten {
+          description
+            "TEN speed-type";
+        }
+        enum hundred {
+          description
+            "HUNDRED speed-type";
+        }
+        enum gigabit {
+          description
+            "GIGABIT speed-type";
+        }
+        enum ten-gig {
+          description
+            "TEN-GIG speed-type";
+        }
+        enum forty-gig {
+          description
+            "FORTY-GIG speed-type";
+        }
+        enum hundred-gig {
+          description
+            "HUNDRED-GIG speed-type";
+        }
+      }
+    }
+  }
+
+  grouping saos-if-extension-l2-cft {
+    description "Reference to l2-cft profile.";
+
+    container cft-profile {
+      description "Containter for l2-cft profile.";
+
+      container config {
+        description "Configuration parameters for l2-cft profile.";
+
+        leaf name {
+          type string;
+          description "Name of l2-cft profile.";
+        }
+
+        leaf enabled {
+          type boolean;
+          description "Port enable/disable.";
+        }
+      }
+    }
+  }
+
+  grouping saos-if-extension-pm-instances {
+
+    container pm-instances {
+      description "Container for pm-instances.";
+
+      list pm-instance {
+        key "name";
+
+        description "pm-instance.";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description
+            "Name of pm-instance.";
+        }
+
+        container config {
+          description
+            "Config container of pm-instance.";
+
+          leaf name {
+            type string;
+              description
+                "Name of pm-instance.";
+          }
+
+          leaf bin-count {
+            type string;
+            description "Number of history bins.";
+          }
+
+          leaf port-type {
+            type string;
+            description "Port type of pm instance";
+          }
+
+          leaf profile-type {
+            type string;
+            description "Profile type of pm instance";
+          }
+        }
+      }
+    }
+  }
+
+  grouping saos-if-extension-relay-agent {
+    description "Reference to relay-agent.";
+
+    container relay-agent {
+      description "Container for relay-agent";
+
+      container config {
+        description "Config container of relay-agent.";
+
+        leaf cid-string {
+          type string;
+          description "Value of cid-string.";
+        }
+
+        leaf virtual-switch-name {
+          type string;
+          description "Name of virtual switch.";
+        }
+
+        leaf trust-mode {
+          type enumeration {
+            enum client-trusted;
+            enum server-trusted;
+            enum dualrole-trusted;
+            enum untrusted;
+          }
+        }
+      }
+    }
+  }
+      
+  grouping saos-sub-if-config-extension {
+    leaf ingress-l2-transform {
+      type string;
+      description "Value for ingress-l2-transform";
+    }
+    leaf egress-l2-transform {
+      type string;
+      description "Value for egress-l2-transform";
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description "Adds SAOS specific configuration to interfaces model";
+    ext:augment-identifier "if-saos-aug";
+
+    uses saos-if-extension-config;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface" {
+    description "Adds SAOS specific configuration to interfaces model";
+    ext:augment-identifier "saos-6-if-cft-aug";
+
+    uses saos-if-extension-l2-cft;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface" {
+      description "Adds SAOS specific configuration to interfaces model";
+      ext:augment-identifier "saos-8-pm-instance-if-aug";
+
+      uses saos-if-extension-pm-instances;
+    }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface" {
+    description "Adds SAOS specific configuration to interfaces model";
+    ext:augment-identifier "saos-8-pm-instance-aug";
+
+    uses saos-if-extension-pm-instances;
+  }
+  
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface" {
+      description "Adds SAOS specific configuration to interfaces model";
+      ext:augment-identifier "saos-8-relay-agent-aug";
+
+      uses saos-if-extension-relay-agent;
+    }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-if:config" {
+    description "Adds saos specific configuration to vlan config model";
+    ext:augment-identifier "saos-sub-if-config-aug";
+
+    uses saos-sub-if-config-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description "Adds SAOS specific configuration to interfaces model";
+
+    uses saos-if-extension-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
+    description "Adds SAOS specific configuration to interfaces model";
+
+    uses saos-if-extension-l2-cft;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/" +
+    "oc-if:subinterfaces/oc-if:subinterface" {
+    description "Adds SAOS specific configuration to interfaces model";
+
+    uses saos-if-extension-pm-instances;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/" +
+      "oc-if:subinterfaces/oc-if:subinterface" {
+      description "Adds SAOS specific configuration to interfaces model";
+
+      uses saos-if-extension-relay-agent;
+    }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface" {
+    description "Adds SAOS specific configuration to interfaces model";
+
+    uses saos-if-extension-pm-instances;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/oc-if:interface/"
+        + "oc-if:subinterfaces/oc-if:subinterface/oc-if:config" {
+    description "Adds SAOS specific configuration to vlan config model";
+    uses saos-sub-if-config-extension;
+  }
+}

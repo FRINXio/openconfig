@@ -1,0 +1,117 @@
+module frinx-cisco-ntp-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/system/cisco-ntp-extension";
+
+  prefix "cisco-ntp-ext";
+
+  // import some basic types
+  import frinx-openconfig-system { prefix oc-sys; }
+  import frinx-openconfig-inet-types { prefix oc-inet; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig connection models,
+    containing cisco specific features.";
+
+  revision "2022-04-11" {
+    description
+      "Initial release";
+    reference "5.0.6";
+  }
+
+  grouping cisco-system-server-config-extension {
+    description "VPN Routing/Forwarding Information";
+    leaf vrf {
+        type string;
+    }
+  }
+
+  grouping cisco-system-ntp-extension {
+    uses cisco-system-ntp-access-group;
+    uses cisco-system-ntp-interface;
+  }
+
+  grouping cisco-system-ntp-access-group {
+    container access-group {
+      description "Control NTP access";
+
+      container config {
+        description "";
+        leaf peer {
+          description "Provide full access";
+          type string;
+        }
+        leaf serve {
+          description "Provide server and query access";
+          type string;
+        }
+        leaf serve-only {
+          description "Provide only server access";
+          type string;
+        }
+        leaf query-only {
+          description "Allow only control queries";
+          type string;
+        }
+      }
+    }
+  }
+
+  grouping cisco-system-ntp-interface {
+    container source-interface {
+      description "Container for ntp source interface";
+
+      container config {
+        leaf name {
+          description "Configured reference to source interface";
+          type string;
+        }
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-sys:system/oc-sys:ntp/oc-sys:servers/oc-sys:server/oc-sys:config" {
+    description "ntp vrf cisco augmentation";
+    ext:augment-identifier "vrf-cisco-aug";
+
+    uses cisco-system-server-config-extension;
+  }
+
+  augment "/oc-sys:system/oc-sys:ntp" {
+    description "ntp vrf cisco augmentation";
+    ext:augment-identifier "ntp-cisco-aug";
+
+    uses cisco-system-ntp-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-sys:system"
+    + "/oc-sys:ntp/oc-sys:servers/oc-sys:server/oc-sys:config" {
+    description "NTP server augmentation for cisco";
+
+    uses cisco-system-server-config-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-sys:system"
+    + "/oc-sys:ntp" {
+    description "NTP augmentation for cisco";
+
+    uses cisco-system-ntp-extension;
+  }
+}

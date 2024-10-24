@@ -1,0 +1,58 @@
+module frinx-oam-types {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/oam/types";
+
+  prefix "frinx-oam-types";
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "This module defines types related to ethernet OAM configurations";
+
+  revision "2019-06-19" {
+    description
+      "Created ethernet OAM entries.";
+    reference "3.1.9";
+  }
+
+  typedef domain-level {
+    type uint8 {
+      range "0 .. 7";
+    }
+    description "Maintenance Domain Level";
+  }
+
+  typedef ccm-interval {
+    type enumeration {
+      enum 3.3ms {
+        description "3.3ms";
+      }
+      enum 10ms {
+        description "10ms";
+      }
+      enum 100ms {
+        description "100ms";
+      }
+      enum 1s {
+        description "1s";
+      }
+      enum 10s {
+        description "10s";
+      }
+      enum 1m {
+        description "1m";
+      }
+      enum 10m {
+        description "10m";
+      }
+    }
+    description "Continuity check message interval";
+  }
+}

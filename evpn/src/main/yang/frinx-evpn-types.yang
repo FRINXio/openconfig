@@ -1,0 +1,49 @@
+module frinx-evpn-types {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/evpn/types";
+
+  prefix "frinx-evpn-types";
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "This module defines types related to EVPN configurations";
+
+  revision "2018-11-12" {
+    description
+        "Created EVPN types.";
+    reference "3.1.7";
+  }
+
+  typedef ethernet-segment-identifier {
+    type string {
+      pattern '[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){8}';
+    }
+    description
+      "ethernet segment identifier";
+  }
+
+  identity ES-LB-MODE {
+    description
+      "Base identity for ethernet segment load balance mode.";
+  }
+
+  identity PORT_ACTIVE {
+    base ES-LB-MODE;
+    description
+      "Port active mode";
+  }
+
+  identity SINGLE_ACTIVE {
+    base ES-LB-MODE;
+    description
+      "Single active mode";
+  }
+}

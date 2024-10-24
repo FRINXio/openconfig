@@ -1,0 +1,233 @@
+module frinx-cer-cable-extension {
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/cable/cer";
+
+  prefix "cer-cable-ext";
+
+  // import some basic types
+  import frinx-openconfig-cable { prefix cable; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to CER cable models";
+
+  revision "2023-01-25" {
+    description
+      "Initial release";
+    reference "5.0.23";
+  }
+
+  grouping cable-mac-extension {
+    container cable-macs {
+      description "Container for cable macs";
+
+      list cable-mac {
+        key id;
+
+        leaf id {
+          type string;
+          description "Identifier";
+        }
+        leaf name {
+          type string;
+          description "Name";
+        }
+        container state {
+          description "Container for state";
+          uses cable-mac-state-extension;
+        }
+      }
+    }
+  }
+
+  grouping cable-modem-extension {
+    container cable-modems {
+      description "Container for cable modems";
+
+      list cable-modem {
+        key id;
+
+        leaf id {
+          type string;
+          description "Identifier";
+        }
+        leaf name {
+          type string;
+          description "Name";
+        }
+        container state {
+          description "Container for state";
+            uses cable-modem-state-extension;
+        }
+      }
+    }
+  }
+
+  grouping cable-modem-state-extension {
+      leaf interface-name {
+        type string;
+        description "Interface";
+      }
+      leaf mac {
+        type string;
+        description "Mac";
+      }
+      leaf bonded {
+        type string;
+        description "Bonded";
+      }
+      leaf state {
+        type string;
+        description "State";
+      }
+      leaf doc-sis {
+        type string;
+        description "Doc-Sis";
+      }
+      leaf qos {
+        type string;
+        description "Qos(DS-US)";
+      }
+      leaf cpe {
+        type string;
+        description "CPE";
+      }
+      leaf mac-address {
+        type string;
+        description "MAC Address";
+      }
+      leaf ip-address {
+        type string;
+        description "IP Address";
+      }
+  }
+
+  grouping fiber-node-config-extension {
+    leaf cable-downstream {
+      type string;
+      description "Downstream interfaces";
+    }
+    leaf cable-upstream {
+      type string;
+      description "Upstream interfaces";
+    }
+    container rpd {
+      leaf name {
+        type string;
+        description "RPD name";
+      }
+      leaf ds-conn {
+        type uint16;
+        description "Downstream connector";
+      }
+      leaf us-conn {
+        type uint16;
+        description "Upstream connector";
+      }
+    }
+  }
+
+  grouping cable-mac-state-extension {
+    container interfaces {
+      description "Container for interfaces";
+
+      list interface {
+        key id;
+
+        leaf id {
+          type string;
+          description "Identifier";
+        }
+        leaf name {
+          type string;
+          description "Interface";
+        }
+        leaf bonded {
+          type string;
+          description "Bonded";
+        }
+        leaf state {
+          type string;
+          description "State";
+        }
+        leaf doc-sis {
+          type string;
+          description "Doc-Sis";
+        }
+        leaf qos {
+          type string;
+          description "Qos(DS-US)";
+        }
+        leaf cpe {
+          type string;
+          description "CPE";
+        }
+        leaf mac-address {
+          type string;
+          description "MAC Address";
+        }
+        leaf ip-address {
+          type string;
+          description "IP Address";
+        }
+      }
+    }
+  }
+
+  // augment statements
+
+  augment "/cable:cable/cable:fiber-nodes/cable:fiber-node/cable:config" {
+    description "Adds R-PHY specific configuration to cable model";
+    ext:augment-identifier "fiber-node-config-aug";
+
+    uses fiber-node-config-extension;
+  }
+
+  augment "/cable:cable" {
+    description "Adds cable modem specific configuration to cable model";
+    ext:augment-identifier "cable-mac-aug";
+
+    uses cable-mac-extension;
+  }
+
+  augment "/cable:cable" {
+    description "Adds cable modem specific configuration to cable model";
+    ext:augment-identifier "cable-modem-aug";
+
+    uses cable-modem-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" +
+    "/cable:cable/cable:fiber-nodes/cable:fiber-node/cable:config" {
+    description "Adds R-PHY specific configuration to cable model";
+
+    uses fiber-node-config-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" +
+    "/cable:cable" {
+    description "Adds cable modem specific configuration to cable model";
+
+    uses cable-mac-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration" +
+    "/cable:cable" {
+    description "Adds cable modem specific configuration to cable model";
+
+    uses cable-modem-extension;
+  }
+}

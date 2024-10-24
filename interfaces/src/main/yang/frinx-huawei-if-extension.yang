@@ -1,0 +1,202 @@
+module frinx-huawei-if-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/interfaces/huawei-extension";
+
+  prefix "huawei-if-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to huawei interfaces models";
+
+  revision "2021-07-29" {
+    description
+      "Initial release";
+    reference "4.2.8";
+  }
+
+  grouping traffic-direction {
+    leaf direction {
+      type enumeration {
+        enum inbound {
+          description
+            "Apply policy to the inbound direction of the interface";
+        }
+        enum outbound {
+          description
+            "Apply policy to the outbound direction of the interface";
+        }
+      }
+    }
+  }
+
+  grouping huawei-if-extension-config {
+
+    leaf flow-stat-interval {
+      type uint32 {
+        range "10 .. 600";
+      }
+      description "Set flow statistics interval";
+    }
+
+    leaf expire-timeout {
+      type uint32 {
+        range "30 .. 62640";
+      }
+      units seconds;
+      description
+        "The number of seconds to ARP expires";
+    }
+
+    leaf trust {
+      type enumeration {
+        enum dscp {
+          description "Specify trust DSCP parameters";
+        }
+        enum 8021p-inner {
+          description "Trust inner 802.1p priority";
+        }
+        enum 8021p-outer {
+          description "Trust outer 802.1p priority";
+        }
+      }
+      description "Trust settings";
+    }
+
+    leaf ip-binding-vpn-instance {
+      type string;
+      description "VPN instance name";
+    }
+
+    leaf radio-enabled {
+      type boolean;
+      description "Radio enabled or not";
+    }
+
+    leaf lldp-enabled {
+      type boolean;
+      description "Lldp enabled or not";
+    }
+
+    container traffic-policy {
+      description "container for traffic-policy";
+
+      leaf traffic-policy {
+        type string;
+        description "Name of Traffic policy";
+      }
+
+      uses traffic-direction;
+    }
+
+    container traffic-filter {
+      description "container for traffic-filter";
+
+      leaf acl-name {
+        type string;
+        description "DSCP trust parameters";
+      }
+
+      leaf ipv6 {
+        type boolean;
+        description "Is ipv6 config or not";
+      }
+
+      uses traffic-direction;
+    }
+  }
+
+  grouping huawei-sub-if-extension-config {
+
+    leaf dot1q-vlan-id {
+      type uint32 {
+        range "1 .. 4094";
+      }
+      description "Specify dot1q low VLAN ID";
+    }
+
+    leaf ip-binding-vpn-instance {
+      type string;
+      description "VPN instance name";
+    }
+
+    leaf trust-dscp {
+      type boolean;
+      description "DSCP trust parameters";
+    }
+
+    container traffic-policy {
+      description "container for traffic-policy";
+
+      leaf traffic-name {
+        type string;
+        description "Name of Traffic policy";
+      }
+
+      uses traffic-direction;
+    }
+
+    container traffic-filter {
+      description "container for traffic-filter";
+
+      leaf acl-name {
+        type string;
+        description "DSCP trust parameters";
+      }
+
+      leaf ipv6 {
+        type boolean;
+        description "Is ipv6 config or not";
+      }
+
+      uses traffic-direction;
+    }
+  }
+
+  // augment statements
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:config" {
+    description "Adds HUAWEI specific configuration to interfaces model";
+    ext:augment-identifier "if-huawei-aug";
+
+    uses huawei-if-extension-config;
+  }
+
+  augment "/oc-if:interfaces/oc-if:interface/oc-if:subinterfaces/" +
+    "oc-if:subinterface/oc-if:config" {
+    description "Adds HUAWEI specific configuration to sub-interfaces model";
+    ext:augment-identifier "sub-if-huawei-aug";
+
+    uses huawei-sub-if-extension-config;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+    "oc-if:interface/oc-if:config" {
+    description "Adds HUAWEI specific configuration to interfaces model";
+
+    uses huawei-if-extension-config;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-if:interfaces/" +
+    "oc-if:interface/oc-if:subinterfaces/oc-if:subinterface/oc-if:config" {
+    description "Adds HUAWEI specific configuration to sub-interfaces model";
+
+    uses huawei-sub-if-extension-config;
+  }
+}

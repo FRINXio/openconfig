@@ -1,0 +1,89 @@
+module frinx-saos-virtual-ring-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/ring/saos";
+
+  prefix "saos-vr-ext";
+
+  // import some basic types
+  import frinx-openconfig-network-instance { prefix oc-ni; }
+
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig network instance models,
+    containing saos specific features.";
+
+  revision "2020-03-17" {
+    description
+      "Initial release";
+    reference "4.2.4";
+  }
+
+  // grouping statements
+  grouping saos-virtual-ring-extension {
+    description "Enclosing container for the list of virtual rings associated with a network instance";
+
+    container virtual-rings {
+      description "Container for the list of rings.";
+
+      list virtual-ring {
+        key "name";
+
+        description "Virtual ring.";
+
+        leaf name {
+          type leafref {
+            path "../config/name";
+          }
+          description "Name of ring.";
+        }
+
+        container config {
+          description "Config container of ring.";
+
+          leaf name {
+            type string;
+              description "Name of ring.";
+          }
+        }
+      }
+    }
+  }
+
+  // augment statements
+  augment "/oc-ni:network-instances/oc-ni:network-instance/oc-ni:vlans/oc-ni:vlan" {
+    description "Adds SAOS specific configuration to network-instance model";
+    ext:augment-identifier "saos-6-vr-aug";
+    uses saos-virtual-ring-extension;
+  }
+
+  augment "/oc-ni:network-instances/oc-ni:network-instance" {
+    description "Adds SAOS specific configuration to network-instance model";
+    ext:augment-identifier "saos-8-vr-aug";
+    uses saos-virtual-ring-extension;
+  }
+
+  // uniconfig augmentations
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/"
+        + "oc-ni:network-instances/oc-ni:network-instance/oc-ni:vlans/oc-ni:vlan" {
+    description "Adds saos specific configuration to vlan model";
+    uses saos-virtual-ring-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-ni:network-instances/oc-ni:network-instance" {
+    description "Adds saos specific configuration to network instance model";
+    uses saos-virtual-ring-extension;
+  }
+}

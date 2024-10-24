@@ -1,0 +1,148 @@
+module frinx-saos-relay-agent-extension {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://frinx.openconfig.net/yang/relay-agent/saos-extension";
+
+  prefix "saos-relay-agent-ext";
+
+  // import some basic types
+  import frinx-openconfig-interfaces { prefix oc-if; }
+  import frinx-openconfig-inet-types { prefix oc-inet; revision-date 2017-04-03; }
+  import frinx-openconfig-relay-agent { prefix oc-relay; }
+  // uniconfig imports
+  import network-topology { prefix nt; revision-date "2013-10-21"; }
+  import frinx-uniconfig-topology { prefix ut; revision-date "2017-11-21"; }
+  import yang-ext { prefix ext; revision-date "2013-07-09"; }
+
+  // meta
+  organization "Frinx s.r.o";
+
+  contact
+    "support@frinx.io";
+
+  description
+    "Set of augments needed to OpenConfig relay-agent models,
+    containing SAOS specific features.";
+
+  revision "2022-06-26" {
+    description
+      "Initial release";
+    reference "4.2.4";
+  }
+
+  grouping saos-relay-agent-extension {
+    description "Reference to relay-agent.";
+
+    container relay-agent {
+
+      container config {
+        description "Configuration parameters for relay-agent.";
+
+        leaf enable {
+          type boolean;
+          default false;
+          description
+            "Enable sending the DHCP option for Relay Agent information -- option 82.";
+          reference
+            "RFC 3046 - DHCP Relay Agent Information Option";
+        }
+
+        leaf circuit-id-type {
+          type enumeration {
+            enum cid-string {
+              description "cid-string";
+            }
+            enum li-vs {
+              description "li-vs";
+            }
+          }
+        }
+
+        leaf remote-id-type {
+          type enumeration {
+            enum device-hostname {
+              description "device-hostname";
+            }
+            enum device-mac {
+              description "device-mac";
+            }
+            enum rid-string {
+              description "rid-string";
+            }
+          }
+        }
+
+        leaf replace-option82 {
+          type boolean;
+          description "replace-option82";
+        }
+      }
+    }
+  }
+
+  grouping saos-relay-agent-virtual-switches-extension {
+
+    container virtual-switches {
+      description "Container for virtual-switches.";
+
+      list virtual-switch {
+        key "name";
+
+        description "virtual-switch.";
+
+        leaf name {
+          type leafref {
+          path "../config/name";
+        }
+        description
+          "Name of virtual-switch.";
+        }
+
+        container config {
+          description "Config container of virtual-switch.";
+
+          leaf name {
+            type string;
+            description
+              "Name of virtual-switch.";
+          }
+
+          leaf enable {
+            type boolean;
+            description
+              "";
+          }
+        }
+      }
+    }
+  }
+
+  // augment statements
+  augment "/oc-relay:relay-agent/oc-relay:dhcp" {
+    ext:augment-identifier "saos-relay-agent-aug";
+    description "Adds saos specific configuration to relay-agent config model";
+    uses saos-relay-agent-extension;
+  }
+
+  augment "/oc-relay:relay-agent/oc-relay:dhcp" {
+    ext:augment-identifier "saos-relay-agent-vs-aug";
+    description "Adds saos specific configuration to relay-agent config model";
+    uses saos-relay-agent-virtual-switches-extension;
+  }
+
+  // uniconfig augmentations
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-relay:relay-agent/oc-relay:dhcp" {
+    description "Adds saos specific configuration to relay-agent config model";
+
+    uses saos-relay-agent-extension;
+  }
+
+  augment "/nt:network-topology/nt:topology/nt:node/ut:configuration/oc-relay:relay-agent/oc-relay:dhcp" {
+    description "Adds saos specific configuration to relay-agent config model";
+
+    uses saos-relay-agent-virtual-switches-extension;
+  }
+}
